@@ -11,3 +11,5 @@ export const testFunc = functions.https.onCall(async (data, context) => {
   return `${uid} said ${message}, and I wrote it to firestore at messages/${write.id}`
 
 })
+
+export const testTrigger = functions.firestore.document('test-messages/{test-message}')
