@@ -69,15 +69,23 @@ export class SupporterDBC extends Supporter {
     )
   }
 
-  public async add(): Promise<FirebaseFirestore.WriteResult> {
-    if (this.uid === null || this.uid === undefined) throw new Error('Missing UID')
+  public async writeNew(supporter: Supporter): Promise<FirebaseFirestore.WriteResult> {
+    if (supporter.uid === null || supporter.uid === undefined) throw new Error('Missing UID')
+      this.uid = supporter.uid
+      this.customer = supporter.customer
+      this.email = supporter.email
+      this.temp = ""
+      this.username = supporter.username
+      this.timezone = ""
+      this.avatar = ""
+      this.banner = ""
+      this.banner = ""
+      const docRef = db.collection('supporters').doc(this.uid!)
+      this.ref = docRef
 
-    const docRef = db.collection('supporters').doc(this.uid)
-    this.ref = docRef
-
-    return await docRef.withConverter(converter).set(this)
-    .catch((err) => {
-      throw new Error(err)
-    })
+      return await docRef.withConverter(converter).set(this)
+      .catch((err) => {
+        throw new Error(err)
+      })
   }
 }
