@@ -2,29 +2,20 @@ import { testEnv } from './env.spec'
 import { db } from '../config'
 
 describe('example test block', () => {
-
   // This is a stupid hack to get typescript to accept our index.ts to use its functions in the test
   // https://github.com/firebase/firebase-functions-test/issues/8
   let api: any
-
-
   beforeAll(() => {
-
     // Part 2 of the aforementioned stupid hack
     api = require('../index.ts')
-
   })
-
   // After each test we need to fun cleanup functions and delete the test data from DB
   afterAll(async () => {
-
     testEnv.cleanup()
-
     const docs = await db
       .collection('test-messages')
       .listDocuments()
     docs.forEach((doc) => { doc.delete() })
-
   })
 
   it('should write test message to the db', async () => {
