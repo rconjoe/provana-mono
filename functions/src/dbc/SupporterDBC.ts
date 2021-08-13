@@ -83,7 +83,7 @@ export class SupporterDBC extends Supporter {
       const docRef = db.collection('supporters').doc(this.uid!)
       this.ref = docRef
 
-      return await docRef.withConverter(converter).set(this)
+      return await this.ref.withConverter(converter).set(this)
       .catch((err) => {
         throw new Error(err)
       })
