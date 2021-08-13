@@ -19,15 +19,6 @@ export const registerSupporter = functions.https.onCall(async (data) => {
   const newCustomer = await new CreateCustomerService().create(supporter)
   supporter.customer = newCustomer.id
 
-  await new SupporterDBC(
-    supporter.uid,
-    supporter.customer,
-    supporter.email,
-    supporter.temp,
-    supporter.username,
-    supporter.timezone,
-    supporter.avatar,
-    supporter.banner,
-    undefined
-  ).add()
+  await new SupporterDBC().writeNew(supporter)
+  return 'ok'
 })
