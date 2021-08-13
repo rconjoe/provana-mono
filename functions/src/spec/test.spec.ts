@@ -49,6 +49,5 @@ describe('example test block', () => {
   })
 
 
-  it('')
 
 })
