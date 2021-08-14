@@ -31,14 +31,6 @@ const converter = {
 
 export class SupporterDBC extends Supporter {
 
-  static readonly UID_FIELD = 'uid'
-  static readonly CUSTOMER_FIELD = 'customer'
-  static readonly EMAIL_FIELD = 'email'
-  static readonly USERNAME_FIELD = 'username'
-  static readonly TIMEZONE_FIELD = 'timezone'
-  static readonly AVATAR_FIELD = 'avatar'
-  static readonly BANNER_FIELD = 'banner'
-
   ref: FirebaseFirestore.DocumentReference | undefined
 
   constructor(
