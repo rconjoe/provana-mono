@@ -8,11 +8,12 @@ import { CreatorDBC } from '../dbc/CreatorDBC'
 export const registerCreator = functions.https.onCall(async (data) => {
   if (data === null || data === undefined) throw new Error('Null payload!')
 
-  const creator = new Creator().setRegisterData(data.email, data.password, data.username)
-  await new AuthUserService().registerCreator(creator)
+  const creator = new Creator().setRegisterData(data.email, data.password, data.code, data.username)
+  const withUID = await new AuthUserService().registerCreator(creator)
 
-  await new StripeCustomerService().create(creator)
-  await new StripeAccountService().create(creator)
+  const withCustomer = await new StripeCustomerService().newCreator(withUID)
+  const withAccount = await new StripeAccountService().create(withCustomer)
+  await withAccount.associateInvitation()
 
   await new CreatorDBC().writeNew(creator)
   return 'ok'
