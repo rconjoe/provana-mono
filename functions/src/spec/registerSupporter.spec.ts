@@ -13,7 +13,7 @@ describe('Tests registerSupporter', () => {
     // Find the doc we just created:
     const cleanupQuery = await db
       .collection('supporters')
-      .where('email', '==', 'jest@test.com')
+      .where('email', '==', 'supporter@jest.com')
       .get()
     const doc = cleanupQuery.docs[0]
     const data = doc.data()
@@ -27,16 +27,16 @@ describe('Tests registerSupporter', () => {
 
   it('should create a new supporter, customer, and db entry', async () => {
     const req = {
-      email: 'jest@test.com',
-      password: 'jesttest',
-      username: 'jesttest'
+      email: 'supporter@jest.com',
+      password: 'jestsupporter',
+      username: 'jestsupporter'
     }
     const wrapped = testEnv.wrap(api.registerSupporter)
     await wrapped({...req})
 
     const user = await auth.getUserByEmail(req.email)
     const supporterQuery = await db.collection('supporters')
-      .where('email', '==', 'jest@test.com')
+      .where('email', '==', 'supporter@jest.com')
       .get()
     const data = supporterQuery.docs[0].data()
     const customer = await stripe.customers.retrieve(data.customer)

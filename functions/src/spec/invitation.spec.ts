@@ -37,6 +37,5 @@ describe('Tests getOrCreateInvitation HTTPS Callable', () => {
     const wrapped = testEnv.wrap(api.validateInvitation)
     const response = await wrapped({code: code})
     expect(response).toBe(true)
-    console.log(response)
   })
 })
