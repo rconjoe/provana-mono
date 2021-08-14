@@ -14,7 +14,7 @@ export const registerSupporter = functions.https.onCall(async (data) => {
   const supporter = new Supporter().setRegisterData(data.email, data.password, data.username)
   await new AuthUserService().registerSupporter(supporter)
 
-  await new StripeCustomerService().create(supporter)
+  await new StripeCustomerService().newSupporter(supporter)
 
   await new SupporterDBC().writeNew(supporter)
   return 'ok'
