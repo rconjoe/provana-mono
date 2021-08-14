@@ -1,9 +1,10 @@
 import { Supporter } from '../../models/Supporter'
+import { Creator } from '../../models/Creator'
 import { auth } from '../../config'
 
 
-export class SupporterAuthService {
-  public async create(_newUser: Supporter): Promise<Supporter> {
+export class AuthUserService {
+  public async registerSupporter(_newUser: Supporter): Promise<Supporter> {
     const newUser = await auth.createUser({
       email: _newUser.email,
       password: _newUser.temp,
@@ -16,6 +17,25 @@ export class SupporterAuthService {
       seller: false,
       onboarded: false,
       isPartner: false
+    })
+    _newUser.temp = ""
+    _newUser.uid = newUser.uid
+    return _newUser
+  }
+
+  public async registerCreator(_newUser: Creator): Promise<Creator> {
+    const newUser = await auth.createUser({
+      email: _newUser.email,
+      password: _newUser.temp,
+      displayName: _newUser.username
+    })
+    .catch((err) => {
+      throw new Error(err)
+    })
+    await this.customClaimSetter(newUser.uid, {
+      seller: true,
+      onboarded: false,
+      isPartner: true
     })
     _newUser.temp = ""
     _newUser.uid = newUser.uid
