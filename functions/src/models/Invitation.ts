@@ -32,15 +32,6 @@ export class Invitation {
     return await new InvitationDBC().isValid(this.code)
   }
 
-  public async associateUID(): Promise<FirebaseFirestore.WriteResult> {
-    if (this.code === null || this.code === undefined) throw new Error('No code!')
-    if (this.uid === null || this.uid === undefined) throw new Error('No code!')
-    const dbc = new InvitationDBC()
-    dbc.uid = this.uid
-    dbc.code = this.code
-    return await dbc.associate()
-  }
-
   private async getFromDB(): Promise<Invitation> {
     if (this.id === null || this.id === undefined) throw new Error('Discord ID is required to fetch invitation.')
     const dbc = await new InvitationDBC(this.id).getFromId()
