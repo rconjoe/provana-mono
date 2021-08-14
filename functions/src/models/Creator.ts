@@ -1,3 +1,4 @@
+import { InvitationDBC } from '../dbc/InvitationDBC'
 export class Creator {
 
   uid: string | undefined
@@ -47,11 +48,17 @@ export class Creator {
       this.facebook = facebook
     }
 
-  public setRegisterData(email: string, password: string, username: string): Creator {
+  public setRegisterData(email: string, password: string, code: string, username: string): Creator {
     this.email = email,
     this.temp = password,
+    this.code = code
     this.username = username
     return this
+  }
+
+  public async associateInvitation(): Promise<FirebaseFirestore.WriteResult> {
+    if (!this.uid || !this.code) throw new Error('UID required to associate invitation.')
+    return await new InvitationDBC().associate(this)
   }
 
 }
