@@ -1,5 +1,6 @@
 import { db } from '../config'
 import { Invitation } from '../models/Invitation'
+import { Creator } from '../models/Creator'
 import { UnixTimestampService } from '../services/UnixTimestampService'
 
 const converter = {
@@ -82,17 +83,14 @@ export class InvitationDBC {
     return snap.data()!
   }
 
-  public async associate(): Promise<FirebaseFirestore.WriteResult> {
-    if (this.uid === null || this.uid === undefined) throw new Error('uid needed to associate Invitation with user.')
-    if (this.code === null || this.code === undefined) throw new Error('Code needed to associate Invitation with user.')
-    const q = await db.collection('invitations').where('uid', '==', this.uid).get()
+  public async associate(creator: Creator): Promise<FirebaseFirestore.WriteResult> {
+    if (!creator.uid || !creator.code) throw new Error('Code and UID needed to associate Invitation with user.')
+    const q = await db.collection('invitations').where('code', '==', creator.code).get()
     if (q.empty) throw new Error('Invitation not found in Firestore.')
     return await q.docs[0].ref.update({
-      uid: this.uid,
-      code: this.code
+      uid: creator.uid,
+      valid: false
     })
-
-
   }
 
   private async getFromCode(code?: string | undefined): Promise<InvitationDBC> {
