@@ -103,4 +103,11 @@ export class CreatorDBC extends Creator {
         throw new Error(err)
       })
   }
+
+  public async fetchByUid(uid?: string | undefined): Promise<Creator> {
+    if (!uid && !this.uid) throw new Error('UID required')
+    const creator = await db.collection('creators').doc(uid ? uid : this.uid!).withConverter(converter).get()
+    if (!creator.exists) throw new Error('Creator not found in firestore.')
+    return creator.data()!
+  }
 }
