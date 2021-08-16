@@ -29,4 +29,9 @@ export class StripeAccountService {
       type: 'account_onboarding'
     })
   }
+
+  public async verifyAccountCapabilities(accountId: string): Promise<boolean> {
+    const account = await stripe.accounts.retrieve(accountId)
+    return account.details_submitted
+  }
 }
