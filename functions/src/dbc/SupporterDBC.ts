@@ -4,13 +4,13 @@ import { Supporter } from '../models/Supporter'
 const converter = {
   toFirestore(supporter: SupporterDBC): FirebaseFirestore.DocumentData {
     return {
-      uid: supporter.uid,
-      customer: supporter.customer,
-      email: supporter.email,
-      username: supporter.username,
-      timezone: supporter.timezone,
-      avatar: supporter.avatar,
-      banner: supporter.banner
+      uid: supporter.uid ? supporter.uid : "",
+      customer: supporter.customer ? supporter.customer : "",
+      email: supporter.email ? supporter.email : "",
+      username: supporter.username ? supporter.username : "",
+      timezone: supporter.timezone ? supporter.timezone : "",
+      avatar: supporter.avatar ? supporter.avatar : "",
+      banner: supporter.banner ? supporter.banner : ""
     }
   },
   fromFirestore(snapshot: FirebaseFirestore.QueryDocumentSnapshot): SupporterDBC {
@@ -30,14 +30,6 @@ const converter = {
 }
 
 export class SupporterDBC extends Supporter {
-
-  static readonly UID_FIELD = 'uid'
-  static readonly CUSTOMER_FIELD = 'customer'
-  static readonly EMAIL_FIELD = 'email'
-  static readonly USERNAME_FIELD = 'username'
-  static readonly TIMEZONE_FIELD = 'timezone'
-  static readonly AVATAR_FIELD = 'avatar'
-  static readonly BANNER_FIELD = 'banner'
 
   ref: FirebaseFirestore.DocumentReference | undefined
 
@@ -74,12 +66,7 @@ export class SupporterDBC extends Supporter {
       this.uid = supporter.uid
       this.customer = supporter.customer
       this.email = supporter.email
-      this.temp = ""
       this.username = supporter.username
-      this.timezone = ""
-      this.avatar = ""
-      this.banner = ""
-      this.banner = ""
       const docRef = db.collection('supporters').doc(this.uid!)
       this.ref = docRef
 

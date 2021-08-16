@@ -11,3 +11,8 @@ export const testFunc = functions.https.onCall(async (data, context) => {
 })
 
 export { registerSupporter } from './endpoint/registerSupporter'
+export { registerCreator } from './endpoint/registerCreator'
+export { getOrCreateInvitation } from './endpoint/getOrCreateInvitation'
+export { validateInvitation } from './endpoint/validateInvitation'
+export { stripeAccountOnboard } from './endpoint/stripeAccountOnboard'
+export { stripeCompleteOnboard } from './endpoint/stripeCompleteOnboard'

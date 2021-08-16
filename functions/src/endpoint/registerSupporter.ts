@@ -1,8 +1,8 @@
 import * as functions from 'firebase-functions'
 import { Supporter } from '../models/Supporter'
-import { SupporterDBC } from '../dbc/SupporterDBC'
-import { SupporterAuthService } from '../services/auth/SupporterAuthService'
+import { AuthUserService } from '../services/auth/AuthUserService'
 import { StripeCustomerService } from '../services/stripe/StripeCustomerService'
+import { SupporterDBC } from '../dbc/SupporterDBC'
 
 
 /**
@@ -12,9 +12,9 @@ export const registerSupporter = functions.https.onCall(async (data) => {
   if (data === null || data === undefined) throw new Error('Null payload!')
 
   const supporter = new Supporter().setRegisterData(data.email, data.password, data.username)
-  await new SupporterAuthService().create(supporter)
+  await new AuthUserService().registerSupporter(supporter)
 
-  await new StripeCustomerService().create(supporter)
+  await new StripeCustomerService().newSupporter(supporter)
 
   await new SupporterDBC().writeNew(supporter)
   return 'ok'
