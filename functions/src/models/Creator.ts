@@ -1,51 +1,67 @@
+import { InvitationDBC } from '../dbc/InvitationDBC'
 export class Creator {
 
-  static readonly UID_FIELD = 'uid'
-  static readonly ACCOUNT_FIELD = 'account'
-  static readonly CUSTOMER_FIELD = 'customer'
-  static readonly EMAIL_FIELD = 'email'
-  static readonly USERNAME_FIELD = 'username'
-  static readonly TIMEZONE_FIELD = 'timezone'
-  static readonly AVATAR_FIELD = 'avatar'
-  static readonly BANNER_FIELD = 'banner'
-
   uid: string | undefined
-  account: string | undefined
   customer: string | undefined
+  account: string | undefined
+  onboarded: boolean | undefined
   email: string | undefined
   temp: string | undefined
+  code: string | undefined
   username: string | undefined
   timezone: string | undefined
   avatar: string | undefined
   banner: string | undefined
+  twitter: string | undefined
+  twitch: string | undefined
+  youtube: string | undefined
+  facebook: string | undefined
 
   constructor(
     uid?: string,
-    account?: string,
     customer?: string,
+    account?: string,
+    onboarded?: boolean,
     email?: string,
     temp?: string,
+    code?: string,
     username?: string,
     timezone?: string,
     avatar?: string,
-    banner?: string
+    banner?: string,
+    twitter?: string,
+    twitch?: string,
+    youtube?: string,
+    facebook?: string
     ) {
       this.uid = uid,
-      this.account = account,
       this.customer = customer
+      this.account = account,
+      this.onboarded = onboarded,
       this.email = email,
       this.temp = temp,
+      this.code = code,
       this.username = username,
       this.timezone = timezone,
       this.avatar = avatar,
       this.banner = banner
+      this.twitter = twitter,
+      this.twitch = twitch,
+      this.youtube = youtube,
+      this.facebook = facebook
     }
 
-  public setRegisterData(email: string, password: string, username: string): Creator {
+  public setRegisterData(email: string, password: string, code: string, username: string): Creator {
     this.email = email,
     this.temp = password,
+    this.code = code
     this.username = username
     return this
+  }
+
+  public async associateInvitation(): Promise<FirebaseFirestore.WriteResult> {
+    if (!this.uid || !this.code) throw new Error('UID required to associate invitation.')
+    return await new InvitationDBC().associate(this)
   }
 
 }

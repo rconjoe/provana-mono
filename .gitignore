@@ -70,3 +70,4 @@ functions/dist
 functions/test-creds.json
 functions/lib
 functions/.runtimeconfig.json
+.vscode
