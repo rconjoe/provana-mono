@@ -30,7 +30,7 @@ export class UserAuth {
      */
     csrfToken?: string;
 
-    public constructor(uid: string, idToken: string){
+    public constructor(idToken: string, uid: string){
         this.uid = uid;
         this.idToken = idToken;
     }
@@ -47,7 +47,16 @@ export class UserAuth {
         return this.uid;
     }
 
-    public setUid(uid: string) {
+    
+    
+    /**
+     * Setter for setting the Uid for the class
+     * @date 8/16/2021 - 3:12:25 PM
+     *
+     * @public
+     * @param {string} uid
+     */
+    public setUid(uid: string): void {
         this.uid = uid
     }
 
