@@ -1,6 +1,7 @@
 import { Supporter } from '../../models/Supporter'
 import { Creator } from '../../models/Creator'
 import { auth } from '../../config'
+import { UserRecord } from 'firebase-functions/lib/providers/auth'
 
 
 export class AuthUserService {
@@ -44,5 +45,9 @@ export class AuthUserService {
 
   private async customClaimSetter(uid: string, claims: object): Promise<void> {
     await auth.setCustomUserClaims(uid, {...claims})
+  }
+
+  public async getUser(uid: string): Promise<UserRecord> {
+    return await auth.getUser(uid)
   }
 }
