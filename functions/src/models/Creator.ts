@@ -4,6 +4,7 @@ export class Creator {
   uid: string | undefined
   customer: string | undefined
   account: string | undefined
+  onboarded: boolean | undefined
   email: string | undefined
   temp: string | undefined
   code: string | undefined
@@ -20,6 +21,7 @@ export class Creator {
     uid?: string,
     customer?: string,
     account?: string,
+    onboarded?: boolean,
     email?: string,
     temp?: string,
     code?: string,
@@ -35,6 +37,7 @@ export class Creator {
       this.uid = uid,
       this.customer = customer
       this.account = account,
+      this.onboarded = onboarded,
       this.email = email,
       this.temp = temp,
       this.code = code,
