@@ -47,6 +47,10 @@ export class UserAuth {
         return this.uid;
     }
 
+    public setUid(uid: string) {
+        this.uid = uid
+    }
+
     
     /**
      * getter for the objects firebase Id Token
@@ -71,5 +75,23 @@ export class UserAuth {
         this.csrfToken = csrfToken;
     }
 
+
     
+    /**
+     * Getter for either getting the csrf token or returns a string that says its not set
+     * @date 8/16/2021 - 3:09:08 PM
+     *
+     * @public
+     * @async
+     * @returns {string}
+     */
+    public getCsrfToken():string {
+        if(this.csrfToken != null) {
+            return this.csrfToken;
+        }
+        else {
+            return "the csrf token was not set"
+        }
+    }
+
 }
