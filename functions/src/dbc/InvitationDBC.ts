@@ -102,10 +102,11 @@ export class InvitationDBC extends Invitation {
     return this
   }
 
-  public async isValid(code?: string | undefined): Promise<boolean> {
-    code ? code : this.code
-    return this.valid ? this.valid : (await this.getFromCode(code)).valid!
+  public async validate(): Promise<boolean> {
+    const doc = await this.getFromCode()
+    return doc.valid!
   }
+
   public async associate(creator: Creator): Promise<FirebaseFirestore.WriteResult> {
     if (!creator.uid || !creator.code) throw new Error('Code and UID needed to associate Invitation with user.')
     const q = await db.collection('invitations').where('code', '==', creator.code).get()
@@ -116,17 +117,10 @@ export class InvitationDBC extends Invitation {
     })
   }
 
-  private async getFromCode(code?: string | undefined): Promise<InvitationDBC> {
-    code ? code : this.code
-    const invitation =  await db.collection('invitations').where('code', '==', code).withConverter(converter).get()
-    if (invitation.empty) throw new Error('Invitation not found')
-    return invitation.docs[0].data()
+  private async getFromCode(): Promise<InvitationDBC> {
+    if (this.code === "" || this.code === undefined) throw new Error('Invitation code is required.')
+    const invitation =  await db.collection('invitations').where('code', '==', this.code).withConverter(converter).get()
+    if (invitation.empty === true) throw new Error('Invitation not found')
+    return invitation.docs[0].data()!
   }
-
-
-  public async validate(code?: string | undefined): Promise<boolean> {
-    if (this.code === null || this.code === undefined) throw new Error('No code to validate!')
-    return await this.isValid(this.code)
-  }
-
 }
