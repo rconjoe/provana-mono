@@ -1,10 +1,9 @@
 import * as functions from 'firebase-functions'
-import { Invitation } from '../models/Invitation'
+import { InvitationDBC } from '../dbc/InvitationDBC'
 
-export const getOrCreateInvitation = functions.https.onCall(async (data): Promise<string> => {
+export const getOrCreateInvitation = functions.https.onCall(async (data, context): Promise<string> => {
   if (data === null || data === undefined) throw new Error('Null or undefined input.')
 
-  const dUser: string = data.discordUserID
-  const invitation = await new Invitation(dUser).getOrCreate()
-  return invitation.code!
+  const invitation = new InvitationDBC().setUser(data.discordUserID)
+  return await invitation.getOrCreate()
 })
