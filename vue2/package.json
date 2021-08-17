@@ -1,0 +1,62 @@
+{
+  "name": "play-pro",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "test:unit": "vue-cli-service test:unit",
+    "test:e2e": "vue-cli-service test:e2e",
+    "preview": "vue-cli-service build && timestamp=$(date \"+%s\"); firebase hosting:channel:deploy $timestamp --expires 1d"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "caniuse-lite": "^1.0.30001219",
+    "core-js": "^3.8.3",
+    "dayjs": "^1.10.4",
+    "firebase": "^8.4.1",
+    "gsap": "^3.7.0",
+    "jquery": "^3.5.1",
+    "js-cookie": "^2.2.1",
+    "popper.js": "^1.16.1",
+    "propper": "^1.0.3",
+    "vue": "^2.6.12",
+    "vue-router": "^3.4.9",
+    "vuetify": "^2.4.3",
+    "vuex": "^3.6.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.4.0",
+    "@vue/cli-plugin-e2e-cypress": "^4.5.12",
+    "@vue/cli-plugin-router": "~4.4.0",
+    "@vue/cli-plugin-unit-jest": "^4.5.12",
+    "@vue/cli-service": "~4.4.0",
+    "@vue/test-utils": "^1.1.4",
+    "firebase-tools": "^9.12.1",
+    "flush-promises": "^1.0.2",
+    "sass": "^1.32.5",
+    "sass-loader": "^8.0.0",
+    "vue-cli-plugin-vuetify": "^2.0.9",
+    "vue-jest": "^3.0.7",
+    "vue-template-compiler": "^2.6.12",
+    "vuetify-loader": "^1.3.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "vue"
+    ],
+    "transform": {
+      ".*\\.(vue)$": "vue-jest"
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>/tests/setup.js"
+    ]
+  }
+}

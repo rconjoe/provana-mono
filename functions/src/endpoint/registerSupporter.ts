@@ -8,14 +8,12 @@ import { SupporterDBC } from '../dbc/SupporterDBC'
 /**
  * @see https://getleaf.app/JosephCarlton/stepbystepa-01xddhel
  */
-export const registerSupporter = functions.https.onCall(async (data) => {
+export const registerSupporter = functions.https.onCall(async (data, context) => {
   if (data === null || data === undefined) throw new Error('Null payload!')
 
   const supporter = new Supporter().setRegisterData(data.email, data.password, data.username)
   await new AuthUserService().registerSupporter(supporter)
-
   await new StripeCustomerService().newSupporter(supporter)
-
   await new SupporterDBC().writeNew(supporter)
   return 'ok'
 })

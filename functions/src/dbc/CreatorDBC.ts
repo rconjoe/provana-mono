@@ -1,5 +1,6 @@
 import { db } from '../config'
 import { Creator } from '../models/Creator'
+import { InvitationDBC } from '../dbc/InvitationDBC'
 
 const converter = {
   toFirestore(creator: CreatorDBC): FirebaseFirestore.DocumentData {
@@ -102,6 +103,8 @@ export class CreatorDBC extends Creator {
       this.username = creator.username
       const docRef = db.collection('creators').doc(this.uid!)
       this.ref = docRef
+
+      await new InvitationDBC().associate(this.toModel())
 
       return await this.ref.withConverter(converter).set(this)
       .catch((err) => {
