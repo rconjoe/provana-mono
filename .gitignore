@@ -71,3 +71,5 @@ functions/test-creds.json
 functions/lib
 functions/.runtimeconfig.json
 .vscode
+vue2/node_modules
+vue2/dist
