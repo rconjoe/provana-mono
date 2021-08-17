@@ -7,67 +7,67 @@
  * @class Review
  * @typedef {Review}
  */
-export default class Review {
+export class Review {
 
     
     /**
      * Seller UID needed to either GET the reviews from database or PUT a new one in the collection
      * @date 8/17/2021 - 3:00:48 PM
      *
-     * @private
+     * @public
      * @type {string}
      */
-    private sellerUid: string;
+    public sellerUid: string;
 
     
     /**
      * Optional Buyer UID used to GET the information about them to save on the review
      * @date 8/17/2021 - 3:01:25 PM
      *
-     * @private
+     * @public
      * @type {?string}
      */
-    private buyerUid?: string;
+    public buyerUid?: string;
 
     
     /**
      * Optional message from a supporter to be saved on the review
      * @date 8/17/2021 - 3:01:54 PM
      *
-     * @private
+     * @public
      * @type {?string}
      */
-    private message?: string;
+    public message?: string;
 
     
     /**
      * Optional the date that a review was written
      * @date 8/17/2021 - 3:02:28 PM
      *
-     * @private
+     * @public
      * @type {?Date}
      */
-    private date?: Date;
+    public date?: Date;
 
     
     /**
      * Optional the rating a supporter gave the service
      * @date 8/17/2021 - 3:02:46 PM
      *
-     * @private
+     * @public
      * @type {?number}
      */
-    private rating?: number;
+    public rating?: number;
 
     
     /**
      * Optional the name of the service that the review was written for
      * @date 8/17/2021 - 3:03:04 PM
      *
-     * @private
+     * @public
      * @type {?string}
      */
-    private serviceName?: string;
+    public serviceName?: string;
 
     
     /**
