@@ -12,7 +12,7 @@
       </v-row>
       <!-- Seller info container 8 cols-->
       <!-- UserName Header row-->
-      <v-row class="pl-6  pt-6 pb-0">
+      <v-row class=" userRow pl-6  pt-6 pb-0">
         <v-col lg="6">
           <UserHeader :profile="profile" />
         </v-col>
@@ -125,6 +125,9 @@ export default {
   background-image: url('../assets/_DashboardBG1.png');
   background-size: contain;
   background-color: #121212;
+}
+.userRow{
+  background-image:linear-gradient(to bottom,#111111 0%,#1e1e1ecc 10%,#1e1e1e00 30%);
 }
 .userBanner {
   background-image: linear-gradient(to bottom,#1e1e1ea3 2.71%,#1e1e1e69 26.76%,#1e1e1e00 53.59%),linear-gradient(to top,#111111 2.71%,#1e1e1ecc 26.76%,#1e1e1e00 53.59%),var(--bannerUrl);

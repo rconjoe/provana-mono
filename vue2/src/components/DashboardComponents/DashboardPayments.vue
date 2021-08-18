@@ -19,12 +19,7 @@
                     <h3 class="subText"> JSTN - 39203947 </h3>
 				</v-col>
 			</v-row>
-			 <v-row>
-				<v-col class="sectionCol">
-					<h1 class="windowHeader">Balance</h1>
-                    <h3 class="subText"> $ 109.99 </h3>
-				</v-col>
-			</v-row>
+
 		</v-col>
 	</v-row>
 </template>
@@ -57,7 +52,7 @@ export default {
 	padding-left:6vw;
 }
 .contact{
-	font: normal 500 2.60vw Poppins;
+	font: normal 600 2.60vw Poppins;
 	padding-bottom: 3vw;
 }
 .switchCol{

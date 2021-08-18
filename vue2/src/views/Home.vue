@@ -32,7 +32,7 @@
 								<div class="heroTextDiv">
 									<h2 class="heroText1"> 1v1 The Rocket League Gods at </h2>
 									<h2 class="heroText2"> PRIDESTARK GAMING </h2>
-									<v-btn class="homeBtn" color="primary"> Make an account</v-btn>
+									<v-btn class="homeBtn btnCTA" color="primary"> Make an account</v-btn>
 								</div>
 							</v-col>
 						</v-row>
@@ -149,26 +149,13 @@
 		margin-top: 1vw;
 		margin-right: auto;
 		margin-left: auto;
-		height: 2.5520833333333335vw;
-		width: 12.19vw;
+
 		border-radius: 5px;
-		font: normal 500 1.0526315789473684vw Poppins;
 	}
 	>>> .v-btn__content {
 		margin-top: 0;
 	}
-	.homeBtn:hover {
-		color: #d4145a;
-	}
-	.homeBtn.v-btn:before {
-		color: #d4145a;
-		opacity: 1;
-		vertical-align: middle;
-	}
-	.homeBtn.v-btn:hover:before {
-		color: white;
-		opacity: 1;
-	}
+
 	.sellCol {
 		margin-top: 8.6vw;
 	}
