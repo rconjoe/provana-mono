@@ -1,6 +1,6 @@
 import * as admin from 'firebase-admin'
 admin.initializeApp()
-
+import 'reflect-metadata'
 import Stripe from 'stripe'
 
 export const auth = admin.auth()

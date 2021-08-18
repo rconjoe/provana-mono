@@ -26,7 +26,7 @@ const converter = {
   }
 }
 
-export class InvitationDBC {
+export class InvitationDBC extends Invitation {
 
   id: string | undefined
   code: string | undefined
@@ -36,34 +36,15 @@ export class InvitationDBC {
   ref: FirebaseFirestore.DocumentReference | undefined
 
   constructor(
-  id?: string | undefined,
-  code?: string | undefined,
-  generated?: number | undefined,
-  valid?: boolean | undefined,
-  uid?: string | undefined,
-  ref?: FirebaseFirestore.DocumentReference | undefined
+    id?: string,
+    code?: string,
+    generated?: number,
+    valid?: boolean,
+    uid?: string,
+    ref?: FirebaseFirestore.DocumentReference,
   ) {
-    this.id = id,
-    this.code = code,
-    this.generated = generated,
-    this.valid = valid,
-    this.uid = uid
+    super(id, code, generated, valid, uid)
     this.ref = ref
-  }
-
-  public async isValid(code?: string | undefined): Promise<boolean> {
-    code ? code : this.code
-    return this.valid ? this.valid : (await this.getFromCode(code)).valid!
-  }
-
-  public async createNew(dUser: string): Promise<InvitationDBC> {
-    this.ref = db.collection('invitations').doc(dUser)
-    this.code = this.generateCode()
-    this.generated = new UnixTimestampService().generate()
-    this.valid = true,
-    this.uid = ""
-    await this.ref.withConverter(converter).set(this)
-    return this
   }
 
   public toModel(): Invitation {
@@ -76,28 +57,34 @@ export class InvitationDBC {
     )
   }
 
-  public async getFromId(): Promise<InvitationDBC> {
+  public setUser(discordUserID: string): InvitationDBC {
+    this.id = discordUserID
+    return this
+  }
+
+  public async getOrCreate(): Promise<string> {
+    if (this.id === null || this.id === undefined) throw new Error('Discord ID is required to get or create')
+    return (await this.exists()) ? await this.getFromId() : await this.create()
+  }
+
+  public async exists(): Promise<boolean> {
+    const snap = await db.collection('invitations').doc(this.id!).get()
+    return snap.exists
+  }
+
+  public async getFromId(): Promise<string> {
     if (this.id === null || this.id === undefined) throw new Error('Discord ID is required to fetch invitation.')
     const snap = await db.collection('invitations').doc(this.id).withConverter(converter).get()
-    if (!snap.exists) throw new Error('Invitation not found in Firestore.')
-    return snap.data()!
+    return snap.data()!.code!
   }
 
-  public async associate(creator: Creator): Promise<FirebaseFirestore.WriteResult> {
-    if (!creator.uid || !creator.code) throw new Error('Code and UID needed to associate Invitation with user.')
-    const q = await db.collection('invitations').where('code', '==', creator.code).get()
-    if (q.empty) throw new Error('Invitation not found in Firestore.')
-    return await q.docs[0].ref.update({
-      uid: creator.uid,
-      valid: false
-    })
-  }
-
-  private async getFromCode(code?: string | undefined): Promise<InvitationDBC> {
-    code ? code : this.code
-    const invitation =  await db.collection('invitations').where('code', '==', code).withConverter(converter).get()
-    if (invitation.empty) throw new Error('Invitation not found')
-    return invitation.docs[0].data()
+  public async create(): Promise<string> {
+    this.ref = db.collection('invitations').doc(this.id!)
+    this.code = this.generateCode()
+    this.generated = new UnixTimestampService().generate()
+    this.valid = true,
+    await this.ref.withConverter(converter).set(this)
+    return this.code
   }
 
   private generateCode(): string {
@@ -110,8 +97,30 @@ export class InvitationDBC {
     return code.join('')
   }
 
-  public async existsInDatabase(): Promise<boolean> {
-    const snap = await db.collection('invitations').doc(this.id!).get()
-    return snap.exists
+  public setCode(code: string): InvitationDBC {
+    this.code = code
+    return this
+  }
+
+  public async validate(): Promise<boolean> {
+    const doc = await this.getFromCode()
+    return doc.valid!
+  }
+
+  public async associate(creator: Creator): Promise<FirebaseFirestore.WriteResult> {
+    if (!creator.uid || !creator.code) throw new Error('Code and UID needed to associate Invitation with user.')
+    const q = await db.collection('invitations').where('code', '==', creator.code).get()
+    if (q.empty) throw new Error('Invitation not found in Firestore.')
+    return await q.docs[0].ref.update({
+      uid: creator.uid,
+      valid: false
+    })
+  }
+
+  private async getFromCode(): Promise<InvitationDBC> {
+    if (this.code === "" || this.code === undefined) throw new Error('Invitation code is required.')
+    const invitation =  await db.collection('invitations').where('code', '==', this.code).withConverter(converter).get()
+    if (invitation.empty === true) throw new Error('Invitation not found')
+    return invitation.docs[0].data()!
   }
 }
