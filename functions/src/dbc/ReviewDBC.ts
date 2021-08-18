@@ -6,7 +6,7 @@ const converter = {
         return {
             sellerUid: review.sellerUid ? review.sellerUid: "",
             buyerUid: review.buyerUid ? review.buyerUid: "",
-            mesage: review.message ? review.message: "",
+            message: review.message ? review.message: "",
             date: review.date ? review.date : new Date,
             rating: review.rating ? review.rating : 1,
             serviceName: review.serviceName ? review.serviceName : "",
@@ -29,7 +29,7 @@ const converter = {
 
 
 
-export default class ReviewDBC extends Review {
+export class ReviewDBC extends Review {
 
     private ref: FirebaseFirestore.DocumentReference | undefined;
 
