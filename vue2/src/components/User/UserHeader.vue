@@ -25,16 +25,16 @@
             <!-- social icons displayed inline-block to float next to previous h1 -->
             <div>
               <a :href="`https://twitter.com/${profile.twitter}`" target="_blank" v-if="profile.twitter">
-                <v-icon color="#1DA1F2" class="socialIcon" size="1.5vw" :href="user.socials.TW"> fab fa-twitter</v-icon>
+                <v-icon color="#f5f5f5" class="socialIcon" size="1.5vw" :href="user.socials.TW"> fab fa-twitter</v-icon>
               </a>
               <a :href="`https://facebook.com/${profile.facebook}`" target="_blank" v-if="profile.facebook">
-                <v-icon color="#4267B2" class="socialIcon" size="1.5vw"> fab fa-facebook</v-icon>
+                <v-icon color="#f5f5f5" class="socialIcon" size="1.5vw"> fab fa-facebook</v-icon>
               </a>
               <a :href="`https://youtube.com/${profile.youtube}`" target="_blank" v-if="profile.youtube">
-                <v-icon color="#FF0000" class="socialIcon" size="1.5vw"> fab fa-youtube</v-icon>
+                <v-icon color="#f5f5f5" class="socialIcon" size="1.5vw"> fab fa-youtube</v-icon>
               </a>
               <a :href="`https://twitch.tv/${profile.twitch}`" target="_blank" v-if="profile.twitch">
-                <v-icon color="#6441A4" class="socialIcon" size="1.5vw"> fab fa-twitch</v-icon>
+                <v-icon color="#f5f5f5" class="socialIcon" size="1.5vw"> fab fa-twitch</v-icon>
               </a>
             </div>
           </div>

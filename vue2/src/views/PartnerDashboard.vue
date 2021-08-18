@@ -42,7 +42,7 @@
 
           <!-- payment window -->
           <v-window-item name="DashPaymentWindow">
-            <v-card color="#1e1e1e" height="800px" name="DashPaymentCard" dark flat tile max-width="100vw">
+            <v-card color="transparent" height="800px" name="DashPaymentCard" dark flat tile max-width="100vw">
               <dashboard-payments></dashboard-payments>
             </v-card>
           </v-window-item>
@@ -72,7 +72,7 @@
         </v-window>
       </v-col>
     </v-row>
-  
+
     <ChatBox/>
   </div>
 </template>
