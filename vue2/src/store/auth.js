@@ -1,4 +1,5 @@
 import { db } from '../plugins/firebase'
+import { store } from './index'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
@@ -31,8 +32,8 @@ export const auth = {
     },
 
     actions: {
-        async setTimezone({ commit }, uid) {
-            const q = await db.collection('users').doc(uid).get()
+        async setTimezone(state, { commit }, uid) {
+            const q = await db.collection(store.state.auth.claims.type).doc(store.state.auth.currentUser.uid).get()
             if (!q.exists) {
                 console.error(`${uid} not found in db, cannot set timezone. Defaulting...`)
                 const guess = dayjs.tz.guess()
