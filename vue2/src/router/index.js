@@ -2,7 +2,7 @@ import Home from '../views/Home.vue'
 import About from '../views/About.vue'
 import User from '../views/User.vue'
 import Register from "../views/Register.vue"
-import PartnerDashboard from "../views/PartnerDashboard.vue"
+import Dashboard from "../views/Dashboard.vue"
 import StripeOnboardSuccess from "../views/StripeOnboardSuccess.vue"
 import Login from "../views/Login.vue"
 import Support from "../views/Support.vue"
@@ -37,7 +37,7 @@ export const routes = [
   {
     path:'/dashboard',
     name:'dashboard',
-    component: PartnerDashboard,
+    component: Dashboard,
     meta: {
       isPrivate: true
       },
