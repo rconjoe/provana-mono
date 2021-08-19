@@ -28,5 +28,8 @@
     "ts-jest": "^27.0.4",
     "typescript": "^3.8.0"
   },
-  "private": true
+  "private": true,
+  "volta": {
+    "node": "12.22.5"
+  }
 }
