@@ -27,7 +27,7 @@ export const notifications = {
 
   actions: {
     bindNotifs({ commit, dispatch }) {
-      db.collection('users')
+      db.collection(`${store.state.auth.claims.type}s`)
         .doc(store.state.auth.currentUser.uid)
         .collection('notifications')
         .orderBy('time')
@@ -41,13 +41,10 @@ export const notifications = {
     },
 
     formatter({commit}, rawNotif) {
-
       switch(rawNotif.category) {
-
         case 'disputed-sale':
           commit('SET_DISPUTE', rawNotif)
           return
-
         default:
           commit('SET_NOTIF', rawNotif)
           return
