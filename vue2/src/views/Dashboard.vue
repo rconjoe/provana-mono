@@ -90,7 +90,7 @@ import DashboardNavMobile from '@/components/DashboardComponents/DashboardNavMob
 import DashboardNotOnboarded from '@/components/DashboardComponents/DashboardNotOnboarded.vue'
 
 export default {
-  name: 'PartnerDashboard',
+  name: 'Dashboard',
 
   components: {
     ChatBox,
