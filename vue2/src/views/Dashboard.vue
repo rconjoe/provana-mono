@@ -1,18 +1,21 @@
 <template>
   <div>
-    <!--Conatiner row. -->
     <v-row class="pa-0  dashRow">
       <!-- Dashboard nav drawer must sit outside of the column -->
+      <!-- Creator and supporter links are set by checking claim then displaying a limited or full list of links -->
       <div v-if="!$vuetify.breakpoint.mobile" cols="1" class="pa-0 navDrawerCol">
         <DashboardNavDrawer
           style="height:100%  "
-          v-if="!$vuetify.breakpoint.mobile"
-          :links=" !seller ? buyerLinks : !onboarded ? onboardLinks : sellerLinks"
+          :links="this.$store.state.auth.claims.type"
           :window="window"
           @update-window="updateWindow"
           :avatar="profile.avatar"
         />
       </div>
+      <!-- Onboard Overlay -->
+      <Overlay :show="false">
+          <DashboardNotOnboarded />
+      </Overlay>
 
       <!-- Column wraps all dashboard windows. -->
       <v-col class="pa-0 DashCol">
@@ -21,9 +24,7 @@
           <!-- home window-->
           <v-window-item name="DashHomeWindow" class="dashWindow">
             <v-card color="transparent" name="DashHomeCard" dark flat class="dashCard">
-
-              <dashboard-home v-if="!seller ? true : onboarded ? true : false" :profile="profile"></dashboard-home>
-              <DashboardNotOnboarded v-else/>
+              <dashboard-home :profile="profile"></dashboard-home>
             </v-card>
           </v-window-item>
           <!-- account window -->
@@ -53,22 +54,6 @@
               <dashboard-contact @update-notifications="updateNotifications"></dashboard-contact>
             </v-card>
           </v-window-item>
-          <!-- requests card
-                    <v-window-item>
-                    <v-card>
-                        <v-card-text>
-                            <v-list-item-avatar color="grey lighten-1">
-                            </v-list-item-avatar>
-                            <v-list-item-content>
-                                <v-list-item-title> request card </v-list-item-title>
-                                <v-list-item-text>
-                                    This is a test card.
-                                </v-list-item-text>
-                            </v-list-item-content>
-                        </v-card-text>
-                    </v-card>
-                    </v-window-item>
-                    requests card -->
         </v-window>
       </v-col>
     </v-row>
@@ -87,7 +72,8 @@ import DashboardPayments from '@/components/DashboardComponents/DashboardPayment
 import DashboardContact from '@/components/DashboardComponents/DashboardContact.vue';
 import DashboardNavDrawer from '@/components/DashboardComponents/DashboardNavDrawer.vue';
 import DashboardNavMobile from '@/components/DashboardComponents/DashboardNavMobile.vue';
-import DashboardNotOnboarded from '@/components/DashboardComponents/DashboardNotOnboarded.vue'
+import DashboardNotOnboarded from '@/components/DashboardComponents/DashboardNotOnboarded.vue';
+import Overlay from '@/components/ReusableComponents/Overlay.vue';
 
 export default {
   name: 'Dashboard',
@@ -101,14 +87,14 @@ export default {
     DashboardContact,
     DashboardNavMobile,
     DashboardNavDrawer,
-    DashboardNotOnboarded
+    DashboardNotOnboarded,
+    Overlay
   },
 
   data: () => ({
     profile: {},
     drawer: null,
     window: 0,
-    seller:null,
     onboarded:true,
     id:null,
     supporters: [
@@ -179,6 +165,16 @@ export default {
       this.profile = profile.data()
     })
   },
+  computed:{
+    notOnboarded(){
+      if( this.$store.state.auth.claims.type === 'creators' && this.profile.onboarded === false){
+        return true
+      }
+      else{
+        return false
+      }
+    }
+  }
 };
 </script>
 
