@@ -21,8 +21,8 @@ export const tz = {
     },
 
     actions: {
-        async setTimezone({ commit }, uid) {
-            const q = await db.collection(`${store.state.auth.claims.type}s`).doc(store.state.auth.currentUser.uid).get()
+        async setTimezone({ commit }) {
+            const q = await db.collection(store.state.auth.claims.type).doc(store.state.auth.currentUser.uid).get()
             if (!q.exists) {
                 console.error(`${uid} not found in db, cannot set timezone. Defaulting...`)
                 const guess = dayjs.tz.guess()
