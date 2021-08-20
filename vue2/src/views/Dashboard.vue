@@ -181,9 +181,7 @@ export default {
     },
   },
   mounted() {
-    this.seller = this.$store.state.auth.claims.seller
-    const collection = this.seller ? 'sellers' : 'users'
-    db.collection(collection).doc(this.$user.uid)
+    db.collection(this.$store.state.auth.claims.type).doc(this.$user.uid)
     .onSnapshot((profile) => {
       this.profile = profile.data()
     })
