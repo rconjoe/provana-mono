@@ -96,13 +96,12 @@ export class ReviewDBC extends Review {
         return reviewArr
     }
 
-    public async getReviewScore(review: Review): Promise<number> {
+    public async getReviewScore(): Promise<number> {
 
-        if(review.sellerUid === null || review.sellerUid === undefined) throw new Error('Seller UID is missing');
-        this.sellerUid = review.sellerUid;
+        if(this === null || this.sellerUid === undefined) throw new Error('Missing Seller Uid');
 
         const reviewArray: FirebaseFirestore.DocumentData[] = [];
-        const collectionRef = db.collection('reviews').where('sellerUid','==',this.sellerUid).orderBy("reviewDate","desc");
+        const collectionRef = db.collection('reviews').where('sellerUid','==',this.sellerUid).orderBy("date","desc");
 
         const returnedFirebaseData = await collectionRef.get();
         let summedRating = 0;
