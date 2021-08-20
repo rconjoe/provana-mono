@@ -91,7 +91,7 @@ export class ReviewDBC extends Review {
             .limit(20)
             .get()
         query.forEach((review) => {
-            reviewArr.push(review.data())
+            reviewArr.push(review.data()!.toModel())
         })
         return reviewArr
     }
