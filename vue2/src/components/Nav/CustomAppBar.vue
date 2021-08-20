@@ -67,19 +67,27 @@
 			</div>
 		</v-app-bar>
 
+		<!-- login Overlay -->
+		<Overlay :show="false">
+			<v-card width="1020px" color="#111111" class="loginCard pb-3">
+			<Login />
+			</v-card>
+		</Overlay>
 		<!-- DisputDialog -->
 		<DisputeDialog v-if="topDispute" :dispute="topDispute" />
 	</div>
 </template>
 
 <script>
+	import Login from '@/views/Login.vue'
+	import Overlay from '@/components/ReusableComponents/Overlay.vue'
 	import LoginBtn from '@/components/Nav/LoginBtn.vue'
 	import Logout from '@/components/Nav/Logout.vue'
 	import DisputeDialog from '@/components/Nav/DisputeDialog.vue'
 	import { mapState } from 'vuex'
 	export default {
 		name: 'CustomAppBar',
-		components: { LoginBtn, Logout, DisputeDialog },
+		components: { LoginBtn, Logout, DisputeDialog,Overlay, Login },
 		data: () => ({
 			appNavDrawer: false,
 			iconActive: false,
@@ -136,6 +144,10 @@
 </script>
 
 <style scoped>
+	.loginCard{
+		margin-left:auto;
+		margin-right:auto;
+	}
 	.notificationContentDiv {
 		max-width: 100%;
 		padding-right: 15px;
