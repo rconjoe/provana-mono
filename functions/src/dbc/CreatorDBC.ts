@@ -92,6 +92,11 @@ export class CreatorDBC extends Creator {
     )
   }
 
+  public setUid(uid: string): CreatorDBC {
+    this.uid = uid
+    return this
+  }
+
   public async writeNew(creator: Creator): Promise<FirebaseFirestore.WriteResult> {
     if (creator.uid === null || creator.uid === undefined) throw new Error('Missing UID')
       this.uid = creator.uid
@@ -112,16 +117,15 @@ export class CreatorDBC extends Creator {
       })
   }
 
-  public async fetchByUid(uid?: string | undefined): Promise<Creator> {
-    if (!uid && !this.uid) throw new Error('UID required')
-    const creator = await db.collection('creators').doc(uid ? uid : this.uid!).withConverter(converter).get()
-    if (!creator.exists) throw new Error('Creator not found in firestore.')
+  public async fetchByUid(): Promise<Creator> {
+    const creator = await db.collection('creators').doc(this.uid!).withConverter(converter).get()
+    if (creator.exists === false) throw new Error('Creator not found in firestore.')
     return creator.data()!
   }
 
-  public async fetchAccountId(uid?: string | undefined): Promise<string> {
-    if (!uid && !this.uid) throw new Error('UID required')
-    const creator = await this.fetchByUid(uid)
+  public async fetchAccountId(): Promise<string> {
+    if (!this.uid) throw new Error('UID required')
+    const creator = await this.fetchByUid()
     if(creator.account === "") throw new Error('Missing account ID in firestore!')
     return creator.account!
   }
