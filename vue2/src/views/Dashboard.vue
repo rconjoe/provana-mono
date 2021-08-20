@@ -6,7 +6,7 @@
       <div v-if="!$vuetify.breakpoint.mobile" cols="1" class="pa-0 navDrawerCol">
         <DashboardNavDrawer
           style="height:100%  "
-          :links="this.$store.state.auth.claims.type"
+          :links="(claims.type === 'creators') ? creators : supporters"
           :window="window"
           @update-window="updateWindow"
           :avatar="profile.avatar"
@@ -64,6 +64,7 @@
 
 <script>
 import { db } from '../plugins/firebase';
+import { mapState } from 'vuex'
 import ChatBox from '@/components/Chat/ChatBox.vue';
 import DashboardHome from '@/components/DashboardComponents/DashboardHome.vue';
 import DashboardAccount from '@/components/DashboardComponents/DashboardAccount.vue';
@@ -166,14 +167,17 @@ export default {
     })
   },
   computed:{
-    notOnboarded(){
-      if( this.$store.state.auth.claims.type === 'creators' && this.profile.onboarded === false){
+    notOnboarded() {
+      if( this.$store.state.auth.claims.type === 'creators' && this.profile.onboarded === false) {
         return true
       }
       else{
         return false
       }
-    }
+    },
+    ...mapState({
+      claims: state => state.auth.claims
+    })
   }
 };
 </script>
