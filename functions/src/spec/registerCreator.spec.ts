@@ -50,6 +50,7 @@ describe('Tests registerCreator', () => {
     const data = creatorQuery.docs[0].data()
     const user = await auth.getUserByEmail('creator@jest.com')
     expect(user.uid).toEqual(data.uid)
+    expect(user.customClaims!.type).toBe('creators')
 
     const invQuery = await db.collection('invitations').where('uid', '==', user.uid).get()
     const inv = invQuery.docs[0].data()
