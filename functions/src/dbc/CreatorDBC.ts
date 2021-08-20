@@ -8,7 +8,7 @@ const converter = {
       uid: creator.uid ? creator.uid : "",
       customer: creator.customer ? creator.customer : "",
       account: creator.account ? creator.account : "",
-      onboarded: creator.onboarded ? creator.onboarded : "",
+      onboarded: creator.onboarded ? creator.onboarded : false,
       email: creator.email ? creator.email : "",
       temp: creator.temp ? creator.temp : "",
       code: creator.code ? creator.code : "",
@@ -97,7 +97,7 @@ export class CreatorDBC extends Creator {
       this.uid = creator.uid
       this.customer = creator.customer
       this.account = creator.account
-      this.onboarded = creator.onboarded
+      this.onboarded = false
       this.email = creator.email
       this.code = creator.code
       this.username = creator.username
