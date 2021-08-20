@@ -92,7 +92,7 @@ auth.onAuthStateChanged(async (user) => {
       })
     }
 
-    store.dispatch('tz/setTimezone', user.uid)
+    store.dispatch('tz/setTimezone')
 
     // turn off loading bar
     store.commit('loading/SET_LOADING', false)
