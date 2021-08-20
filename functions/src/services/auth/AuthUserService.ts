@@ -15,7 +15,7 @@ export class AuthUserService {
       throw new Error(err)
     })
     await this.customClaimSetter(newUser.uid, {
-      type: 'supporter',
+      type: 'supporters',
       isPartner: false
     })
     _newUser.temp = ""
@@ -33,7 +33,7 @@ export class AuthUserService {
       throw new Error(err)
     })
     await this.customClaimSetter(newUser.uid, {
-      type: 'creator',
+      type: 'creators',
       isPartner: true
     })
     _newUser.temp = ""
