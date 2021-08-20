@@ -9,7 +9,7 @@
  */
 export class Review {
 
-    
+
     /**
      * Seller UID needed to either GET the reviews from database or PUT a new one in the collection
      * @date 8/17/2021 - 3:00:48 PM
@@ -17,9 +17,9 @@ export class Review {
      * @public
      * @type {string}
      */
-    public sellerUid: string;
+    public sellerUid?: string;
 
-    
+
     /**
      * Optional Buyer UID used to GET the information about them to save on the review
      * @date 8/17/2021 - 3:01:25 PM
@@ -29,7 +29,7 @@ export class Review {
      */
     public buyerUid?: string;
 
-    
+
     /**
      * Optional message from a supporter to be saved on the review
      * @date 8/17/2021 - 3:01:54 PM
@@ -39,7 +39,7 @@ export class Review {
      */
     public message?: string;
 
-    
+
     /**
      * Optional the date that a review was written
      * @date 8/17/2021 - 3:02:28 PM
@@ -49,7 +49,7 @@ export class Review {
      */
     public date?: Date;
 
-    
+
     /**
      * Optional the rating a supporter gave the service
      * @date 8/17/2021 - 3:02:46 PM
@@ -59,7 +59,7 @@ export class Review {
      */
     public rating?: number;
 
-    
+
     /**
      * Optional the name of the service that the review was written for
      * @date 8/17/2021 - 3:03:04 PM
@@ -69,7 +69,7 @@ export class Review {
      */
     public serviceName?: string;
 
-    
+
     /**
      * Creates an instance of Review.
      * @date 8/17/2021 - 3:03:23 PM
@@ -83,7 +83,7 @@ export class Review {
      * @param {?number} [rating]
      * @param {?string} [serviceName]
      */
-    public constructor(sellerUid:string, buyerUid?: string, message?: string, date?: Date, rating?: number, serviceName?: string) {
+    public constructor(sellerUid?: string, buyerUid?: string, message?: string, date?: Date, rating?: number, serviceName?: string) {
         this.sellerUid = sellerUid;
         this.buyerUid = buyerUid;
         this.message = message;
@@ -92,7 +92,7 @@ export class Review {
         this.serviceName = serviceName;
     }
 
-    
+
     /**
      * Setter for the BuyerUid atribute
      * @date 8/17/2021 - 3:03:34 PM
@@ -104,7 +104,7 @@ export class Review {
         this.buyerUid = buyerUid;
     }
 
-    
+
     /**
      * Setter for the message atrabute
      * @date 8/17/2021 - 3:03:45 PM
@@ -116,7 +116,7 @@ export class Review {
         this.message = message;
     }
 
-    
+
     /**
      * Setter for the date atribute
      * @date 8/17/2021 - 3:04:19 PM
@@ -128,7 +128,7 @@ export class Review {
         this.date = date;
     }
 
-    
+
     /**
      * Setter for the rating atribute
      * @date 8/17/2021 - 3:04:30 PM
@@ -140,7 +140,7 @@ export class Review {
         this.rating = rating;
     }
 
-    
+
     /**
      * Setter for the serviceName atribute
      * @date 8/17/2021 - 3:04:46 PM
