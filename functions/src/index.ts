@@ -17,3 +17,5 @@ export { validateInvitation } from './endpoint/validateInvitation'
 export { stripeAccountOnboard } from './endpoint/stripeAccountOnboard'
 export { stripeCompleteOnboard } from './endpoint/stripeCompleteOnboard'
 export { createService } from './endpoint/createService'
+export { writeNewReview } from './endpoint/writeNewReview';
+export { getRecentReviews } from './endpoint/getRecentReviews';
