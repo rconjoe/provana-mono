@@ -82,8 +82,6 @@ auth.onAuthStateChanged(async (user) => {
       photoURL: user.photoURL
     })
 
-    store.dispatch('auth/setTimezone', user.uid)
-
     // other than the above three fields, our JWT's contain custom claims that must be fetched from the server:
     await auth.currentUser.getIdTokenResult()
       .then((idTokenResult) => {
@@ -93,6 +91,9 @@ auth.onAuthStateChanged(async (user) => {
         })
       })
     }
+
+    store.dispatch('tz/setTimezone', user.uid)
+
     // turn off loading bar
     store.commit('loading/SET_LOADING', false)
 
