@@ -46,6 +46,7 @@ describe('Tests registerCreator', () => {
 
     const creatorQuery = await db.collection('creators').where('email', '==', 'creator@jest.com').get()
     expect(creatorQuery.size).toBe(1)
+    expect(creatorQuery.docs[0].data()!.onboarded).toBe(false)
 
     const data = creatorQuery.docs[0].data()
     const user = await auth.getUserByEmail('creator@jest.com')
