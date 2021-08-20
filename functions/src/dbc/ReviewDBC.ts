@@ -34,7 +34,7 @@ export class ReviewDBC extends Review {
     private ref: FirebaseFirestore.DocumentReference | undefined;
 
     constructor(
-        sellerUid: string,
+        sellerUid?: string | undefined,
         buyerUid?: string | undefined,
         message?: string | undefined,
         date?: Date | undefined,
@@ -76,22 +76,26 @@ export class ReviewDBC extends Review {
             })
     }
 
-    public async getRecentReviews(review: Review): Promise<FirebaseFirestore.DocumentData[]> {
-        if(review.sellerUid === null || review.sellerUid === undefined) throw new Error('Missing Seller Uid');
-        // this.sellerUid = review.sellerUid;
-        const docRefs = db.collection('reviews').where('sellerUid','==',review.sellerUid).orderBy('reviewDate','desc').limit(20);
-
-        const reviewArray: FirebaseFirestore.DocumentData[] = [];
-
-        const docArray = await docRefs.get()
-
-        docArray.forEach((doc) => {
-            reviewArray.push(doc.data());
-        })
-
-        return reviewArray
+    public setSellerUid(sellerUid: string): ReviewDBC {
+        this.sellerUid = sellerUid
+        return this
     }
-    
+
+    public async getRecentReviews(): Promise<Array<Review>> {
+        if(this === null || this.sellerUid === undefined) throw new Error('Missing Seller Uid');
+        let reviewArr: Array<Review> = []
+        const query = await db.collection('reviews')
+            .where('sellerUid', '==', this.sellerUid)
+            .withConverter(converter)
+            .orderBy('date', 'desc')
+            .limit(20)
+            .get()
+        query.forEach((review) => {
+            reviewArr.push(review.data())
+        })
+        return reviewArr
+    }
+
     public async getReviewScore(review: Review): Promise<number> {
 
         if(review.sellerUid === null || review.sellerUid === undefined) throw new Error('Seller UID is missing');
