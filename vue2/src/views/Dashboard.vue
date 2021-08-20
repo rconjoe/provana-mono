@@ -105,13 +105,13 @@ export default {
   },
 
   data: () => ({
-    profile: null,
+    profile: {},
     drawer: null,
     window: 0,
     seller:null,
     onboarded:true,
     id:null,
-    buyerLinks: [
+    supporters: [
       {
         icon: 'fas fa-home',
         text: 'Dasard',
@@ -128,7 +128,7 @@ export default {
         value: 4,
       },
     ],
-    sellerLinks: [
+    creators: [
       {
         icon: 'fas fa-home',
         text: 'Dashboard',
@@ -155,13 +155,6 @@ export default {
         value: 4,
       },
     ],
-    onboardLinks:[
-      {
-        icon: 'fas fa-home',
-        text: 'Dashboard',
-        value: 0,
-      }
-    ]
   }),
   methods: {
     updateWindow(toggle) {
