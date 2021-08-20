@@ -13,8 +13,8 @@
         />
       </div>
       <!-- Onboard Overlay -->
-      <Overlay :show="false">
-          <DashboardNotOnboarded />
+      <Overlay :show="(this.profile.onboarded !== undefined && this.profile.onboarded === false)">
+          <OnboardOverlay />
       </Overlay>
 
       <!-- Column wraps all dashboard windows. -->
@@ -73,7 +73,7 @@ import DashboardPayments from '@/components/DashboardComponents/DashboardPayment
 import DashboardContact from '@/components/DashboardComponents/DashboardContact.vue';
 import DashboardNavDrawer from '@/components/DashboardComponents/DashboardNavDrawer.vue';
 import DashboardNavMobile from '@/components/DashboardComponents/DashboardNavMobile.vue';
-import DashboardNotOnboarded from '@/components/DashboardComponents/DashboardNotOnboarded.vue';
+import OnboardOverlay from '@/components/DashboardComponents/OnboardOverlay.vue';
 import Overlay from '@/components/ReusableComponents/Overlay.vue';
 
 export default {
@@ -88,7 +88,7 @@ export default {
     DashboardContact,
     DashboardNavMobile,
     DashboardNavDrawer,
-    DashboardNotOnboarded,
+    OnboardOverlay,
     Overlay
   },
 
