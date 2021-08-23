@@ -143,6 +143,7 @@
 						<!-- 2/3 Col  -->
 						<!-- Platform -->
 						<v-col class="px-0">
+							<!--
 							<div class="serviceItemDiv">
 								<v-tooltip right max-width="14vw" color="#333333">
 									<template v-slot:activator="{ on, attrs }">
@@ -164,7 +165,7 @@
 									counter="20"
 								>
 								</v-text-field>
-							</div>
+							</div> -->
 
 							<!-- Tags -->
 							<div class="tagItemDiv">

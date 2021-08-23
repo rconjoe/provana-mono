@@ -137,7 +137,7 @@
 								<!-- 2/3 COL  -->
 								<!-- Platform -->
 								<v-col>
-									<div class="serviceItemDiv">
+									<!-- <div class="serviceItemDiv">
 
 										<v-tooltip right max-width="14vw" color="#333333">
 											<template v-slot:activator="{ on, attrs }">
@@ -153,7 +153,7 @@
 										<span class="value">
 											{{ service.platform }}
 										</span>
-									</div>
+									</div> -->
 									<!-- Tags -->
 									<div class="tagItemDiv " >
 										<v-tooltip right max-width="14vw" color="#333333">
