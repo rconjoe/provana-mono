@@ -101,6 +101,31 @@ export class ServiceDBC extends Service {
     )
   }
 
+  public callData(
+    serviceName: string,
+    serviceCost: number,
+    serviceDescription: string,
+    serviceLength: number,
+    attendees: number,
+    tags: Array<string>,
+    software: string,
+    mandatoryFill: boolean,
+    serviceColor: string,
+    uid: string
+  ): ServiceDBC {
+    this.serviceName = serviceName
+    this.serviceCost = serviceCost
+    this.serviceDescription = serviceDescription
+    this.serviceLength = serviceLength
+    this.attendees = attendees
+    this.tags = tags
+    this.software = software
+    this.mandatoryFill = mandatoryFill
+    this.color = serviceColor
+    this.uid = uid
+    return this
+  }
+
   public async initialize(): Promise<ServiceDBC> {
     this.ref = db.collection('services').doc()
     this.id = this.ref.id
