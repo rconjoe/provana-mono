@@ -333,13 +333,10 @@
 					serviceName: '',
 					serviceCost: null,
 					serviceDescription: '',
-					serviceHours: null,
-					serviceMinutes: null,
 					serviceLength: null,
 					attendees: null,
 					tags: [],
 					software: '',
-					platform: '',
 					mandatoryFill: false,
 					serviceColor: { hex: '#FA4B6B' },
 					uid: '',
@@ -570,7 +567,7 @@
 	#cancelBtn:hover{
 		color:#fb4b6a;
 	}
-	
+
 
 	.inputText {
 		font: normal normal 0.78125vw Arboria;
