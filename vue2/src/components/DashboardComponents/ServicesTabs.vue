@@ -138,7 +138,7 @@
 								<!-- Platform -->
 								<v-col>
 									<div class="serviceItemDiv">
-										
+
 										<v-tooltip right max-width="14vw" color="#333333">
 											<template v-slot:activator="{ on, attrs }">
 												<v-icon size="0.78125vw" color="#333333" class="mr-2" v-on="on" v-bind="attrs"
@@ -171,7 +171,7 @@
 										</div>
 									</div>
 									<!-- Service Terms -->
-									
+
 								</v-col>
 								<v-col class="pl-0">
 									<div class="serviceItemDiv">
@@ -351,12 +351,15 @@
 			},
 			async createService(e) {
 				this.createServiceLoading = true
-				const createService = functions.httpsCallable('callableCreateService')
-				await createService({ service: e }).then((resp) => {
+				const createService = functions.httpsCallable('createService')
+				await createService({...e}).then(() => {
 					this.tab = 'start'
 					this.newServiceName = ''
 					this.selectedService = ''
 					this.createServiceLoading = false
+				})
+				.catch(err => {
+					console.error(err)
 				})
 			},
 			serviceDeletePrompt(e) {
@@ -393,7 +396,7 @@
 <style scoped>
 	.tagItemDiv{
 		display:flex;
-		
+
 	}
 	.tagsIcon{
 		align-self: flex-start;
