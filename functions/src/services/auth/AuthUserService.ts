@@ -16,7 +16,6 @@ export class AuthUserService {
     })
     await this.customClaimSetter(newUser.uid, {
       type: 'supporters',
-      isPartner: false
     })
     _newUser.temp = ""
     _newUser.uid = newUser.uid
@@ -34,7 +33,6 @@ export class AuthUserService {
     })
     await this.customClaimSetter(newUser.uid, {
       type: 'creators',
-      isPartner: true
     })
     _newUser.temp = ""
     _newUser.uid = newUser.uid
