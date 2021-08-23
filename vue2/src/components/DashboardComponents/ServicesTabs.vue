@@ -293,7 +293,7 @@
 			serviceNameValid: false,
 			nameRules: [(v) => !!v || '', (v) => (v && v.length >= 3) || '', (v) => (v && v.length <= 25) || ''],
 		}),
-		created() {
+		mounted() {
 			db.collection('services')
 				.where('uid', '==', this.$user.uid)
 				.where('active', '==', true)
