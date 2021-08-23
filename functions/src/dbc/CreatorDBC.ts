@@ -9,6 +9,7 @@ const converter = {
       customer: creator.customer ? creator.customer : "",
       account: creator.account ? creator.account : "",
       onboarded: creator.onboarded ? creator.onboarded : false,
+      partner: creator.partner ? creator.partner : false,
       email: creator.email ? creator.email : "",
       temp: creator.temp ? creator.temp : "",
       code: creator.code ? creator.code : "",
@@ -30,6 +31,7 @@ const converter = {
       data.customer,
       data.account,
       data.onboarded,
+      data.partner,
       data.email,
       data.temp,
       data.code,
@@ -55,6 +57,7 @@ export class CreatorDBC extends Creator {
     customer?: string | undefined,
     account?: string | undefined,
     onboarded?: boolean | undefined,
+    partner?: boolean | undefined,
     email?: string | undefined,
     temp?: string | undefined,
     code?: string | undefined,
@@ -68,7 +71,7 @@ export class CreatorDBC extends Creator {
     facebook?: string | undefined,
     ref?: FirebaseFirestore.DocumentReference | undefined,
   ) {
-    super(uid, customer, account, onboarded, email, temp, code, username, timezone, avatar, banner, twitter, twitch, youtube, facebook)
+    super(uid, customer, account, onboarded, partner, email, temp, code, username, timezone, avatar, banner, twitter, twitch, youtube, facebook)
     this.ref = ref
   }
 
@@ -78,6 +81,7 @@ export class CreatorDBC extends Creator {
       this.customer,
       this.account,
       this.onboarded,
+      this.partner,
       this.email,
       this.temp,
       this.code,
@@ -103,6 +107,7 @@ export class CreatorDBC extends Creator {
       this.customer = creator.customer
       this.account = creator.account
       this.onboarded = false
+      this.partner = true
       this.email = creator.email
       this.code = creator.code
       this.username = creator.username
