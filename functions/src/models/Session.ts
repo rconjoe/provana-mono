@@ -1,42 +1,39 @@
 export default class Session {
-  id: string | undefined
   sellerUid: string | undefined
-  buyerUid: string | undefined
-  buyerUsername: string | undefined
-  paymentIntent: string | undefined
+  slots: number | undefined
   serviceDocId: string | undefined
+  mandatoryFill: boolean | undefined
   name: string | undefined
   color: string | undefined
   serviceColor: string | undefined
   start: number | undefined
   end: number | undefined
+  id: string | undefined
   status: string | undefined
 
   constructor(
-    id?: string,
     sellerUid?: string,
-    buyerUid?: string,
-    buyerUsername?: string,
-    paymentIntent?: string,
+    slots?: number,
     serviceDocId?: string,
+    mandatoryFill?: boolean,
     name?: string,
     color?: string,
     serviceColor?: string,
     start?: number,
     end?: number,
+    id?: string,
     status?: string
   ) {
-    this.id = id,
     this.sellerUid = sellerUid,
-    this.buyerUid = buyerUid,
-    this.buyerUsername = buyerUsername,
-    this.paymentIntent = paymentIntent,
+    this.slots = slots
     this.serviceDocId = serviceDocId,
+    this.mandatoryFill = mandatoryFill,
     this.name = name,
     this.color = color,
-    this.serviceColor = serviceColor,
+    this.serviceColor = serviceColor
     this.start = start,
     this.end = end,
+    this.id = id,
     this.status = status
   }
 }
