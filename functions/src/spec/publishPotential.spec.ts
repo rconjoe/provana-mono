@@ -9,9 +9,6 @@ describe('Tests publishPotential HTTPS endpoint', () => {
     api = require('../index.ts')
   })
 
-  afterEach(async () => {
-  })
-
   afterAll(async () => {
     testEnv.cleanup()
     await db.collection('sessions').doc('12345').delete()
