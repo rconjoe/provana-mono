@@ -45,7 +45,7 @@
 							width="48.229166666666664vw"
 							height="9vw"
 							color="#1E1E1E"
-							:style="{ borderColor: service.serviceColor }"
+							:style="{ borderColor: service.color }"
 							flat
 						>
 							<!-- services  -->
@@ -297,7 +297,7 @@
 		computed: {
 			cssVars() {
 				return {
-					'--tabColor': this.selectedService.serviceColor,
+					'--tabColor': this.selectedService.color,
 				}
 			},
 		},
@@ -391,7 +391,7 @@
 				this.termsDialog = true
 			},
 		},
-		
+
 	}
 </script>
 
