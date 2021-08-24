@@ -1,6 +1,7 @@
 import { testEnv } from './env.spec'
 import { db } from '../config'
 
+jest.setTimeout(3 * 60 * 1000)
 describe('Tests publishPotential HTTPS endpoint', () => {
   let api: any
 
@@ -8,53 +9,98 @@ describe('Tests publishPotential HTTPS endpoint', () => {
     api = require('../index.ts')
   })
 
-  afterAll(async () => {
-    // const srv = await db.collection('services').listDocuments()
-    // srv.forEach(doc => doc.delete())
-    // const ses = await db.collection('sessions').listDocuments()
-    // ses.forEach(doc => doc.delete())
+  afterEach(async () => {
+    // const srv = await db.collection('services').where('uid', '==', '123abc').get()
+    // await srv.docs[0].ref.delete()
+    // const ses = await db.collection('sessions').where('sellerUid', '==', '123abc').get()
+    // ses.forEach(doc => doc.ref.delete())
+  })
+
+  afterAll(() => {
+    testEnv.cleanup()
   })
 
   it('Publishes potential sessions with 1 attendee', async () => {
-    await db.collection('services').doc('abc123').set({
+    await db.collection('services').doc('123').set({
       active: true,
       attendees: 1,
-      color: '#7c4848',
-      id: 'abc123',
-      mandatoryFill: false,
-      serviceCost: 23,
-      serviceDescription: 'testboi by jest',
+      color: '00d6ff',
+      id: '123',
+      mandatoryFill: true,
+      serviceCost: 25,
+      serviceDescription: 'jesty testy',
       serviceLength: 90,
-      serviceName: 'jestest',
-      seessionDocIdArray: [],
-      software: 'npm run test',
-      stripePrice: '123abcdefg',
-      tags: ['bingus', 'thurston', 'waffles'],
+      serviceName: 'jestington testington',
+      sessionDocIdArray: ['12345'],
+      software: 'onlyfans',
+      stripePrice: 'price_12345',
+      tags: ['booty', 'cats', 'womp'],
       uid: '123abc'
     })
-    .catch(err => console.error(err))
-    await db.collection('sessions').doc('12345678').set({
+    await db.collection('sessions').doc('12345').set({
       color: 'grey',
-      end: 123456,
-      id: '12345678',
-      mandatoryFill: false,
-      name: 'test-jest',
+      end: 139476827,
+      id: '12345',
+      mandatoryFill: true,
+      name: 'jestest',
       sellerUid: '123abc',
-      serviceColor: '#7c4848',
-      serviceDocId: 'abc123',
+      serviceColor: '#00d6ff',
+      serviceDocId: '123',
       slots: 1,
-      start: 12345,
+      start: 1129387455,
       status: 'potential'
     })
-    .catch(err => console.error(err))
     const wrapped = testEnv.wrap(api.publishPotential)
     const response = await wrapped({uid: '123abc'})
     console.log(response)
-    expect(response).toBe('ok')
-    const published = await db.collection('sessions').where('sellerUid', '==', '123abc').get()
-    published.forEach(session => {
-      expect(session.data().status).toBe('published')
+
+    const sessionRef = await db.collection('sessions').doc('12345').get()
+    const s = sessionRef.data()!
+    expect(s.status).toBe('published')
+    expect(s.color).toBe('#00d6ff')
+  })
+  it('Publishes potential session with multiple slots', async () => {
+    await db.collection('services').doc('456').set({
+      active: true,
+      attendees: 5,
+      color: '00d6ff',
+      id: '456',
+      mandatoryFill: true,
+      serviceCost: 25,
+      serviceDescription: 'jesty testy',
+      serviceLength: 90,
+      serviceName: 'jestington testington',
+      sessionDocIdArray: [],
+      software: 'onlyfans',
+      stripePrice: 'price_12345',
+      tags: ['booty', 'cats', 'womp'],
+      uid: '123abc'
+  })
+    await db.collection('sessions').doc('45678').set({
+      color: 'grey',
+      end: 139476827,
+      id: '45678',
+      mandatoryFill: true,
+      name: 'jestest',
+      sellerUid: '123abc',
+      serviceColor: '#00d6ff',
+      serviceDocId: '456',
+      slots: 5,
+      start: 1129387455,
+      status: 'potential'
+    })
+
+    const wrapped = testEnv.wrap(api.publishPotential)
+    const response = await wrapped({uid: '123abc'})
+    console.log(response)
+
+    const _parent = await db.collection('sessions').doc('45678').get()
+    const parent = _parent.data()!
+    expect(parent.status).toBe('published')
+    const slots = await db.collection('sessions').doc('45678').collection('slots').get()
+    expect(slots.size).toBe(5)
+    slots.forEach(slot => {
+      expect(slot.data()!.serviceDocId).toBe('456')
     })
   })
-
 })

@@ -1,40 +1,6 @@
 import ParentSession from '../models/ParentSession'
 import { db } from '../config'
-
-const converter = {
-  toFirestore(parent: ParentDBC): FirebaseFirestore.DocumentData {
-    return {
-      sellerUid: parent.sellerUid ? parent.sellerUid : "",
-      slots: parent.slots ? parent.slots : 1,
-      serviceDocId: parent.serviceDocId ? parent.serviceDocId : "",
-      mandatoryFill: parent.mandatoryFill ? parent.mandatoryFill : true,
-      name: parent.name ? parent.name : "",
-      color: parent.color ? parent.color : "",
-      serviceColor: parent.serviceColor ? parent.serviceColor : "",
-      start: parent.start ? parent.start : 0,
-      end: parent.end ? parent.end : 0,
-      id: parent.id ? parent.id : "",
-      status: parent.status ? parent.status : "",
-    }
-  },
-  fromFirestore(snapshot: FirebaseFirestore.QueryDocumentSnapshot): ParentDBC {
-    const data = snapshot.data()
-    return new ParentDBC(
-      data.sellerUid,
-      data.slots,
-      data.serviceDocId,
-      data.mandatoryFill,
-      data.name,
-      data.color,
-      data.serviceColor,
-      data.start,
-      data.end,
-      data.id,
-      data.status,
-      snapshot.ref
-    )
-  }
-}
+import SlotDBC from '../dbc/SlotDBC'
 
 export default class ParentDBC extends ParentSession {
   ref: FirebaseFirestore.DocumentReference | undefined
@@ -57,8 +23,35 @@ export default class ParentDBC extends ParentSession {
     this.ref = ref
   }
 
-  public async publish(): Promise<void> {
-    return
+  public async publish(): Promise<FirebaseFirestore.WriteResult> {
+    if (this.id === undefined || this.id === "") throw new Error('ID required to publish slots!')
+    if (this.slots === undefined || this.slots === 0) throw new Error('need slots!')
+    for(let i=0; i<this.slots!; i++) {
+      const newRef = db.collection('sessions').doc(this.id).collection('slots').doc()
+      const slotNo = i+1
+      const slot = new SlotDBC(
+        newRef.id,
+        this.name,
+        slotNo,
+        this.slots,
+        this.start,
+        this.end,
+        this.sellerUid,
+        this.serviceDocId,
+        "",
+        "",
+        "",
+        'published',
+        this.id,
+        newRef
+      )
+      return await slot.publish()
+    }
+    this.ref = db.collection('sessions').doc(this.id)
+    return await this.ref.update({
+      color: this.serviceColor,
+      status: 'published'
+    })
   }
 
 }

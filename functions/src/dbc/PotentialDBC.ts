@@ -1,8 +1,5 @@
 import PotentialSession from '../models/PotentialSession'
 import { db } from '../config'
-import SessionDBC from './SessionDBC'
-import ParentDBC from './ParentDBC'
-import IFilteredPotentials from '../models/IFilteredPotentials'
 
 const converter = {
   toFirestore(p: PotentialDBC): FirebaseFirestore.DocumentData {
@@ -82,59 +79,7 @@ export default class PotentialDBC extends PotentialSession {
     return this
   }
 
-  public async publishAll(): Promise<void> {
-    const potentials = await this.fetchByUid()
-    const filtered = this.filter(potentials)
-    filtered.parents.forEach(async (parent) => {
-      return await parent.publish()
-    })
-    filtered.sessions.forEach(async (session) => {
-      return await session.publish()
-    })
-  }
-
-  private filter(potentials: Array<PotentialDBC>): IFilteredPotentials {
-    let parents: Array<ParentDBC> = []
-    let sessions: Array<SessionDBC> = []
-    potentials.forEach((s) => {
-      if (s.slots! > 1) {
-        parents.push(new ParentDBC(
-          s.sellerUid,
-          s.slots,
-          s.serviceDocId,
-          s.mandatoryFill,
-          s.name,
-          s.color,
-          s.serviceColor,
-          s.start,
-          s.end,
-          s.id,
-          s.status,
-          s.ref
-        ))
-      }
-      else {
-        sessions.push(new SessionDBC(
-          s.id,
-          s.sellerUid,
-          "",
-          "",
-          "",
-          s.serviceDocId,
-          s.name,
-          s.color,
-          s.serviceColor,
-          s.start,
-          s.end,
-          s.status,
-          s.ref
-        ))
-      }
-    })
-    return { parents, sessions }
-  }
-
-  private async fetchByUid(): Promise<Array<PotentialDBC>> {
+  public async fetchByUid(): Promise<Array<PotentialDBC>> {
     if (this.sellerUid === null || this.sellerUid === undefined) throw new Error('UID required!')
     let a: Array<PotentialDBC> = []
     const q = await db
