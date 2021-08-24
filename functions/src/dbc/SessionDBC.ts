@@ -1,69 +1,85 @@
-// import { db } from '../config'
 import Session from '../models/Session'
+import { db } from '../config'
 
-// const converter = {
-//   toFirestore(session: Session): FirebaseFirestore.DocumentData {
-//     return {
-//       id: session.id ? session.id : "",
-//       sellerUid: session.sellerUid ? session.sellerUid : "",
-//       buyerUid: session.buyerUid ? session.buyerUid : "",
-//       buyerUsername: session.buyerUsername ? session.buyerUsername : "",
-//       paymentIntent: session.paymentIntent ? session.paymentIntent : "",
-//       serviceDocId: session.serviceDocId ? session.serviceDocId : "",
-//       name: session.name ? session.name : "",
-//       color: session.color ? session.color : "",
-//       serviceColor: session.serviceColor ? session.serviceColor : "",
-//       start: session.start ? session.start : 0,
-//       end: session.end ? session.end : 0,
-//       status: session.status ? session.status : "",
-//     }
-//   },
-//   fromFirestore(snapshot: FirebaseFirestore.QueryDocumentSnapshot): SessionDBC {
-//     const data = snapshot.data()
-//     return new SessionDBC(
-//       data.id,
-//       data.sellerUid,
-//       data.buyerUid,
-//       data.buyerUsername,
-//       data.paymentIntent,
-//       data.serviceDocId,
-//       data.name,
-//       data.color,
-//       data.serviceColor,
-//       data.start,
-//       data.end,
-//       data.status,
-//       snapshot.ref
-//     )
-//   }
-// }
+const converter = {
+  toFirestore(s: SessionDBC): FirebaseFirestore.DocumentData {
+    return {
+      sellerUid: s.sellerUid ? s.sellerUid : "",
+      slots: s.slots ? s.slots : "",
+      serviceDocId: s.serviceDocId ? s.serviceDocId : "",
+      mandatoryFill: s.mandatoryFill ? s.mandatoryFill : "",
+      name: s.name ? s.name : "",
+      color: s.color ? s.color : "",
+      serviceColor: s.serviceColor ? s.serviceColor : "",
+      start: s.start ? s.start : 0,
+      end: s.end ? s.end : 0,
+      id: s.id ? s.id : "",
+      status: s.status ? s.status : "",
+    }
+  },
+  fromFirestore(snapshot: FirebaseFirestore.QueryDocumentSnapshot): SessionDBC {
+    const data = snapshot.data()
+    return new SessionDBC(
+      data.sellerUid,
+      data.slots,
+      data.serviceDocId,
+      data.mandatoryFill,
+      data.name,
+      data.color,
+      data.serviceColor,
+      data.start,
+      data.end,
+      data.id,
+      data.status,
+      snapshot.ref
+    )
+  }
+}
 
 export default class SessionDBC extends Session {
   ref: FirebaseFirestore.DocumentReference | undefined
 
   constructor(
-    id?: string,
     sellerUid?: string,
-    buyerUid?: string,
-    buyerUsername?: string,
-    paymentIntent?: string,
+    slots?: number,
     serviceDocId?: string,
+    mandatoryFill?: boolean,
     name?: string,
     color?: string,
     serviceColor?: string,
     start?: number,
     end?: number,
+    id?: string,
     status?: string,
     ref?: FirebaseFirestore.DocumentReference
   ) {
-    super(id, sellerUid, buyerUid, buyerUsername, paymentIntent, serviceDocId, name, color, serviceColor, start, end, status)
+    super(sellerUid, slots, serviceDocId, mandatoryFill, name, color, serviceColor, start, end, id, status)
     this.ref = ref
   }
 
-  public async publish(): Promise<FirebaseFirestore.WriteResult> {
-    return await this.ref!.update({
-      color: this.serviceColor,
-      status: 'published'
+  public setSellerUid(uid: string): SessionDBC {
+    this.sellerUid = uid
+    return this
+  }
+
+  public async publish(): Promise<void> {
+    const potentials = await this.fetchByUid()
+    potentials.forEach(async (session) => {
+      return await session.ref!.update({
+        color: session.serviceColor,
+        status: 'published'
+      })
     })
   }
+
+  private async fetchByUid(): Promise<Array<SessionDBC>> {
+    if (this.sellerUid === undefined) throw new Error('Missing sellerUid')
+    let a: Array<SessionDBC> = []
+    const q = await db.collection('sessions').where('sellerUid', '==', this.sellerUid).withConverter(converter).get()
+    q.forEach(doc => {
+      a.push(doc.data())
+    })
+    return a
+  }
+
 }
