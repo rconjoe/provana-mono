@@ -60,7 +60,7 @@ import UserReviews from '@/components/User/UserReviews.vue';
 import UserServiceSelected from '@/components/User/UserServiceSelected.vue';
 import { functions, storage } from '../plugins/firebase';
 export default {
-  name: 'User',
+  name: 'Storefront',
   components: {
     UserHeader,
     UserService,
@@ -82,7 +82,13 @@ export default {
     serviceArray: null,
     sessions: null,
   }),
-
+  computed: {
+    cssVars() {
+      return {
+        '--bannerUrl': 'url(' + this.profile.banner + ')',
+      };
+    },
+  },
   async mounted() {
     this.profile = this.$store.state.viewing.profile;
     const fun = functions.httpsCallable('callableGetServicesByUid');
@@ -100,13 +106,7 @@ export default {
       this.selectedService = service;
     },
   },
-  computed: {
-    cssVars() {
-      return {
-        '--bannerUrl': 'url(' + this.profile.banner + ')',
-      };
-    },
-  },
+  
 };
 </script>
 

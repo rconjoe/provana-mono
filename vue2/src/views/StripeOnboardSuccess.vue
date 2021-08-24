@@ -44,15 +44,9 @@ export default {
 
     methods: {
         async completeOnboard() {
-            let fun = functions.httpsCallable('callableCompleteOnboard');
-            await fun({uid: this.$user.uid})
-            .then(function() {
-                console.log("Write operation successful");
-                    })
-            .catch(function(error) {
-                console.error("Error writing document: ", error);
-                    });
-            return this.$router.push("/dashboard");
+            const stripeCompleteOnboard = functions.httpsCallable('stripeCompleteOnboard');
+            const success =  await stripeCompleteOnboard({uid: this.$user.uid})
+            success ? null : console.error('Error completing onboard!')
         }
     },
 

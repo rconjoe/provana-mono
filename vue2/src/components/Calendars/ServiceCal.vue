@@ -11,8 +11,8 @@
 						class="datepicker mt-4"
 					></v-date-picker>
 				<h3 class="selectedServiceText mt-9"> Selected:</h3>
-				<div class="selectedServiceBox" :style="selectedService ? { borderColor: selectedService.serviceColor } : ''">
-					<h3 class="selectedService" v-if="selectedService" :style="{ color: selectedService.serviceColor }">
+				<div class="selectedServiceBox" :style="selectedService ? { borderColor: selectedService.color } : ''">
+					<h3 class="selectedService" v-if="selectedService" :style="{ color: selectedService.color }">
 						{{ selectedService.serviceName }}</h3
 					>
 					<h3 class="selectedService" v-else> None Selected</h3>
@@ -39,11 +39,11 @@
 						</v-icon>
 					</v-btn>
 
-					
+
 					<v-spacer></v-spacer>
 					<h3 class="selectedServiceText"> Selected:</h3>
-					<div class="selectedServiceBox" :style="selectedService ? { borderColor: selectedService.serviceColor } : ''">
-						<h3 class="selectedService" v-if="selectedService" :style="{ color: selectedService.serviceColor }">
+					<div class="selectedServiceBox" :style="selectedService ? { borderColor: selectedService.color } : ''">
+						<h3 class="selectedService" v-if="selectedService" :style="{ color: selectedService.color }">
 							{{ selectedService.serviceName }}</h3
 						>
 						<h3 class="selectedService" v-else> None Selected</h3>
@@ -179,7 +179,7 @@
 						save availability
 					</v-btn>
 		</v-col>
-		
+
 	</v-row>
 </template>
 
@@ -188,7 +188,7 @@
 	import { formatter } from '../../plugins/sessionFormatter'
 	import dayjs from 'dayjs'
 	export default {
-		name: 'calTesting',
+		name: 'Service Cal',
 		props: ['selectedService'],
 		data: function() {
 			return {
@@ -217,7 +217,33 @@
 				overlapChk: false,
 			}
 		},
-
+		computed: {
+			startTime() {
+				const start = this.selectedEvent.start
+				let time = dayjs(start).format('h:mma')
+				return time
+			},
+			endTime() {
+				const start = this.selectedEvent.end
+				let time = dayjs(start).format('h:mma')
+				return time
+			},
+			startDate() {
+				const start = this.selectedEvent.end
+				let time = dayjs(start).format('MM/YY')
+				return time
+			},
+			cssVars() {
+				if(this.selectedService){
+					return {
+						'--serviceColor': this.selectedService.color,
+					}
+				}
+				else{
+					return { '--serviceColor':'transparent'}
+				}
+			},
+		},
 		async mounted() {
 			const query = db.collection('sessions').where('sellerUid', '==', this.$user.uid)
 			query.onSnapshot((querySnapshot) => {
@@ -410,7 +436,7 @@
 					slots: this.selectedService.attendees,
 					mandatoryFill: this.selectedService.mandatoryFill,
 					color: 'grey',
-					serviceColor: this.selectedService.serviceColor,
+					serviceColor: this.selectedService.color,
 					start: unixStartTime,
 					end: unixEndTime,
 					sellerUid: this.$user.uid,
@@ -476,33 +502,7 @@
 					})
 			},
 		},
-		computed: {
-			startTime() {
-				const start = this.selectedEvent.start
-				let time = dayjs(start).format('h:mma')
-				return time
-			},
-			endTime() {
-				const start = this.selectedEvent.end
-				let time = dayjs(start).format('h:mma')
-				return time
-			},
-			startDate() {
-				const start = this.selectedEvent.end
-				let time = dayjs(start).format('MM/YY')
-				return time
-			},
-			cssVars() {
-				if(this.selectedService){
-					return {
-						'--serviceColor': this.selectedService.serviceColor,
-					}
-				}
-				else{
-					return { '--serviceColor':'transparent'}
-				}
-			},
-		}
+
 	}
 </script>
 

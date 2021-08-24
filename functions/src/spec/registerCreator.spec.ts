@@ -49,6 +49,7 @@ describe('Tests registerCreator', () => {
     expect(creatorQuery.docs[0].data()!.onboarded).toBe(false)
 
     const data = creatorQuery.docs[0].data()
+    expect(data.partner).toBe(true)
     const user = await auth.getUserByEmail('creator@jest.com')
     expect(user.uid).toEqual(data.uid)
     expect(user.customClaims!.type).toBe('creators')

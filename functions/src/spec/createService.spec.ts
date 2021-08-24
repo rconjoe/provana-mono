@@ -17,14 +17,14 @@ describe('Tests createService endpoint', () => {
     const wrapped = testEnv.wrap(api.createService)
     const testData = {
       serviceName: 'jesttest',
-      serviceDescription: 'created by jest for test running',
       serviceCost: 23,
+      serviceDescription: 'created by jest for test running',
       serviceLength: 60,
       tags: ['booty', 'cats', 'womp'],
-      color: 'green',
       software: 'illustrator',
       attendees: '1',
       mandatoryFill: true,
+      color: 'green',
       uid: 'testUser123',
     }
     const response = await wrapped({...testData})

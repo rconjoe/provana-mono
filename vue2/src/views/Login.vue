@@ -46,6 +46,7 @@
 import { auth, LOCAL_PERSISTENCE, NO_PERSISTENCE } from '../plugins/firebase';
 
 export default {
+  name: 'Login',
   data: () => ({
     password: '',
     email: '',
@@ -91,8 +92,8 @@ a {
   padding-right: 8.2%;
   background-image: url('../assets/VerticalCamoBG1.png');
   background-size: cover;
-  min-height: 100vh;
-  min-width: 100vw;
+  min-height: 100%;
+  min-width: 100%;
   padding-left: 9.2%;
 }
 .welcomeBack {
@@ -113,7 +114,7 @@ a {
   padding-top: 1%;
 }
 .loginDiv {
-  margin-left: 9vw;
+  margin-left: ;
   margin-top: 10%;
 }
 .dontHaveAccount {
@@ -133,12 +134,12 @@ a {
   margin-left: 5%;
 }
 .registerDiv{
-    padding-top:1.2vw;
+    padding-top:2%;
     padding-left:28%;
 }
 .eyes{
     margin-top:24%;
-    width:600px;
+    width:80%;
     height:auto;
     transform: rotate(10deg)
 }

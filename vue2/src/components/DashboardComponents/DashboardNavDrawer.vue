@@ -37,6 +37,7 @@
 
 <script>
 export default {
+  name:'Dash Nav Drawer',
   data: () => ({
     drawer: null,
   }),

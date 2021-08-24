@@ -20,3 +20,4 @@ export { createService } from './endpoint/createService'
 export { writeNewReview } from './endpoint/writeNewReview';
 export { getRecentReviews } from './endpoint/getRecentReviews';
 export { getReviewScore } from './endpoint/getReviewScore';
+export { publishPotential } from './endpoint/publishPotential'

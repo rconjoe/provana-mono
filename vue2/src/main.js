@@ -87,7 +87,6 @@ auth.onAuthStateChanged(async (user) => {
       .then((idTokenResult) => {
         store.commit('auth/SET_CLAIMS', {
           type: idTokenResult.claims.type,
-          isPartner: idTokenResult.claims.isPartner
         })
       })
     }

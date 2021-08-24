@@ -143,6 +143,7 @@
 						<!-- 2/3 Col  -->
 						<!-- Platform -->
 						<v-col class="px-0">
+							<!--
 							<div class="serviceItemDiv">
 								<v-tooltip right max-width="14vw" color="#333333">
 									<template v-slot:activator="{ on, attrs }">
@@ -164,7 +165,7 @@
 									counter="20"
 								>
 								</v-text-field>
-							</div>
+							</div> -->
 
 							<!-- Tags -->
 							<div class="tagItemDiv">
@@ -333,13 +334,10 @@
 					serviceName: '',
 					serviceCost: null,
 					serviceDescription: '',
-					serviceHours: null,
-					serviceMinutes: null,
 					serviceLength: null,
 					attendees: null,
 					tags: [],
 					software: '',
-					platform: '',
 					mandatoryFill: false,
 					serviceColor: { hex: '#FA4B6B' },
 					uid: '',
@@ -570,7 +568,7 @@
 	#cancelBtn:hover{
 		color:#fb4b6a;
 	}
-	
+
 
 	.inputText {
 		font: normal normal 0.78125vw Arboria;

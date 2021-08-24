@@ -3,22 +3,17 @@ import { ServiceDBC } from '../dbc/ServiceDBC'
 import { StripePriceService } from '../services/stripe/StripePriceService'
 
 export const createService = functions.https.onCall(async (data, context) => {
-  const service = new ServiceDBC(
-    "",
+  const service = new ServiceDBC().callData(
     data.serviceName,
-    data.serviceDescription,
     data.serviceCost,
+    data.serviceDescription,
     data.serviceLength,
-    data.tags,
-    data.color,
-    data.software,
     data.attendees,
+    data.tags,
+    data.software,
     data.mandatoryFill,
-    [],
-    data.uid,
-    "",
-    true,
-    undefined
+    data.serviceColor,
+    data.uid
   )
   await service.initialize()
   const price: string = await new StripePriceService().create(service.toModel())

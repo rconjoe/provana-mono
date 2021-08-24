@@ -9,6 +9,7 @@ const converter = {
       customer: creator.customer ? creator.customer : "",
       account: creator.account ? creator.account : "",
       onboarded: creator.onboarded ? creator.onboarded : false,
+      partner: creator.partner ? creator.partner : false,
       email: creator.email ? creator.email : "",
       temp: creator.temp ? creator.temp : "",
       code: creator.code ? creator.code : "",
@@ -30,6 +31,7 @@ const converter = {
       data.customer,
       data.account,
       data.onboarded,
+      data.partner,
       data.email,
       data.temp,
       data.code,
@@ -55,6 +57,7 @@ export class CreatorDBC extends Creator {
     customer?: string | undefined,
     account?: string | undefined,
     onboarded?: boolean | undefined,
+    partner?: boolean | undefined,
     email?: string | undefined,
     temp?: string | undefined,
     code?: string | undefined,
@@ -68,7 +71,7 @@ export class CreatorDBC extends Creator {
     facebook?: string | undefined,
     ref?: FirebaseFirestore.DocumentReference | undefined,
   ) {
-    super(uid, customer, account, onboarded, email, temp, code, username, timezone, avatar, banner, twitter, twitch, youtube, facebook)
+    super(uid, customer, account, onboarded, partner, email, temp, code, username, timezone, avatar, banner, twitter, twitch, youtube, facebook)
     this.ref = ref
   }
 
@@ -78,6 +81,7 @@ export class CreatorDBC extends Creator {
       this.customer,
       this.account,
       this.onboarded,
+      this.partner,
       this.email,
       this.temp,
       this.code,
@@ -92,12 +96,18 @@ export class CreatorDBC extends Creator {
     )
   }
 
+  public setUid(uid: string): CreatorDBC {
+    this.uid = uid
+    return this
+  }
+
   public async writeNew(creator: Creator): Promise<FirebaseFirestore.WriteResult> {
     if (creator.uid === null || creator.uid === undefined) throw new Error('Missing UID')
       this.uid = creator.uid
       this.customer = creator.customer
       this.account = creator.account
       this.onboarded = false
+      this.partner = true
       this.email = creator.email
       this.code = creator.code
       this.username = creator.username
@@ -112,16 +122,15 @@ export class CreatorDBC extends Creator {
       })
   }
 
-  public async fetchByUid(uid?: string | undefined): Promise<Creator> {
-    if (!uid && !this.uid) throw new Error('UID required')
-    const creator = await db.collection('creators').doc(uid ? uid : this.uid!).withConverter(converter).get()
-    if (!creator.exists) throw new Error('Creator not found in firestore.')
+  public async fetchByUid(): Promise<Creator> {
+    const creator = await db.collection('creators').doc(this.uid!).withConverter(converter).get()
+    if (creator.exists === false) throw new Error('Creator not found in firestore.')
     return creator.data()!
   }
 
-  public async fetchAccountId(uid?: string | undefined): Promise<string> {
-    if (!uid && !this.uid) throw new Error('UID required')
-    const creator = await this.fetchByUid(uid)
+  public async fetchAccountId(): Promise<string> {
+    if (!this.uid) throw new Error('UID required')
+    const creator = await this.fetchByUid()
     if(creator.account === "") throw new Error('Missing account ID in firestore!')
     return creator.account!
   }

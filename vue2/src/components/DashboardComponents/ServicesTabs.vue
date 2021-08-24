@@ -45,7 +45,7 @@
 							width="48.229166666666664vw"
 							height="9vw"
 							color="#1E1E1E"
-							:style="{ borderColor: service.serviceColor }"
+							:style="{ borderColor: service.color }"
 							flat
 						>
 							<!-- services  -->
@@ -137,8 +137,8 @@
 								<!-- 2/3 COL  -->
 								<!-- Platform -->
 								<v-col>
-									<div class="serviceItemDiv">
-										
+									<!-- <div class="serviceItemDiv">
+
 										<v-tooltip right max-width="14vw" color="#333333">
 											<template v-slot:activator="{ on, attrs }">
 												<v-icon size="0.78125vw" color="#333333" class="mr-2" v-on="on" v-bind="attrs"
@@ -153,7 +153,7 @@
 										<span class="value">
 											{{ service.platform }}
 										</span>
-									</div>
+									</div> -->
 									<!-- Tags -->
 									<div class="tagItemDiv " >
 										<v-tooltip right max-width="14vw" color="#333333">
@@ -171,7 +171,7 @@
 										</div>
 									</div>
 									<!-- Service Terms -->
-									
+
 								</v-col>
 								<v-col class="pl-0">
 									<div class="serviceItemDiv">
@@ -276,6 +276,7 @@
 	import AddServiceForm from '@/components/DashboardComponents/AddServiceForm.vue'
 
 	export default {
+		name:"Service Tabs",
 		components: { AddServiceForm },
 		data: () => ({
 			createServiceLoading: false,
@@ -293,7 +294,14 @@
 			serviceNameValid: false,
 			nameRules: [(v) => !!v || '', (v) => (v && v.length >= 3) || '', (v) => (v && v.length <= 25) || ''],
 		}),
-		created() {
+		computed: {
+			cssVars() {
+				return {
+					'--tabColor': this.selectedService.color,
+				}
+			},
+		},
+		mounted() {
 			db.collection('services')
 				.where('uid', '==', this.$user.uid)
 				.where('active', '==', true)
@@ -351,12 +359,15 @@
 			},
 			async createService(e) {
 				this.createServiceLoading = true
-				const createService = functions.httpsCallable('callableCreateService')
-				await createService({ service: e }).then((resp) => {
+				const createService = functions.httpsCallable('createService')
+				await createService({...e}).then(() => {
 					this.tab = 'start'
 					this.newServiceName = ''
 					this.selectedService = ''
 					this.createServiceLoading = false
+				})
+				.catch(err => {
+					console.error(err)
 				})
 			},
 			serviceDeletePrompt(e) {
@@ -380,20 +391,14 @@
 				this.termsDialog = true
 			},
 		},
-		computed: {
-			cssVars() {
-				return {
-					'--tabColor': this.selectedService.serviceColor,
-				}
-			},
-		},
+
 	}
 </script>
 
 <style scoped>
 	.tagItemDiv{
 		display:flex;
-		
+
 	}
 	.tagsIcon{
 		align-self: flex-start;
