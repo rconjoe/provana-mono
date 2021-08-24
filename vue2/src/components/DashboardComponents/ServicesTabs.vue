@@ -276,6 +276,7 @@
 	import AddServiceForm from '@/components/DashboardComponents/AddServiceForm.vue'
 
 	export default {
+		name:"Service Tabs",
 		components: { AddServiceForm },
 		data: () => ({
 			createServiceLoading: false,
@@ -293,6 +294,13 @@
 			serviceNameValid: false,
 			nameRules: [(v) => !!v || '', (v) => (v && v.length >= 3) || '', (v) => (v && v.length <= 25) || ''],
 		}),
+		computed: {
+			cssVars() {
+				return {
+					'--tabColor': this.selectedService.serviceColor,
+				}
+			},
+		},
 		mounted() {
 			db.collection('services')
 				.where('uid', '==', this.$user.uid)
@@ -383,13 +391,7 @@
 				this.termsDialog = true
 			},
 		},
-		computed: {
-			cssVars() {
-				return {
-					'--tabColor': this.selectedService.serviceColor,
-				}
-			},
-		},
+		
 	}
 </script>
 

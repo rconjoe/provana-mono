@@ -143,6 +143,25 @@ export default {
       },
     ],
   }),
+  computed:{
+    notOnboarded() {
+      if( this.$store.state.auth.claims.type === 'creators' && this.profile.onboarded === false) {
+        return true
+      }
+      else{
+        return false
+      }
+    },
+    ...mapState({
+      claims: state => state.auth.claims
+    })
+  },
+  mounted() {
+    db.collection(this.$store.state.auth.claims.type).doc(this.$user.uid)
+    .onSnapshot((profile) => {
+      this.profile = profile.data()
+    })
+  },
   methods: {
     updateWindow(toggle) {
       console.log(toggle);
@@ -159,26 +178,8 @@ export default {
     updateWindow(data) {
       this.window = data;
     },
-  },
-  mounted() {
-    db.collection(this.$store.state.auth.claims.type).doc(this.$user.uid)
-    .onSnapshot((profile) => {
-      this.profile = profile.data()
-    })
-  },
-  computed:{
-    notOnboarded() {
-      if( this.$store.state.auth.claims.type === 'creators' && this.profile.onboarded === false) {
-        return true
-      }
-      else{
-        return false
-      }
-    },
-    ...mapState({
-      claims: state => state.auth.claims
-    })
   }
+  
 };
 </script>
 

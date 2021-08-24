@@ -76,6 +76,7 @@
 import { functions } from '../../plugins/firebase';
 
 export default {
+  name:'Creator Register',
   data() {
     return {
       showPassword: false,

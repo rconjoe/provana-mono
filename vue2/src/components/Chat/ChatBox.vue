@@ -29,6 +29,7 @@
 import ChatRoomList from '@/components/Chat/ChatRoomList';
 import ChatConversation from '@/components/Chat/ChatConversation';
 export default {
+  name:'ChatBox',
   components: { ChatRoomList,ChatConversation },
   data: () => ({
     chatShow: true,

@@ -29,11 +29,11 @@ import ServiceCal from '../../components/Calendars/ServiceCal.vue'
 import ServicesTabs from './ServicesTabs'
 
 export default {
+  name: 'DashboardService',
   components: {
     ServiceCal,
     ServicesTabs,
   },
-  name: 'DashboardService',
   data: () => ({
     selectedService:null,
     tabsKey:1,

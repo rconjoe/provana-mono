@@ -188,7 +188,7 @@
 	import { formatter } from '../../plugins/sessionFormatter'
 	import dayjs from 'dayjs'
 	export default {
-		name: 'calTesting',
+		name: 'Service Cal',
 		props: ['selectedService'],
 		data: function() {
 			return {
@@ -217,7 +217,33 @@
 				overlapChk: false,
 			}
 		},
-
+		computed: {
+			startTime() {
+				const start = this.selectedEvent.start
+				let time = dayjs(start).format('h:mma')
+				return time
+			},
+			endTime() {
+				const start = this.selectedEvent.end
+				let time = dayjs(start).format('h:mma')
+				return time
+			},
+			startDate() {
+				const start = this.selectedEvent.end
+				let time = dayjs(start).format('MM/YY')
+				return time
+			},
+			cssVars() {
+				if(this.selectedService){
+					return {
+						'--serviceColor': this.selectedService.serviceColor,
+					}
+				}
+				else{
+					return { '--serviceColor':'transparent'}
+				}
+			},
+		},
 		async mounted() {
 			const query = db.collection('sessions').where('sellerUid', '==', this.$user.uid)
 			query.onSnapshot((querySnapshot) => {
@@ -476,33 +502,7 @@
 					})
 			},
 		},
-		computed: {
-			startTime() {
-				const start = this.selectedEvent.start
-				let time = dayjs(start).format('h:mma')
-				return time
-			},
-			endTime() {
-				const start = this.selectedEvent.end
-				let time = dayjs(start).format('h:mma')
-				return time
-			},
-			startDate() {
-				const start = this.selectedEvent.end
-				let time = dayjs(start).format('MM/YY')
-				return time
-			},
-			cssVars() {
-				if(this.selectedService){
-					return {
-						'--serviceColor': this.selectedService.serviceColor,
-					}
-				}
-				else{
-					return { '--serviceColor':'transparent'}
-				}
-			},
-		}
+		
 	}
 </script>
 

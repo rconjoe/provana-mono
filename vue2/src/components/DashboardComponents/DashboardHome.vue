@@ -104,9 +104,6 @@ export default {
     sessionToolTip: false,
   }),
 
-  async mounted() {
-  },
-
   methods: {
     selectSession(e){
       this.selectedEvent = e

@@ -46,6 +46,7 @@
 import { auth, LOCAL_PERSISTENCE, NO_PERSISTENCE } from '../plugins/firebase';
 
 export default {
+  name: 'Login',
   data: () => ({
     password: '',
     email: '',
