@@ -95,15 +95,10 @@ export default class SlotDBC extends Slot {
   }
 
   public async publish(): Promise<FirebaseFirestore.WriteResult> {
-    if (this.ref === undefined) throw new Error('need ref to set slot!')
-    if (this.parentSession === undefined || this.parentSession === "") throw new Error('no parent session!')
-    return await db
-      .collection('sessions')
-      .doc(this.parentSession)
-      .collection('slots')
-      .doc(this.id!)
-      .withConverter(converter)
-      .set(this)
+    if (this.parentSession === undefined || this.parentSession === "") throw new Error("need parenSession ID")
+    const newDoc = db.collection('sessions').doc(this.parentSession).collection('slots').doc()
+    this.id = newDoc.id
+    return await newDoc.withConverter(converter).set(this)
   }
 
 }
