@@ -101,6 +101,7 @@ dayjs.extend(utc)
 dayjs.extend(timezone)
 
 export default {
+  name:'Chat Convo',
   props:['chatroom'],
 
   data: () => ({

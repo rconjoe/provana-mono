@@ -42,14 +42,13 @@
 import { db } from '../../plugins/firebase';
 
 export default {
+  name:'Chatroom List',
   data: () => ({
     uid: '',
     rooms: [],
     messages: [],
     newMessages: null,
   }),
-
-  created() {},
 
   async mounted() {
     db.collection('chats').where('users', 'array-contains', this.$user.uid)

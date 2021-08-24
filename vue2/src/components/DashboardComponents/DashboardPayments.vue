@@ -27,7 +27,7 @@
 <script>
 import ConnectWithStripe from './ConnectWithStripe.vue'
 export default {
-	name: 'DashboardContact',
+	name: 'DashboardPayments',
 
 	components: {
 		ConnectWithStripe,

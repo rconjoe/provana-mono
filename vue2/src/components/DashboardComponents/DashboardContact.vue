@@ -55,9 +55,7 @@ export default {
 
 
 	data: () => ({
-		profile:{
-			email:'dustinderouen@me.comdustinderoewejwlewj'
-		},
+		profile:{},
 		info: '',
 		url: '',
 		editEmail: false,

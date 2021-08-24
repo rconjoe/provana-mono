@@ -249,8 +249,6 @@
 
 		props: ['profile'],
 
-		components: {},
-
 		data: () => ({
 			timeNow: '',
 			timezoneSelect: '',
@@ -299,7 +297,6 @@
 				(v) => !!v || 'Bio is required',
 				(v) => (v && v.length <= 350) || 'Bio must be less than 350 characters.',
 			],
-
 			form: {
 				firstname: '',
 				lastname: '',
