@@ -9,12 +9,11 @@ export const onSessionPublished = functions
     const b = change.before.data()
     const slots = a.slots
     if (b.status === 'potential' && a.status === 'published') {
-      for(let i=0; i<slots; i++) {
-        const _slot = i+1
+      for(let i=1; i<=slots; i++) {
         await new SlotDBC(
           "",
           a.name,
-          _slot,
+          i,
           a.slots,
           a.start,
           a.end,

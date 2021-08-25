@@ -6,7 +6,8 @@ const converter = {
     return {
       id: s.id ? s.id : "",
       name: s.name ? s.name : "",
-      slots: s.slots ? s.slots : 0,
+      slot: s.slot ? s.slot : 1,
+      slots: s.slots ? s.slots : 1,
       start: s.start ? s.start : 0,
       end: s.end ? s.end : 0,
       sellerUid: s.sellerUid ? s.sellerUid : "",

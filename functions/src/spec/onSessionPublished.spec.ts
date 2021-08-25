@@ -52,6 +52,7 @@ describe('Tests onSessionPublished firestore trigger endpoint', () => {
       expect(slots.size).toBe(5)
       slots.forEach((slot) => {
         expect(slot.data().status).toBe('published')
+        expect(slot.data().slot).toBeTruthy()
       })
     })
   })
