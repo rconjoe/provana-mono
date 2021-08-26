@@ -41,11 +41,11 @@
       <v-row class="pa-3 sellerRow">
         <v-col cols="6" class="d-flex flex-row-reverse reviewsCol">
           <!-- Seller Feed column -->
-          <UserFeed />
+          <UserFeed :uid="profile.uid" />
         </v-col>
         <v-col cols="6" class="reviewsCol" id="reviews">
           <!-- Recent Reviews Column-->
-          <UserReviews />
+          <UserReviews :uid="profile.uid" />
         </v-col>
       </v-row>
     </v-col>
@@ -58,9 +58,9 @@ import UserService from '@/components/User/UserService.vue';
 import UserFeed from '@/components/User/UserFeed.vue';
 import UserReviews from '@/components/User/UserReviews.vue';
 import UserServiceSelected from '@/components/User/UserServiceSelected.vue';
-import { functions, storage } from '../plugins/firebase';
+import { db, storage } from '../plugins/firebase'
 export default {
-  name: 'Storefront',
+  name: 'User',
   components: {
     UserHeader,
     UserService,
@@ -68,19 +68,18 @@ export default {
     UserReviews,
     UserServiceSelected,
   },
-
-
   data: () => ({
     avatarUrl: null,
-    profile: '',
     servicesVisible: true,
     selectedService: '',
     services: [],
     loading: false,
     postData: '',
+    profile: {},
     userPostArray: [],
     serviceArray: null,
     sessions: null,
+    uid: ""
   }),
   computed: {
     cssVars() {
@@ -90,11 +89,16 @@ export default {
     },
   },
   async mounted() {
-    this.profile = this.$store.state.viewing.profile;
-    const fun = functions.httpsCallable('callableGetServicesByUid');
-    await fun({ uid: this.$store.state.viewing.viewingUID }).then((servicesArray) => {
-      this.services = servicesArray.data;
-    });
+    const q = await db.collection('creators')
+      .where('username', '==', this.$attrs.username)
+      .get()
+    this.profile = q.docs[0].data()
+    db
+      .collection('services')
+      .where('uid', '==', this.profile.uid)
+      .onSnapshot((snap) => {
+        snap.forEach(doc => this.services.push(doc.data()))
+      })
   },
 
   methods: {
@@ -106,7 +110,7 @@ export default {
       this.selectedService = service;
     },
   },
-  
+
 };
 </script>
 
