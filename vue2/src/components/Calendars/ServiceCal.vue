@@ -188,7 +188,7 @@
 	import { formatter } from '../../plugins/sessionFormatter'
 	import dayjs from 'dayjs'
 	export default {
-		name: 'ServicegCal',
+		name: 'ServiceCal',
 		props: ['selectedService'],
 		data: function() {
 			return {
