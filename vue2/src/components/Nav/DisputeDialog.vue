@@ -42,7 +42,7 @@
 
 <script>
 export default {
-	name:'Dispute Dialog',
+	name:'DisputeDialog',
     props:['dispute'],
     data: () => ({
         disputeDialog:true,
