@@ -10,8 +10,6 @@ import Contact from '../views/Contact.vue'
 import PaymentSuccess from '../views/PaymentSuccess.vue'
 import PaymentFailure from '../views/PaymentFailure.vue'
 
-import { store } from '../store/index'
-
 
 export const routes = [
   {
@@ -29,10 +27,6 @@ export const routes = [
     name:'User',
     component: User,
     props: true,
-    async beforeEnter (to, from, next) {
-        await store.dispatch('viewing/name2data', to.params.username);
-        next();
-    }
   },
   {
     path:'/dashboard',
