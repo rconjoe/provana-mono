@@ -62,7 +62,7 @@
 	import dayjs from 'dayjs'
 	import { mapState } from 'vuex'
 	export default {
-		name:'Upcoming Sessions',
+		name:'UpcomingSessions',
 		props: ['sessions'],
 		data: () => ({
 			tab: 'sold',
