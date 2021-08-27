@@ -36,6 +36,7 @@
 
 <script>
 export default {
+  props: ['uid'],
   data: () => ({
     reviews: {
       1: {

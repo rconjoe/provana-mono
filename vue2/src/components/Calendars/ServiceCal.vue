@@ -175,7 +175,7 @@
 					</v-card>
 				</v-dialog>
 			</v-sheet>
-			<v-btn class="saveBtn float-right mt-2" color="primary" @click="publishPotentialSessions" :loading="potentialLoading">
+			<v-btn class="saveBtn float-right mt-2" color="primary" @click="saveAvailability" :loading="potentialLoading">
 						save availability
 					</v-btn>
 		</v-col>
@@ -188,7 +188,7 @@
 	import { formatter } from '../../plugins/sessionFormatter'
 	import dayjs from 'dayjs'
 	export default {
-		name: 'Service Cal',
+		name: 'ServiceCal',
 		props: ['selectedService'],
 		data: function() {
 			return {
@@ -260,28 +260,6 @@
 			this.$watch('selectedEvent', () => {
 				this.bindSlots()
 			})
-			// old code that retrieved all slots
-			// this.slots = []
-			// const slots = db.collectionGroup('slots').where('sellerUid', '==', this.$user.uid)
-			// slots.get().then((querySnapshot) => {
-			//   querySnapshot.forEach((doc) => {
-			//     const data = doc.data()
-			//     const localStart = dayjs.unix(data.start).format('YYYY-MM-DD HH:mm')
-			//     const localEnd = dayjs.unix(data.end).format('YYYY-MM-DD HH:mm')
-			//     const slot = {
-			//       name: data.name,
-			//       color: data.color,
-			//       serviceColor: data.serviceColor,
-			//       start: localStart,
-			//       end: localEnd,
-			//       status: data.status,
-			//       sellerUid: data.sellerUid,
-			//       serviceDocId: data.serviceDocId,
-			//       id: data.id
-			//     }
-			//     this.slots.push(slot)
-			//   })
-			// })
 			await this.getServices()
 		},
 
@@ -370,48 +348,27 @@
 			},
 			async createPotentialSession(time) {
 				if (this.selectedService) {
-					//
-					// when dealing with times here: both START and END times need to be available in 1. unix, 2. our format, 3. dayjs format (start time only)
-					// 1. unix is used in the DB because it is timezone independent
-					// 2. our format is for displaying things YYYY-MM-DD HH:mm
-					// 3. dayjs needs date objects in its dayjs format to do things like addition. it relies on adding object that match the dayjs object type
-					//
-					// CONVERSIONS:
-					// round start minute to nearest 15
 					const startMinute = this.round(time.minute)
-					// format rounded start time to our format
 					const formattedStartTime = dayjs(`${time.year}-${time.month}-${time.day} ${time.hour}:${startMinute}`).format(
 						'YYYY-MM-DD HH:mm'
 					)
-					// convert rounded, formatted start time to unix
 					const unixStartTime = dayjs(formattedStartTime).unix()
-					// format end time to our format
 					const formattedEndTime = dayjs(formattedStartTime)
 						.add(this.selectedService.serviceLength, 'minute')
 						.format('YYYY-MM-DD HH:mm')
-					// convert end time to unix
 					const unixEndTime = dayjs(formattedEndTime).unix()
-
-					// OVERLAP CHECKS:
-					// return true if start time is between an existing session's start/end time
 					const startOverlap = this.event.some((session) => {
 						return dayjs(formattedStartTime).isBetween(session.start, session.end, null, '[]')
 					}, formattedStartTime)
-					// same thing, but for end time
 					const endOverlap = this.event.some((session) => {
 						return dayjs(formattedEndTime).isBetween(session.start, session.end, null, '[]')
 					}, formattedEndTime)
-
-					// CHECK LOGIC:
-					// if either overlap checks are true:
 					if (startOverlap === true || endOverlap === true) {
 						return this.setError(true, 'You cannot book overlapping sessions.', 'warning', 'fas fa-exclamation')
 					}
-					// if it's in the past
 					else if (dayjs(formattedStartTime).isBefore(dayjs())) {
 						return this.setError(true, 'You can not set a session in the past', 'red', 'fas fa-exclamation-circle')
 					}
-					// if it's more than 6 days out
 					else if (dayjs(formattedStartTime).isAfter(dayjs().add(6, 'day'))) {
 						return this.setError(
 							true,
@@ -420,12 +377,10 @@
 							'fas fa-exclamation-circle'
 						)
 					}
-					// if ALL of these checks pass, write it
 					else {
 						this.writePotentialSession(unixStartTime, unixEndTime)
 					}
 				} else {
-					// if you didn't select a service:
 					return this.setError(true, 'You must select a service first.', 'red', 'fas fa-exclamation-circle')
 				}
 			},
@@ -446,11 +401,11 @@
 				}
 				await newSessionDoc.set({ ...potentialSession })
 			},
-			async publishPotentialSessions() {
-				// TODO: add loading states here for however many potential sessions are passed
+			async saveAvailability() {
+				// TODO: disable the button until this is done doing its thing so you can't double click impatiently
 				this.potentialLoading = true
-				const publishSessions = functions.httpsCallable('callablePublishPotentialSession')
-				await publishSessions({ uid: this.$user.uid }).then(() => {
+				const publishPotentials = functions.httpsCallable('publishPotential')
+				await publishPotentials({ uid: this.$user.uid }).then(() => {
 					this.potentialLoading = false
 				})
 			},
@@ -484,17 +439,13 @@
 
 			async deleteSession() {
 				this.deleteUnbookedLoading = true
-				if (this.selectedEvent.slots > 1) {
-					const deleteUnbookedSlots = functions.httpsCallable('callableDeleteUnbookedSlots')
-					await deleteUnbookedSlots({ sessionId: this.selectedEvent.id }).catch((err) => {
-						console.log(err)
-					})
-				}
-				db.collection('sessions')
+				const ses = await db
+					.collection('sessions')
 					.doc(this.selectedEvent.id)
-					.delete()
-					.then((res) => {
-						console.log(res)
+				const slots = await ses.collection('slots').get()
+				slots.forEach(async slot => await slot.ref.delete())
+				await ses.delete()
+					.then(() => {
 						this.deleteUnbookedLoading = false
 						this.sessionTooltip = false
 						this.toolTipWindow = 0

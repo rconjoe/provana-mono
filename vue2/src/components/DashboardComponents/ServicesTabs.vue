@@ -276,7 +276,7 @@
 	import AddServiceForm from '@/components/DashboardComponents/AddServiceForm.vue'
 
 	export default {
-		name:"Service Tabs",
+		name:"ServiceTabs",
 		components: { AddServiceForm },
 		data: () => ({
 			createServiceLoading: false,

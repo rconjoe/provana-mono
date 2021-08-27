@@ -27,7 +27,7 @@
 					<v-textarea full-width filled> </v-textarea>
           <div class="d-flex justify-space-between">
             <v-btn class="btnCTA" color="#333333" @click="showPostOverlay = false"> Cancel </v-btn>
-            <v-btn class="btnCTA" color="primary"> Submit </v-btn>
+            <v-btn class="btnCTA" color="primary" @click="submitPost"> Submit </v-btn>
           </div>
 				</v-overlay>
 			</div>
@@ -39,15 +39,15 @@
 	import { db } from '../../plugins/firebase'
 
 	export default {
+		props: ['uid'],
 		data: () => ({
 			posts: [],
 			showPostOverlay: false,
 		}),
 
 		async mounted() {
-			console.log(this.$store.state.viewing.viewingUID)
 			db.collection('sellers')
-				.doc(this.$store.state.viewing.viewingUID)
+				.doc(this.$props.uid)
 				.collection('posts')
 				.onSnapshot((querySnapshot) => {
 					this.posts = []
@@ -59,7 +59,7 @@
 
 		computed:{
       isCurrentUser(){
-        return this.$store.state.viewing.viewingUID === this.$user.uid
+        return this.$props.uid === this.$user.uid
       }
     }
 	}

@@ -63,7 +63,7 @@ export default class SessionDBC extends Session {
   }
 
   public async publish(): Promise<void> {
-    const potentials = await this.fetchByUid()
+    const potentials = await this.fetchPotentials()
     potentials.forEach(async (session) => {
       return await session.ref!.update({
         color: session.serviceColor,
@@ -72,10 +72,11 @@ export default class SessionDBC extends Session {
     })
   }
 
-  private async fetchByUid(): Promise<Array<SessionDBC>> {
+  private async fetchPotentials(): Promise<Array<SessionDBC>> {
     if (this.sellerUid === undefined) throw new Error('Missing sellerUid')
     let a: Array<SessionDBC> = []
-    const q = await db.collection('sessions').where('sellerUid', '==', this.sellerUid).withConverter(converter).get()
+    const q = await db.collection('sessions').where('sellerUid', '==', this.sellerUid)
+      .where('status', '==', 'potential').withConverter(converter).get()
     q.forEach(doc => {
       a.push(doc.data())
     })

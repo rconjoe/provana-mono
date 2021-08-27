@@ -268,7 +268,7 @@
 	import { mapState } from 'vuex'
 	import { functions } from '../../plugins/firebase'
 	export default {
-		name:'Session Details',
+		name:'SessionDetails',
 		data: () => ({
 			x: 0,
 			y: 0,
