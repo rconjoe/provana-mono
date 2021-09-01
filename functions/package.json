@@ -14,7 +14,6 @@
   },
   "main": "lib/index.js",
   "dependencies": {
-    "@google-cloud/tasks": "^2.3.6",
     "class-transformer": "^0.4.0",
     "dayjs": "^1.10.6",
     "firebase-admin": "^9.8.0",
