@@ -9,7 +9,8 @@ export const notifications = {
 
   state: () => ({
     notifications: [],
-    disputes: []
+    disputes: [],
+    online: false,
   }),
 
   mutations: {
@@ -22,12 +23,12 @@ export const notifications = {
     RESET_NOTIF(state) {
       state.notifications = []
       state.disputes = []
-    }
+    },
   },
 
   actions: {
     bindNotifs({ commit, dispatch }) {
-      db.collection(`${store.state.auth.claims.type}s`)
+      db.collection(store.state.auth.claims.type)
         .doc(store.state.auth.currentUser.uid)
         .collection('notifications')
         .orderBy('time')
@@ -49,7 +50,6 @@ export const notifications = {
           commit('SET_NOTIF', rawNotif)
           return
       }
-
     },
 
   }

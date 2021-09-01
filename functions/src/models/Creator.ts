@@ -16,6 +16,7 @@ export class Creator {
   twitch: string | undefined
   youtube: string | undefined
   facebook: string | undefined
+  online: boolean | undefined
 
   constructor(
     uid?: string,
@@ -33,7 +34,8 @@ export class Creator {
     twitter?: string,
     twitch?: string,
     youtube?: string,
-    facebook?: string
+    facebook?: string,
+    online?: boolean
     ) {
       this.uid = uid,
       this.customer = customer
@@ -50,7 +52,8 @@ export class Creator {
       this.twitter = twitter,
       this.twitch = twitch,
       this.youtube = youtube,
-      this.facebook = facebook
+      this.facebook = facebook,
+      this.online = online
     }
 
   public setRegisterData(email: string, password: string, code: string, username: string): Creator {

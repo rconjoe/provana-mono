@@ -18,6 +18,7 @@
 					<h3 class="selectedService" v-else> None Selected</h3>
 				</div>
 			</v-sheet>
+
 		</v-col>
 		<v-col class="pl-0">
 			<!-- <v-sheet height="64" color="transparent">
@@ -188,7 +189,7 @@
 	import { formatter } from '../../plugins/sessionFormatter'
 	import dayjs from 'dayjs'
 	export default {
-		name: 'Service Cal',
+		name: 'ServiceCal',
 		props: ['selectedService'],
 		data: function() {
 			return {

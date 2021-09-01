@@ -42,7 +42,7 @@
 import { db } from '../../plugins/firebase';
 
 export default {
-  name:'Chatroom List',
+  name:'ChatroomList',
   data: () => ({
     uid: '',
     rooms: [],

@@ -3,8 +3,7 @@ import { Creator } from '../../models/Creator'
 import { auth } from '../../config'
 import { UserRecord } from 'firebase-functions/lib/providers/auth'
 
-
-export class AuthUserService {
+export default class AuthUserService {
   public async registerSupporter(_newUser: Supporter): Promise<Supporter> {
     const newUser = await auth.createUser({
       email: _newUser.email,
@@ -45,5 +44,11 @@ export class AuthUserService {
 
   public async getUser(uid: string): Promise<UserRecord> {
     return await auth.getUser(uid)
+  }
+
+  public async toEmail(uid: string): Promise<string> {
+    const user = await this.getUser(uid)
+    if (!user.email) throw new Error('This user does not have an email and has probably been deleted')
+    return user.email
   }
 }

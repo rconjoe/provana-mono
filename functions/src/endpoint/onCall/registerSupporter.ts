@@ -1,8 +1,8 @@
 import * as functions from 'firebase-functions'
-import { Supporter } from '../models/Supporter'
-import { AuthUserService } from '../services/auth/AuthUserService'
-import { StripeCustomerService } from '../services/stripe/StripeCustomerService'
-import { SupporterDBC } from '../dbc/SupporterDBC'
+import { Supporter } from '../../models/Supporter'
+import AuthUserService from '../../services/auth/AuthUserService'
+import { StripeCustomerService } from '../../services/stripe/StripeCustomerService'
+import { SupporterDBC } from '../../dbc/SupporterDBC'
 
 
 /**

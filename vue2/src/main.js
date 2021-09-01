@@ -89,6 +89,7 @@ auth.onAuthStateChanged(async (user) => {
           type: idTokenResult.claims.type,
         })
       })
+    store.dispatch('notifications/setOnline')
     }
 
     store.dispatch('tz/setTimezone')
@@ -101,7 +102,8 @@ auth.onAuthStateChanged(async (user) => {
 
     if (isAuthed && meta.isPublicOnly) {
       router.push('/dashboard')
-    } else if (!isAuthed && meta.isPrivate) {
+    }
+    else if (!isAuthed && meta.isPrivate) {
       router.push('/login')
     }
 

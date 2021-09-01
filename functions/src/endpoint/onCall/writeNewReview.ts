@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import { ReviewDBC } from '../dbc/ReviewDBC';
+import { ReviewDBC } from '../../dbc/ReviewDBC';
 
 export const writeNewReview = functions.https.onCall(async (data,context) => {
     const reviewDBC = new ReviewDBC(
