@@ -53,7 +53,8 @@
 					<v-window v-model="toolTipWindow">
 						<!-- Window 0 -->
 						<v-window-item>
-							<div>
+							<!-- If the selected session has more than 1 slot display slots tooltip -->
+							<div v-if="selectedEvent.slots > 1">
 								<h3 class="toolTipTitle">
 									{{ selectedEvent.name }}
 								</h3>
@@ -89,6 +90,29 @@
 									</v-list-item>
 								</v-list>
 							</div>
+
+							<!-- if the selected event has 1 slot-->
+							<div v-else>
+								<!-- Tittle bar -->
+								<h3 class="toolTipTitle">
+									{{ selectedEvent.name }}
+								</h3>
+								<v-divider></v-divider>
+								<!-- body text -->
+								<v-card-text>
+									would you like to {{ selectedEvent.name }} on {{ formatDate(selectedEvent.start) }} @
+									{{ formatTime(selectedEvent.start) }}
+								</v-card-text>
+								<!-- buttons -->
+								<v-card-actions>
+									<v-btn text color="grey" @click="sessionToolTip = false">
+										Close
+									</v-btn>
+									<v-btn color="primary" small @click="prebookCheck">
+											Book it!
+										</v-btn>
+								</v-card-actions>
+							</div>
 						</v-window-item>
 
 						<!-- window 1 are you sure -->
@@ -113,8 +137,14 @@
 									<v-icon size=".8vw" class="mr-2"> fas fa-chevron-left</v-icon>
 									Back
 								</v-btn>
-								<v-btn @click="purchaseSession(selectedSlot)">
+								<!-- conditional button if the session is a slot -->
+								<v-btn v-if="selectedEvent.slots > 1" @click="purchaseSession(selectedSlot)">
 									Checkout Slot!
+									<v-icon size=".8vw" class="ml-2"> fas fa-chevron-right</v-icon>
+								</v-btn>
+								<!-- else it is a normal session -->
+								<v-btn @click="purchaseSession(selectedEvent)" v-else>
+									Checkout Session!
 									<v-icon size=".8vw" class="ml-2"> fas fa-chevron-right</v-icon>
 								</v-btn>
 							</div>
@@ -209,18 +239,20 @@
 			bindSlots() {
 				this.slots = []
 				const session = this.selectedEvent
-				const slots = db
-					.collection('sessions')
-					.doc(session.id)
-					.collection('slots')
-					.orderBy('slot')
-				slots.get().then((querySnapshot) => {
-					querySnapshot.forEach((doc) => {
-						const data = doc.data()
-						const slot = formatter(data)
-						this.slots.push(slot)
+				if (session.slots > 1) {
+					const slots = db
+						.collection('sessions')
+						.doc(session.id)
+						.collection('slots')
+						.orderBy('slot')
+					slots.get().then((querySnapshot) => {
+						querySnapshot.forEach((doc) => {
+							const data = doc.data()
+							const slot = formatter(data)
+							this.slots.push(slot)
+						})
 					})
-				})
+				}
 			},
 			// TODO: [PRV-222] fix this
 			prebookCheck() {
@@ -247,6 +279,10 @@
 			async purchaseSession(session) {
 				this.checkoutLoading = true
 				const createCheckoutSession = functions.httpsCallable('callableCreateCheckoutSession')
+				// check to see if this session is a slot
+				const _slot = session.slots > 1 ? true : false
+				// if it is, set the parentSession
+				const parentSession = _slot ? session.parentSession : null
 				const checkoutData = {
 					uid: this.$user.uid,
 					username: this.$user.displayName,
@@ -254,7 +290,7 @@
 					price: this.service.stripePrice,
 					serviceCost: this.service.serviceCost,
 					sessionId: session.id,
-					parentSession: session.parentSession,
+					parentSession: parentSession,
 					slots: session.slots,
 				}
 				await createCheckoutSession(checkoutData).then((resp) => {
