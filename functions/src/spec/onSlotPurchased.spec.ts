@@ -1,17 +1,29 @@
 import { testEnv } from './env.spec'
 import { db } from '../config'
-const ref = db.collection('sessions').doc('12345').collection('slots').doc('12345678')
 
 describe('Tests onSlotPurchased firestore trigger', () => {
   let api: any
 
   beforeAll(async() => {
     api = require('../index.ts')
+    await db.collection('sessions').doc('12345').set({
+      sellerUid: 'dclKIs51l3dlJfULDlzcoDYkV7i2',
+      slots: 1,
+      serviceDocId: '13579',
+      mandatoryFill: true,
+      name: 'jest test parent session',
+      color: 'green',
+      serviceColor: 'green',
+      start: 1630520984,
+      end: 1630521984,
+      id: '12345',
+      status: 'published'
+    })
   })
 
   afterAll(async () => {
     testEnv.cleanup()
-    await ref.delete()
+    await db.collection('sessions').doc('12345').collection('slots').doc('12345678').delete()
   })
 
   it('sends and email on slot sold', async () => {
@@ -21,9 +33,9 @@ describe('Tests onSlotPurchased firestore trigger', () => {
       slot: 1,
       slots: 1,
       start: 1630520984,
-      end: 1630520984,
+      end: 1630521984,
       sellerUid: 'dclKIs51l3dlJfULDlzcoDYkV7i2',
-      serviceDocId: '78934587',
+      serviceDocId: '13579',
       buyerUid: '54764576',
       buyerUsername: 'buttington',
       paymentIntent: 'pi_12345',
@@ -36,9 +48,9 @@ describe('Tests onSlotPurchased firestore trigger', () => {
       slot: 1,
       slots: 1,
       start: 1630520984,
-      end: 1630520984,
+      end: 1630521984,
       sellerUid: 'dclKIs51l3dlJfULDlzcoDYkV7i2',
-      serviceDocId: '78934587',
+      serviceDocId: '13579',
       buyerUid: '54764576',
       buyerUsername: 'buttington',
       paymentIntent: 'pi_12345',
