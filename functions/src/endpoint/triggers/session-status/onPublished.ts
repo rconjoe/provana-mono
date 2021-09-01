@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions'
-import SlotDBC from '../dbc/SlotDBC'
+import SlotDBC from '../../../dbc/SlotDBC'
 
 export const onSessionPublished = functions
   .firestore

@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions'
-import { InvitationDBC } from '../dbc/InvitationDBC'
+import { InvitationDBC } from '../../dbc/InvitationDBC'
 
 /**
  * Returns boolean with invitation code validity.

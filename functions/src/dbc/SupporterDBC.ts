@@ -10,7 +10,8 @@ const converter = {
       username: supporter.username ? supporter.username : "",
       timezone: supporter.timezone ? supporter.timezone : "",
       avatar: supporter.avatar ? supporter.avatar : "",
-      banner: supporter.banner ? supporter.banner : ""
+      banner: supporter.banner ? supporter.banner : "",
+      online: supporter.online ? supporter.online : false
     }
   },
   fromFirestore(snapshot: FirebaseFirestore.QueryDocumentSnapshot): SupporterDBC {
@@ -24,6 +25,7 @@ const converter = {
       data.timezone,
       data.avatar,
       data.banner,
+      data.online,
       snapshot.ref
     )
   }
@@ -42,9 +44,10 @@ export class SupporterDBC extends Supporter {
     timezone?: string | undefined,
     avatar?: string | undefined,
     banner?: string | undefined,
+    online?: boolean | undefined,
     ref?: FirebaseFirestore.DocumentReference | undefined,
   ) {
-    super(uid, customer, email, temp, username, timezone, avatar, banner)
+    super(uid, customer, email, temp, username, timezone, avatar, banner, online)
     this.ref = ref
   }
 
@@ -58,6 +61,7 @@ export class SupporterDBC extends Supporter {
       this.timezone,
       this.avatar,
       this.banner,
+      this.online
     )
   }
 

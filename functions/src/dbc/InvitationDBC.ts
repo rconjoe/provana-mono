@@ -1,7 +1,7 @@
 import { db } from '../config'
 import { Invitation } from '../models/Invitation'
 import { Creator } from '../models/Creator'
-import { UnixTimestampService } from '../services/UnixTimestampService'
+import TimeService from '../services/TimeService'
 
 const converter = {
   toFirestore(invitation: InvitationDBC): FirebaseFirestore.DocumentData {
@@ -81,7 +81,7 @@ export class InvitationDBC extends Invitation {
   public async create(): Promise<string> {
     this.ref = db.collection('invitations').doc(this.id!)
     this.code = this.generateCode()
-    this.generated = new UnixTimestampService().generate()
+    this.generated = new TimeService().generate()
     this.valid = true,
     await this.ref.withConverter(converter).set(this)
     return this.code

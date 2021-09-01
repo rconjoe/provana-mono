@@ -13,7 +13,7 @@ describe('Tests getRecentReviews', () => {
         sellerUid:'56789',
         buyerUid: i,
         rating: 5,
-        message:'this is a jest test message',
+        messageh :'this is a jest test message',
         date: dayjs().unix(),
         serviceName: `test review #${i}`
       })

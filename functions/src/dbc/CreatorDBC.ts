@@ -20,8 +20,8 @@ const converter = {
       twitter: creator.twitter ? creator.twitter : "",
       twitch: creator.twitch ? creator.twitch : "",
       youtube: creator.youtube ? creator.youtube : "",
-      facebook: creator.facebook ? creator.facebook : ""
-
+      facebook: creator.facebook ? creator.facebook : "",
+      online: creator.online ? creator.online : false
     }
   },
   fromFirestore(snapshot: FirebaseFirestore.QueryDocumentSnapshot): CreatorDBC {
@@ -43,12 +43,13 @@ const converter = {
       data.twitch,
       data.youtube,
       data.facebook,
+      data.online,
       snapshot.ref
     )
   }
 }
 
-export class CreatorDBC extends Creator {
+export default class CreatorDBC extends Creator {
 
   ref: FirebaseFirestore.DocumentReference | undefined
 
@@ -69,9 +70,10 @@ export class CreatorDBC extends Creator {
     twitch?: string | undefined,
     youtube?: string | undefined,
     facebook?: string | undefined,
+    online?: boolean | undefined,
     ref?: FirebaseFirestore.DocumentReference | undefined,
   ) {
-    super(uid, customer, account, onboarded, partner, email, temp, code, username, timezone, avatar, banner, twitter, twitch, youtube, facebook)
+    super(uid, customer, account, onboarded, partner, email, temp, code, username, timezone, avatar, banner, twitter, twitch, youtube, facebook, online)
     this.ref = ref
   }
 
@@ -92,7 +94,8 @@ export class CreatorDBC extends Creator {
       this.twitter,
       this.twitch,
       this.youtube,
-      this.facebook
+      this.facebook,
+      this.online
     )
   }
 

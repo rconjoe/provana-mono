@@ -9,7 +9,7 @@ export async function sendSessionSoldEmail(sellerUsername: string, buyerUsername
     const serviceDoc = await db.collection('services').doc(serviceDocRef).get();
     const serviceData = serviceDoc.data();
     const serviceName = serviceData!.serviceName;
-    
+
     const sellerDocRef = await db.collection('creators').doc(sellerUid).get();
     const sellerData = sellerDocRef.data();
     const sellerEmail = sellerData!.email;

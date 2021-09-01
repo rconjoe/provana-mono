@@ -8,6 +8,7 @@ export class Supporter {
   timezone: string | undefined
   avatar: string | undefined
   banner: string | undefined
+  online: boolean | undefined
 
   constructor(
     uid?: string,
@@ -17,7 +18,8 @@ export class Supporter {
     username?: string,
     timezone?: string,
     avatar?: string,
-    banner?: string
+    banner?: string,
+    online?: boolean
     ) {
       this.uid = uid,
       this.customer = customer
@@ -26,7 +28,8 @@ export class Supporter {
       this.username = username,
       this.timezone = timezone,
       this.avatar = avatar,
-      this.banner = banner
+      this.banner = banner,
+      this.online = online
     }
 
   public setRegisterData(email: string, password: string, username: string): Supporter {
