@@ -13,10 +13,10 @@ export const onSlotPurchased = functions
       const creator = await new CreatorDBC(b.sellerUid).fetchByUid()
       const dateTime = new TimeService().toLocalDateTime(b.start, creator.timezone!)
       await new MailService('jcarlton1227@gmail.com').slotSold({
-        serviceName: b.name,
-        sellerUsername: creator.username!,
-        buyerUsername: b.buyerUsername,
-        time: dateTime.date,
+        username: creator.username!,
+        service: b.name,
+        buyer: b.buyerUsername,
+        time: dateTime.time,
         date: dateTime.date
       })
     }
