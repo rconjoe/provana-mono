@@ -102,13 +102,4 @@ export default class SlotDBC extends Slot {
     return await newDoc.withConverter(converter).set(this)
   }
 
-  public async update(session: string, slot: string, data: FirebaseFirestore.UpdateData): Promise<FirebaseFirestore.WriteResult> {
-    return await db
-      .collection('sessions')
-      .doc(session)
-      .collection('slots')
-      .doc(slot)
-      .update({...data})
-  }
-
 }
