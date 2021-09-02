@@ -102,10 +102,14 @@ export default class SlotDBC extends Slot {
     return await newDoc.withConverter(converter).set(this)
   }
 
-  public async setPath(session: string, id: string): Promise<SlotDBC> {
-    this.parentSession = session
-    this.id = id
-    return this
+  public async fromPath(session: string, id: string): Promise<SlotDBC> {
+    const slot = await db
+      .collection('sessions').doc(session)
+      .collection('slots').doc(id)
+      .withConverter(converter)
+      .get()
+    if (!slot.exists) throw new Error("slot not found")
+    return slot.data()!
   }
 
   public async update(data: any): Promise<FirebaseFirestore.WriteResult> {
