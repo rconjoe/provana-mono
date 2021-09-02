@@ -102,4 +102,18 @@ export default class SlotDBC extends Slot {
     return await newDoc.withConverter(converter).set(this)
   }
 
+  public async setPath(session: string, id: string): Promise<SlotDBC> {
+    this.parentSession = session
+    this.id = id
+    return this
+  }
+
+  public async update(data: any): Promise<FirebaseFirestore.WriteResult> {
+    if (this.ref === null || this.ref === undefined) throw new Error('Ref required to update slot')
+    return await this.ref.update({...data})
+    .catch(err => {
+      throw new Error(err)
+    })
+  }
+
 }
