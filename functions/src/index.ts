@@ -23,3 +23,4 @@ export { getReviewScore } from './endpoint/onCall/getReviewScore';
 export { publishPotential } from './endpoint/onCall/publishPotential'
 export { onSessionPublished } from './endpoint/triggers/session-status/onPublished'
 export { onSlotPurchased } from './endpoint/triggers/slot-status/onPurchased'
+export { checkout } from './endpoint/onCall/checkout'
