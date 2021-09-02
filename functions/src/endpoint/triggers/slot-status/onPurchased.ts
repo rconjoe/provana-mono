@@ -6,19 +6,21 @@ import TimeService from '../../../services/TimeService'
 export const onSlotPurchased = functions
   .firestore
   .document('session/{sessionId}/slots/{slotId}')
-  .onUpdate(async (change, context): Promise<void> => {
+  .onUpdate(async (change, context): Promise<string|void> => {
     const b = change.before.data()
     const a = change.after.data()
     if (b.status === 'holding' && a.status === 'purchased') {
+
       const creator = await new CreatorDBC(b.sellerUid).fetchByUid()
       const dateTime = new TimeService().toLocalDateTime(b.start, creator.timezone!)
-      await new MailService('jcarlton1227@gmail.com').slotSold({
+      return await new MailService(creator.email!).slotSold({
         username: creator.username!,
         service: b.name,
         buyer: b.buyerUsername,
         time: dateTime.time,
         date: dateTime.date
       })
+
     }
     else return
   })
