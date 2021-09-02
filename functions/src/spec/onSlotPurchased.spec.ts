@@ -26,6 +26,11 @@ describe('Tests onSlotPurchased firestore trigger', () => {
     await db.collection('sessions').doc('12345').collection('slots').doc('12345678').delete()
   })
 
+/**
+ * This test will always pass. You'll need to set your UID below and make sure your email
+ * is set to an account you can check in the database.
+ * (Don't worry changing the DB email won't affect your login. That comes from Auth API elsewhere.)
+ */
   it('sends and email on slot sold', async () => {
     const bSnap = testEnv.firestore.makeDocumentSnapshot({
       id: '12345678',
@@ -60,8 +65,7 @@ describe('Tests onSlotPurchased firestore trigger', () => {
 
     const change = testEnv.makeChange(bSnap, aSnap)
     const wrapped = testEnv.wrap(api.onSlotPurchased)
-    await wrapped(change).then((response: any) => {
-      console.log(response)
-    })
+    const response = await wrapped(change)
+    expect(response).toBe('Mail sent,')
   })
 })
