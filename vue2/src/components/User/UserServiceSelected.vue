@@ -279,10 +279,6 @@
 			async purchaseSession(session) {
 				this.checkoutLoading = true
 				const createCheckoutSession = functions.httpsCallable('callableCreateCheckoutSession')
-				// check to see if this session is a slot
-				const _slot = session.slots > 1 ? true : false
-				// if it is, set the parentSession
-				const parentSession = _slot ? session.parentSession : null
 				const checkoutData = {
 					uid: this.$user.uid,
 					username: this.$user.displayName,
@@ -290,7 +286,7 @@
 					price: this.service.stripePrice,
 					serviceCost: this.service.serviceCost,
 					sessionId: session.id,
-					parentSession: parentSession,
+					parentSession: session.parentSession,
 					slots: session.slots,
 				}
 				await createCheckoutSession(checkoutData).then((resp) => {
