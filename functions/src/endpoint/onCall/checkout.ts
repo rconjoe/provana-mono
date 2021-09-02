@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions'
 import StripeCheckoutService from '../../services/stripe/StripeCheckoutService'
-import SlotDBC from '../../dbc/SlotDBC'
+// import SlotDBC from '../../dbc/SlotDBC'
 
 export const checkout = functions.https.onCall(async (data, context) => {
   const checkout = await new StripeCheckoutService().createCheckout({
@@ -13,13 +13,13 @@ export const checkout = functions.https.onCall(async (data, context) => {
     slotId: data.slotId,
     sessionId: data.sessionId
   })
-  const slot = await new SlotDBC().setPath(data.sessionId, data.slotId)
-  await slot.update({
-    status: 'holding',
-    paymentIntent: checkout.payment_intent,
-    buyerUid: data.buyerUid,
-    buyerUsername: data.buyerUsername
-  })
+  // const slot = await new SlotDBC().fromPath(data.sessionId, data.slotId)
+  // await slot.update({
+  //   status: 'holding',
+  //   paymentIntent: checkout.payment_intent,
+  //   buyerUid: data.buyerUid,
+  //   buyerUsername: data.buyerUsername
+  // })
 
   // schedule task here
 
