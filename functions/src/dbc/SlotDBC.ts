@@ -120,4 +120,14 @@ export default class SlotDBC extends Slot {
     })
   }
 
+  public async fromId(id: string): Promise<SlotDBC> {
+    const q = await db
+      .collectionGroup('slots')
+      .where('id', '==', id)
+      .withConverter(converter)
+      .get()
+    if (q.empty) throw new Error('Slot not found')
+    return q.docs[0].data()
+  }
+
 }
