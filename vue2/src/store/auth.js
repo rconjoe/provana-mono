@@ -1,4 +1,10 @@
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
 import { store } from './index'
+import { db } from '../plugins/firebase'
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 export const auth = {
     namespaced: true,
@@ -7,6 +13,7 @@ export const auth = {
         currentUser: null,
         error: null,
         claims: null,
+        tz: null
     }),
 
     mutations: {
@@ -19,5 +26,35 @@ export const auth = {
         SET_CLAIMS(state, data) {
             state.claims = data;
         },
+        SET_TIMEZONE(state, data) {
+            state.tz = data;
+        }
     },
+    actions: {
+        async fetchUserProfile({ commit }, uid) {
+            if (!store.state.auth.claims.type) return
+            const _profile = await db.collection(store.state.auth.claims.type).doc(uid).get()
+            commit('SET_USER', _profile.data())
+        },
+        async setTimezone({ commit }) {
+            if (!store.state.currentUser) {
+                const guess = dayjs.tz.guess()
+                commit('SET_TIMEZONE', guess)
+            }
+            else {
+                const tz = store.state.currentUser.timezone
+                if (!tz || tz === '') {
+                    const guess = dayjs.tz.guess()
+                    dayjs.tz.setDefault(guess)
+                    commit('SET_TIMEZONE', guess)
+                    await db.collection(store.state.auth.claims.type).doc(store.state.auth.currentUser.uid)
+                    .set({ timezone: guess }, { merge: true })
+                }
+                else {
+                    dayjs.tz.setDefault(tz)
+                    commit('SET_TIMEZONE', tz)
+                }
+            }
+        }
+    }
 }
