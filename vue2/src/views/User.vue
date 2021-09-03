@@ -28,7 +28,7 @@
               />
             </div>
             <div v-else key="selectedService">
-              <UserServiceSelected @show-services="showServices" :service="selectedService" />
+              <UserServiceSelected @show-services="showServices" :service="selectedService" :profile="profile" />
             </div>
           </transition>
         </v-col>
