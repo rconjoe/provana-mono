@@ -44,6 +44,7 @@ describe('Tests checkout session generation endpoint', () => {
       slotId: '67890',
       sessionId: '12345'
     })
+    console.log(response)
     expect(response).toBeTruthy()
     const _slot = await db.collection('sessions').doc('12345')
       .collection('slots').doc('67890').get()
