@@ -53,8 +53,7 @@
 					<v-window v-model="toolTipWindow">
 						<!-- Window 0 -->
 						<v-window-item>
-							<!-- If the selected session has more than 1 slot display slots tooltip -->
-							<div v-if="selectedEvent.slots > 1">
+							<div>
 								<h3 class="toolTipTitle">
 									{{ selectedEvent.name }}
 								</h3>
@@ -77,41 +76,18 @@
 								<v-list dense color="transparent">
 									<!-- loop through slots creating list item for each -->
 									<v-list-item
-										v-for="(slot, i) in slots"
+										v-for="(slot, i) in selectedEvent.slots"
 										:key="i"
 										class="slotListItem"
 										:disabled="slot.status === 'booked'"
 									>
-										<h3 class="slotItemTime"> Slot {{ slot.slot}} of {{slot.slots}}</h3>
+										<h3 class="slotItemTime"> Slot {{ selectedEvent.slot }} of {{ selectedEvent.slots}}</h3>
 										<v-spacer> </v-spacer>
-										<v-btn color="primary" class="bookBtn"  :disabled="slot.status != 'published'" @click="prebookSlot(slot)">
+										<v-btn color="primary" class="bookBtn"  :disabled="selectedEvent.status != 'published'" @click="prebookSlot(slot)">
 											Book it!
 										</v-btn>
 									</v-list-item>
 								</v-list>
-							</div>
-
-							<!-- if the selected event has 1 slot-->
-							<div v-else>
-								<!-- Tittle bar -->
-								<h3 class="toolTipTitle">
-									{{ selectedEvent.name }}
-								</h3>
-								<v-divider></v-divider>
-								<!-- body text -->
-								<v-card-text>
-									would you like to {{ selectedEvent.name }} on {{ formatDate(selectedEvent.start) }} @
-									{{ formatTime(selectedEvent.start) }}
-								</v-card-text>
-								<!-- buttons -->
-								<v-card-actions>
-									<v-btn text color="grey" @click="sessionToolTip = false">
-										Close
-									</v-btn>
-									<v-btn color="primary" small @click="prebookCheck">
-											Book it!
-										</v-btn>
-								</v-card-actions>
 							</div>
 						</v-window-item>
 
@@ -138,13 +114,8 @@
 									Back
 								</v-btn>
 								<!-- conditional button if the session is a slot -->
-								<v-btn v-if="selectedEvent.slots > 1" @click="purchaseSession(selectedSlot)">
+								<v-btn @click="checkout(selectedSlot)">
 									Checkout Slot!
-									<v-icon size=".8vw" class="ml-2"> fas fa-chevron-right</v-icon>
-								</v-btn>
-								<!-- else it is a normal session -->
-								<v-btn @click="purchaseSession(selectedEvent)" v-else>
-									Checkout Session!
 									<v-icon size=".8vw" class="ml-2"> fas fa-chevron-right</v-icon>
 								</v-btn>
 							</div>
@@ -182,7 +153,7 @@
 			checkoutLoading: false,
 			toolTipWindow: 0,
 		}),
-		props: ['service'],
+		props: ['service', 'profile'],
 		mounted() {
 			db.collection('sessions')
 				.where('serviceDocId', '==', this.service.id)
@@ -276,22 +247,31 @@
 				this.selectedSlot = e
 				this.toolTipWindow = 1
 			},
-			async purchaseSession(session) {
+			async checkout(session) {
 				this.checkoutLoading = true
-				const createCheckoutSession = functions.httpsCallable('callableCreateCheckoutSession')
-				const checkoutData = {
+				// await functions.httpsCallable('callableCreateCheckoutSession', {
+				// 	uid: this.$user.uid,
+				// 	username: this.$user.displayName,
+				// 	customer: this.$store.state.currentUser.customer,
+				// 	price: this.service.stripePrice,
+				// 	serviceCost: this.service.serviceCost,
+				// 	sessionId: session.id,
+				// 	parentSession: session.parentSession,
+				// 	slots: session.slots,
+				// }).then((resp) => {
+				// 	console.log(resp.data)
+				// 	this.checkoutLoading = false
+				// 	stripe.redirectToCheckout({ sessionId: resp.data.id })
+				// })
+				console.log({
 					uid: this.$user.uid,
 					username: this.$user.displayName,
-					sellerUid: session.sellerUid,
-					price: this.service.stripePrice,
-					serviceCost: this.service.serviceCost,
-					sessionId: session.id,
-					parentSession: session.parentSession,
-					slots: session.slots,
-				}
-				await createCheckoutSession(checkoutData).then((resp) => {
-					this.checkoutLoading = false
-					stripe.redirectToCheckout({ sessionId: resp.data.id })
+					customer: this.$store.state.auth.currentUser.customer,
+					price: this.selectedEvent.stripePrice,
+					serviceCost: this.selectedEvent.serviceCost,
+					sessionId: this.selectedEvent.id,
+					parentSession: this.selectedEvent.parentSession,
+					slots: this.selectedEvent.slots,
 				})
 			},
 		},
