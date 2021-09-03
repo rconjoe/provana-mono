@@ -1,6 +1,5 @@
 import { testEnv } from './env.spec'
 import { db } from '../config'
-
 describe('Tests checkout session generation endpoint', () => {
   let api: any
 
@@ -49,7 +48,7 @@ describe('Tests checkout session generation endpoint', () => {
     const _slot = await db.collection('sessions').doc('12345')
       .collection('slots').doc('67890').get()
     const slot = _slot.data()!
-    console.log(slot)
+    // console.log(slot)
     expect(slot.status).toBe('holding')
     expect(slot.paymentIntent).toBeTruthy()
     expect(slot.buyerUid).toBe('abc123')
