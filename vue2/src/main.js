@@ -68,8 +68,7 @@ auth.onAuthStateChanged(async (user) => {
     await auth.currentUser.getIdTokenResult()
       .then(async (idTokenResult) => {
         store.commit('auth/SET_CLAIMS', idTokenResult.claims)
-        const profile = await db.collection(idTokenResult.claims.type).doc(user.uid).get()
-        store.commit('auth/SET_USER', profile.data())
+        await store.dispatch('auth/bindProfile', user.uid)
         Vue.prototype.$user = user
         Vue.prototype.$user.type = idTokenResult.claims.type
       })
