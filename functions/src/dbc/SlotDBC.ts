@@ -129,5 +129,4 @@ export default class SlotDBC extends Slot {
     if (q.empty) throw new Error('Slot not found')
     return q.docs[0].data()
   }
-
 }
