@@ -9,6 +9,25 @@ export const auth = admin.auth()
 export const db = admin.firestore()
 const settings = { timestampsInSnapshots: true }
 db.settings(settings)
+// utility for array updating to avoid importing admin elsewhere:
+export const addToArray = async (data: {ref: FirebaseFirestore.DocumentReference, field: string, value: string})
+  :Promise<FirebaseFirestore.WriteResult> => {
+    return await data.ref.update({
+      [data.field]: admin.firestore.FieldValue.arrayUnion(data.value)
+    })
+      .catch(err => {
+        throw new Error(err)
+      })
+}
+export const removeFromArray = async (data: {ref: FirebaseFirestore.DocumentReference, field: string, value: string})
+  :Promise<FirebaseFirestore.WriteResult> => {
+    return await data.ref.update({
+      [data.field]: admin.firestore.FieldValue.arrayRemove(data.value)
+    })
+      .catch(err => {
+        throw new Error(err)
+      })
+}
 
 // stripe
 export const stripeTestKey = "sk_test_51HJUgfGoIl5NLNcQ8xzPwo3tXqwoaGym8ZXwPBxbVWuOEEdCQxst4ORTV9x8GU4k4TK9uyFFiB9zLHMvDMLSV9UW00N8C4ejVB"
