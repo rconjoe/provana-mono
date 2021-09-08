@@ -25,3 +25,4 @@ export { onSessionPublished } from './endpoint/triggers/session-status/onPublish
 export { onSlotPurchased } from './endpoint/triggers/slot-status/onPurchased'
 export { checkout } from './endpoint/onCall/checkout'
 export { confirmCheckoutComplete } from './endpoint/onRequest/confirmCheckoutComplete'
+export { checkoutComplete } from './endpoint/onCall/checkoutComplete'
