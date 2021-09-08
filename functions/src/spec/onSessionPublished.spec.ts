@@ -14,9 +14,10 @@ describe('Tests onSessionPublished firestore trigger endpoint', () => {
     const slots = await db.collection('sessions').doc('12345').collection('slots').listDocuments()
     slots.forEach(async (doc) => await doc.delete())
     await db.collection('sessions').doc('12345').delete()
+    await db.collection('chats').doc('12345').delete()
   })
 
-  it('Should create the slots under a session when it is published', async () => {
+  it('Creates slots, chat room, and *add other things here* on session publish', async () => {
     const before = testEnv.firestore.makeDocumentSnapshot({
       sellerUid: '123abc',
       slots: 5,
@@ -48,12 +49,18 @@ describe('Tests onSessionPublished firestore trigger endpoint', () => {
 
     const wrapped = testEnv.wrap(api.onSessionPublished)
     await wrapped(change).then(async () => {
+      // slots
       const slots = await db.collection('sessions').doc('12345').collection('slots').get()
       expect(slots.size).toBe(5)
       slots.forEach((slot) => {
         expect(slot.data().status).toBe('published')
         expect(slot.data().slot).toBeTruthy()
       })
+      // chat 
+      const room = await db.collection('chats').doc('12345').get()
+      expect(room.exists).toBe(true)
+      expect(room.data()!.users).toContain('123abc')
+      expect(room.data()!.creator).toBe('123abc')
     })
   })
 })

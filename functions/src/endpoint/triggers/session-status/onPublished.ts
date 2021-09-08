@@ -1,10 +1,11 @@
 import * as functions from 'firebase-functions'
 import SlotDBC from '../../../dbc/SlotDBC'
+import ChatRoomDBC from '../../../dbc/ChatRoomDBC'
 
 export const onSessionPublished = functions
   .firestore
   .document('sessions/{sessionId}')
-  .onUpdate(async(change, context) => {
+  .onUpdate(async(change, context): Promise<void> => {
     const a = change.after.data()
     const b = change.before.data()
     const slots = a.slots
@@ -27,6 +28,9 @@ export const onSessionPublished = functions
           undefined
         ).publish()
       }
+      await new ChatRoomDBC().initialize({
+      id: a.id,
+      creator: a.sellerUid
+      })
     }
-  return
 })
