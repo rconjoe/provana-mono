@@ -100,6 +100,9 @@ export default class SlotDBC extends Slot {
     const newDoc = db.collection('sessions').doc(this.parentSession).collection('slots').doc()
     this.id = newDoc.id
     return await newDoc.withConverter(converter).set(this)
+    .catch(err => {
+      throw new Error(err)
+    })
   }
 
   public async fromPath(session: string, id: string): Promise<SlotDBC> {
