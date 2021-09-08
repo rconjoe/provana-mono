@@ -50,4 +50,11 @@ export default class StripeCheckoutService {
     const cents = serviceCost * 100
     return cents * 0.2 // 20%
   }
+
+  public async retrieve(id: string) {
+    return await stripe.checkout.sessions.retrieve(id)
+      .catch(err => {
+        throw new Error(err)
+      })
+  }
 }
