@@ -37,13 +37,15 @@ export default class ChatRoomDBC extends ChatRoom {
 
   public async initialize(data: {
     id: string,
-    creator: string
+    creator: string,
+    title: string
   }): Promise<void> {
     this.ref = db
       .collection('chats')
       .doc(data.id)
     await this.ref.set({
-      creator: data.creator
+      creator: data.creator,
+      title: data.title
     })
     await addToArray({
       ref: this.ref,

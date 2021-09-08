@@ -61,6 +61,7 @@ describe('Tests onSessionPublished firestore trigger endpoint', () => {
       expect(room.exists).toBe(true)
       expect(room.data()!.users).toContain('123abc')
       expect(room.data()!.creator).toBe('123abc')
+      expect(room.data()!.title).toBe('jest-test')
     })
   })
 })

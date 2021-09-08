@@ -29,8 +29,9 @@ export const onSessionPublished = functions
         ).publish()
       }
       await new ChatRoomDBC().initialize({
-      id: a.id,
-      creator: a.sellerUid
+        id: a.id,
+        creator: a.sellerUid,
+        title: a.name
       })
     }
 })
