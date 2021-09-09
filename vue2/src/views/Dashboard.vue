@@ -93,7 +93,6 @@ export default {
   },
 
   data: () => ({
-    profile: {},
     drawer: null,
     window: 0,
     onboarded:true,
@@ -153,7 +152,8 @@ export default {
       }
     },
     ...mapState({
-      claims: state => state.auth.claims
+      claims: state => state.auth.claims,
+      profile: state => state.auth.currentUser
     })
   },
   mounted() {
