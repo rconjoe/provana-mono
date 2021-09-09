@@ -2,24 +2,21 @@
   <!-- Container -->
   <v-row class="containerRow">
     <v-col>
-      <!-- Banner Row -->
-      <v-row class="userBanner" align="end" :style="cssVars">
-        <v-col class="avatarCol">
-          <v-avatar class="avatarBorder" size="7.771vw">
-            <v-img :src="profile.avatar" v-if="profile.avatar"> </v-img>
-          </v-avatar>
-        </v-col>
-      </v-row>
-      <!-- Seller info container 8 cols-->
-      <!-- UserName Header row-->
-      <v-row class=" userRow pl-6  pt-6 pb-0">
-        <v-col lg="6">
+      <!-- Header Row -->
+      <v-row class="userHeaderRow" :style="cssVars">
+        <v-col class="userHeaderCol">
           <UserHeader :profile="profile" />
         </v-col>
-        <!-- Services Column -->
-        <v-col v-if="services" lg="6" class=" servicesCol pr-0  ">
-          <transition name="slide" mode="out-in">
-            <div v-if="servicesVisible" key="services">
+      </v-row>
+
+
+      <!-- Services row-->
+      <v-row class="servicesRow">
+        <v-col v-if="services"  class=" servicesCol pr-0  ">
+          <div class="servicesLeftBarDiv">
+            <h1 class="chooseSession"> Choose a session!</h1>
+          </div>
+            <div v-if="servicesVisible" class="servicesDiv" key="services">
               <UserService
                 @service-clicked="serviceClicked"
                 v-for="service in this.services"
@@ -30,7 +27,6 @@
             <div v-else key="selectedService">
               <UserServiceSelected @show-services="showServices" :service="selectedService" :profile="profile" />
             </div>
-          </transition>
         </v-col>
         <v-col v-else cols="6" class="servicesCol pr-0 ">
           <p> This User is currently not offering any services.</p>
@@ -39,10 +35,6 @@
 
       <!-- Review and Seller feed row -->
       <v-row class="pa-3 sellerRow">
-        <v-col cols="6" class="d-flex flex-row-reverse reviewsCol">
-          <!-- Seller Feed column -->
-          <UserFeed :uid="profile.uid" />
-        </v-col>
         <v-col cols="6" class="reviewsCol" id="reviews">
           <!-- Recent Reviews Column-->
           <UserReviews :uid="profile.uid" />
@@ -115,8 +107,21 @@ export default {
 </script>
 
 <style scoped>
-.avatarCol {
-  position: relative;
+.servicesDiv{
+  display: inline-block;
+}
+.chooseSession{
+  font: normal 600 1.3020833333333333vw/1.5625vw Poppins;
+  letter-spacing: -0.06510416666666667vw ;
+  color:#333333;
+  margin-top:0.9375vw;
+}
+.servicesRow{
+  padding-top:1.8229166666666667vw;
+}
+.servicesLeftBarDiv{
+  max-width:200px;
+  display: inline-block;
 }
 .avatarBorder {
   border: 3px solid #fa4b6b;
@@ -126,24 +131,22 @@ export default {
   top: -7vw;
 }
 .containerRow {
-  background-image: url('../assets/_DashboardBG1.png');
+  background-image: linear-gradient(to right,#111111 10%, #11111100 100%),linear-gradient(to top,#111111 10%, #11111100 100%), url('../assets/ProvanaAlphaBadge-02.png');
   background-size: contain;
-  background-color: #121212;
+  max-height: 50.46875vw;
+  background-color: #cccccc;
 }
-.userRow{
-  background-image:linear-gradient(to bottom,#111111 0%,#1e1e1ecc 10%,#1e1e1e00 30%);
-}
-.userBanner {
-  background-image: linear-gradient(to bottom,#1e1e1ea3 2.71%,#1e1e1e69 26.76%,#1e1e1e00 53.59%),linear-gradient(to top,#111111 2.71%,#1e1e1ecc 26.76%,#1e1e1e00 53.59%),var(--bannerUrl);
-  background-size: cover;
-  height: 18.75vw;
-  background-position: top;
-  background-repeat: no-repeat;
-  background-color: #2d2d2d;
+
+.userHeaderRow {
+  padding-left:10.416666666666666vw;
+  padding-top:6.770833333333333vw;
+  background-color: transparent;
 }
 .servicesCol {
-  padding-right: 1.042vw;
-  padding-left: 1.80625vw;
+  margin-right: 10.416666666666666vw;
+  margin-left: 10.416666666666666vw;
+  height:22.760416666666668vw;
+  background-image: linear-gradient(to left, #11111154 0%, #111111 100%);
 }
 .sellerRow {
   margin-top: 10.520833333333334vw;
