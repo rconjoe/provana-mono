@@ -28,7 +28,25 @@ export const removeFromArray = async (data: {ref: FirebaseFirestore.DocumentRefe
         throw new Error(err)
       })
 }
-
+// and also for incrementing/decrementing numeric value:
+export const increment = async (data: {ref: FirebaseFirestore.DocumentReference, field: string, amount: number})
+  :Promise<FirebaseFirestore.WriteResult> => {
+    return await data.ref.update({
+      [data.field]: admin.firestore.FieldValue.increment(data.amount)
+    })
+      .catch(err => {
+        throw new Error(err)
+      })
+  }
+export const decrement = async (data: {ref: FirebaseFirestore.DocumentReference, field: string, amount: number})
+  :Promise<FirebaseFirestore.WriteResult> => {
+    return await data.ref.update({
+      [data.field]: admin.firestore.FieldValue.increment(-data.amount)
+    })
+      .catch(err => {
+        throw new Error(err)
+      })
+  }
 // stripe
 export const stripeTestKey = "sk_test_51HJUgfGoIl5NLNcQ8xzPwo3tXqwoaGym8ZXwPBxbVWuOEEdCQxst4ORTV9x8GU4k4TK9uyFFiB9zLHMvDMLSV9UW00N8C4ejVB"
 export var stripe: Stripe
