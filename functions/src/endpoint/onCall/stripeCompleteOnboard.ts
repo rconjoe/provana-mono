@@ -6,6 +6,6 @@ export const stripeCompleteOnboard = functions.https.onCall(async (data, context
   const dbc = new CreatorDBC().setUid(data.uid)
   const creator = await dbc.fetchByUid()
   const complete = await new StripeAccountService().verifyAccountCapabilities(creator.account!)
-  complete ? (await dbc.completeOnboard(complete)) : null
+  await dbc.completeOnboard(complete)
   return complete
 })
