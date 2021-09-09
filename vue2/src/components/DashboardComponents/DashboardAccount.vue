@@ -61,14 +61,14 @@
 							<v-textarea
 								color="white"
 								auto-grow
-								v-model="profile.bio"
+								v-model="form.bio"
 								:rules="bioRules"
 								counter="350"
 								single-line
 								:label="profile.bio"
 								class="editInput"
 							>
-								<v-icon slot="append" @click="toggleBio" :disabled="!bioValid" color="success">fas fa-save</v-icon>
+								<v-icon slot="append" @click="updateBio" :disabled="!bioValid" color="success">fas fa-save</v-icon>
 								<v-icon v-if="!bioLoading" slot="append" @click="bioEdit = !bioEdit" class="ml-2" color="red darken-4"
 									>fas fa-times</v-icon
 								>
@@ -335,43 +335,43 @@
 			},
 			async updateTag() {
 				this.tagLoading = true
-				const setTagline = functions.httpsCallable('setTagline')
-				await setTagline({ uid: this.$user.uid, tagline: this.form.tagline }).then((resp) => {
-					console.log(resp.data)
-					this.tagLoading = false
-					this.toggleTag()
-				})
+				const updateTagline = db.collection(this.$store.state.auth.claims.type).doc(this.uid).set({tagline:this.form.tagline},{merge:true});
+				return await updateTagline.then((resp) => {
+					this.tagLoading = false;
+					this.toggleTag();
+				});
 			},
 			async updateBio() {
-				this.bioLoading = true
-				const setBio = functions.httpsCallable('setBio')
-				if (this.form.bio !== '') {
-					await setBio({ uid: this.$user.uid, bio: `${this.form.bio}` }).then((resp) => {
-						console.log(resp.data)
-						this.tagLoading = false
-						this.toggleBio()
-					})
-				} else {
-					this.bioEdit = false
-				}
+				this.bioLoading = true;
+				const setBio = db.collection(this.$store.state.auth.claims.type).doc(this.uid).set({bio:this.form.bio},{merge:true});
+				return await setBio.then((resp) => {
+					this.bioLoading = false;
+					this.toggleBio();
+				})
 			},
 			async updateSocials() {
+				console.log('made it to updateSocials()')
 				this.socialLoading = !this.socialLoading
-				const setTwitter = functions.httpsCallable('setTwitter')
-				const setFacebook = functions.httpsCallable('setFacebook')
-				const setYoutube = functions.httpsCallable('setYoutube')
-				const setTwitch = functions.httpsCallable('setTwitch')
+				// const setTwitter = functions.httpsCallable('setTwitter')
+				// const setFacebook = functions.httpsCallable('setFacebook')
+				// const setYoutube = functions.httpsCallable('setYoutube')
+				// const setTwitch = functions.httpsCallable('setTwitch')
+				const setTwitter = db.collection(this.$store.state.auth.claims.type).doc(this.uid);
+				const setFacebook = db.collection(this.$store.state.auth.claims.type).doc(this.uid);
+				const setYoutube = db.collection(this.$store.state.auth.claims.type).doc(this.uid);
+				const setTwitch = db.collection(this.$store.state.auth.claims.type).doc(this.uid);
 				if (this.form.socials.twitter !== '') {
-					await setTwitter({ uid: this.$user.uid, twitter: this.form.socials.twitter })
+					console.log('made it to twitter if')
+					await db.collection(this.$store.state.auth.claims.type).doc(this.uid).set({twitter: this.form.socials.twitter},{merge:true})
 				}
 				if (this.form.socials.facebook !== '') {
-					await setFacebook({ uid: this.$user.uid, facebook: this.form.socials.facebook })
+					await setFacebook.set({facebook: this.form.socials.facebook},{merge:true})
 				}
 				if (this.form.socials.youtube !== '') {
-					await setYoutube({ uid: this.$user.uid, youtube: this.form.socials.youtube })
+					await setYoutube.set({youtube: this.form.socials.youtube},{merge:true})
 				}
 				if (this.form.socials.twitch !== '') {
-					await setTwitch({ uid: this.$user.uid, twitch: this.form.socials.twitch })
+					await setTwitch.set({twitch: this.form.socials.twitch},{merge:true})
 				}
 				this.socialLoading = !this.socialLoading
 				this.socialEdit = !this.socialEdit
