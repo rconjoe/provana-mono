@@ -53,4 +53,11 @@ export default class ChatRoomDBC extends ChatRoom {
       value: data.creator
     })
   }
+  public async addToRoom(uid: string, room: string): Promise<void> {
+    await addToArray({
+      ref: db.collection('chats').doc(room),
+      field: 'users',
+      value: uid
+    })
+  }
 }
