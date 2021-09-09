@@ -23,10 +23,18 @@
 				<br />
 
 				<!-- review row -->
-				<a href="#reviews"> <span class="ratingLink"> Reviews </span> </a>
+				<a  @click="showReview = true"> <span class="ratingLink"> Reviews </span> </a>
 				<span class="rating"> 4.9</span>
 				<v-icon size="1vw" class="star"> fas fa-star </v-icon>
 
+        <v-expand-transition>
+        <div class="reviewDiv" v-if="showReview">
+          <div class="iconDiv">
+            <v-icon class="exitReview" @click="showReview = false" right> fas fa-times</v-icon>
+          </div>
+          <UserReviews :uid="profile.uid" />
+        </div>
+        </v-expand-transition>
 				<!-- Socials -->
 				<div class="pl-0 socialsDiv">
 					<UserSocials :facebook="profile.facebook" :twitch="profile.twitch" :twitter="profile.twitter" :youtube="profile.youtube" />
@@ -40,11 +48,13 @@
 <script>
   import UserAbout from '@/components/User/UserAbout.vue'
   import UserSocials from '@/components/User/UserSocials.vue'
+  import UserReviews from '@/components/User/UserReviews.vue'
 	export default {
-    components:{UserAbout, UserSocials},
+    components:{UserAbout, UserSocials, UserReviews},
 		props: ['profile'],
 		data: () => ({
 			alphaHover: false,
+      showReview:false,
 			
 		}),
 	}
@@ -52,6 +62,28 @@
 
 <style scoped>
 	/* Header styles */
+  .iconDiv{
+    display: flex;
+    justify-content: flex-end;
+  }
+  .exitReview{
+    justify-self: flex-end;
+    margin-right:30px;
+    margin-top: 15px;
+    margin-bottom:10px;
+  }
+  .reviewDiv{
+    overflow: hidden;
+    max-height:550px;
+    width:540px;
+    position:absolute;
+    top:10;
+    left:10;
+    background-color:#333333 ;
+    z-index:2;
+    border-radius: 0 25px 0 0;
+  
+  }
 	
 	.userText {
 		font: normal 750 3.6458vw Poppins;
@@ -79,8 +111,8 @@
 	}
 	.headerDiv {
 		display: inline-block;
-		max-width: 28.645833333333332vw;
-		min-width: 28.645833333333332vw;
+		max-width: 38.645833333333332vw;
+		min-width: 38.645833333333332vw;
 	}
 	a {
 		text-decoration: none;

@@ -1,15 +1,14 @@
 <template>
   <!-- Reviews col must be 6 to fit inside parent row aside Seller Feed -->
-  <v-row class="reviewCol">
+  <v-row class="reviewRow">
     <!-- Review Header -->
-    <v-col cols="12">
-      <h1 class="reviewHeader pb-10"> Recent Reviews</h1>
+    <v-col>
       <!-- iterate through reviews as card elements -->
       <div v-if="Object.keys(reviews).length > 0">
-        <v-card v-for="review in reviews" :key="review.date" color="transparent" class="pt-4 mb-3">
+        <v-card v-for="review in reviews" :key="review.date" color="transparent" flat class="pt-4 mb-3">
           <!-- review tittle row -->
-          <v-col cols="12" class="d-flex justify-space-between py-0">
-            <h2 class="reviewTitle"> {{ review.username }} on {{ review.service }} </h2>
+          <v-col cols="12" class="d-flex justify-space-between py-0 px-0">
+            <h2 class="reviewTitle"> {{ review.username }} </h2>
             <!-- Review rating -->
             <h3 class="reviewRating">
               {{ review.rating }}
@@ -17,12 +16,13 @@
             </h3>
           </v-col>
           <!-- review message and date -->
-          <v-col class="d-flex justify-space-between">
+          <v-col class="pa-0">
             <p class="reviewDescription">
               {{ review.message }}
             </p>
-            <span class="reviewDate"> {{ review.date }}</span>
           </v-col>
+          <span class="reviewDate mr-4"> {{ review.date }}</span>
+          <span class="reviewDate"> {{ review.service }} </span>
         </v-card>
       </div>
       <div v-else>
@@ -67,19 +67,37 @@ export default {
         service: 'Session 1',
         message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
       },
+      5: {
+        username: 'MR@NDERSON',
+        rating: 4.9,
+        date: 'Nov 30th 2020',
+        service: 'Session 1',
+        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
+      },
+      6: {
+        username: 'MR@NDERSON',
+        rating: 4.9,
+        date: 'Nov 30th 2020',
+        service: 'Session 1',
+        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
+      },
     },
   }),
 };
 </script>
 
 <style scoped>
-.reviewCol {
-  max-width: 28.6451vw;
-  margin-left: 3.90625vw;
+.reviewRow {
+  max-width: 100%;
+  max-height:500px;
+  margin-left: 1.8421052631578947vw;
+  margin-right: 1.8421052631578947vw;
+  overflow-x: scroll;
+
 }
 .reviewTitle {
-  font: normal 600 1.5625vw Arboria;
-
+  font: normal 600 1.3157894736842106vw Poppins;
+  color:#666666;
   display: inline-block;
 }
 .reviewRating {
@@ -89,16 +107,15 @@ export default {
 }
 .reviewDescription {
   display: inline-block;
-  font: normal 500 0.78125vw Arboria;
-  color: #959595;
-  width: 15.625vw;
-  margin-left: 1.302vw;
+  font: normal 500 1.0526315789473684vw Arboria;
+  color: #FFFFFF;
+  width: 21.157894736842106vw;
   margin-bottom: 0;
 }
 .reviewDate {
   display: inline-block;
   font: normal 500 0.78125vw Arboria;
-  color: white;
+  color: #666666;
   align-self: flex-start;
   text-align: right;
 }

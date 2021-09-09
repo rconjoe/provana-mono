@@ -1,131 +1,142 @@
 <template>
 	<div>
-		<LoadingOverlay v-if='checkoutLoading' />
-		<v-col class="d-flex justify-space-between serviceHeader">
-			<h1 class="serviceTitle"> {{ service.serviceName }} </h1>
-			<v-btn class="backBtn pa-1  " @click="showServices" small color="primary" text> &#60; Back </v-btn>
-		</v-col>
-		<h3 class="serviceInfo"> {{ service.serviceCost }} </h3>
-		<h3 class="serviceInfo"> {{ service.serviceLength }} Min.</h3>
-		<h3 class="serviceInfo"> {{ service.platform }} </h3>
-		<h3 class="serviceInfo"> {{ service.software }} </h3>
-		<h3 class="serviceDescription"> {{service.serviceDescription}} </h3>
+		<LoadingOverlay v-if="checkoutLoading" />
+		<v-row class="serviceSelectedRow">
+			<v-col class="backBtnCol">
+				<v-btn class="backBtn pa-1  " @click="showServices" small color="#333333" text> &#60; Back </v-btn>
+			</v-col>
+			<v-col class="detailsCol">
+				<ServiceDetails :service="service" />
+			</v-col>
+			<v-col class="scheduleCol">
+				<!-- Calendar header -->
+				<v-sheet height="70" color="transparent">
+					<v-toolbar flat color="transparent" class="mb-6">
+						<h1 class="availableHeader" v-if="sessions"> Choose a spot this week! </h1>
+						<h1 class="availableHeader" v-else>Oh No! :(</h1>
 
-		<!-- Calendar start -->
-		<v-sheet height="70" color="transparent">
-			<v-toolbar flat color="transparent" class="mb-6">
-				<h1 class="availableHeader" v-if="sessions"> Choose a spot this week! </h1>
-				<h1 class="availableHeader" v-else>Oh No! :(</h1>
+						<v-btn fab text color="grey darken-2" @click="prev">
+							<v-icon>
+								fas fa-chevron-left
+							</v-icon>
+						</v-btn>
 
-				<v-btn fab text color="grey darken-2" @click="prev">
-					<v-icon>
-						fas fa-chevron-left
-					</v-icon>
-				</v-btn>
-
-				<h3 class=" mr-2" v-if="$refs.calendar">
-					{{ $refs.calendar.title }}
-				</h3>
-
-				<v-btn fab text color="grey darken-2" @click="next">
-					<v-icon>
-						fas fa-chevron-right
-					</v-icon>
-				</v-btn>
-			</v-toolbar>
-		</v-sheet>
-		<!-- actual Calendar -->
-		<v-sheet v-if="sessions" height="400" color="transparent" class="calendarContainer">
-			<v-calendar ref="calendar" v-model="focus" type="week" :events="sessions" @click:event="showEvent">
-				<template v-slot:event="{ event, start }">
-					<div v-if="start" class="eventCard">
-						<h3 class="pt-0 white--text text-truncate eventName">
-							{{ event.name }}
+						<h3 class=" mr-2" v-if="$refs.calendar">
+							{{ $refs.calendar.title }}
 						</h3>
-					</div>
-				</template>
-			</v-calendar>
-			<!-- tooltip window -->
-			<!--  -->
-			<!--  -->
-			<v-menu v-model="sessionToolTip" :close-on-content-click="false" :activator="selectedElement" offset-x elevation="0">
-				<v-card class="toolTip pa-2" min-width="350px" max-width="450px" elvation="0">
-					<v-window v-model="toolTipWindow">
-						<!-- Window 0 -->
-						<v-window-item>
-							<div>
-								<h3 class="toolTipTitle">
-									{{ selectedEvent.name }}
+
+						<v-btn fab text color="grey darken-2" @click="next">
+							<v-icon>
+								fas fa-chevron-right
+							</v-icon>
+						</v-btn>
+					</v-toolbar>
+				</v-sheet>
+				<!-- actual Calendar -->
+				<v-sheet v-if="sessions" height="400" color="transparent" class="calendarContainer">
+					<v-calendar ref="calendar" v-model="focus" type="week" :events="sessions" @click:event="showEvent">
+						<template v-slot:event="{ event, start }">
+							<div v-if="start" class="eventCard">
+								<h3 class="pt-0 white--text text-truncate eventName">
+									{{ event.name }}
 								</h3>
-								<v-card-text class="pt-0 pl-0 pb-1">
-									{{ formatDate(selectedEvent.start) }} @
-									{{ formatTime(selectedEvent.start) }}
-								</v-card-text>
-								<v-divider></v-divider>
-								<!-- If the service is mandtory fill display warning to the buyer -->
-								<div v-if="service.mandatoryFill">
-									<h3 class="mandatoryFillTitle">
-										<v-icon color="warning"> fas fa-exclamation-triangle</v-icon> Mandatory Fill
-									</h3>
-									<h3 class="mandatoryFillText">
-										If all slots are not filled before the event start time, All money will be refunded and the session
-										will be automatically canceled.
-									</h3>
-								</div>
-								<!-- List the slots available if the slot is booked = disabled -->
-								<v-list dense color="transparent">
-									<!-- loop through slots creating list item for each -->
-									<v-list-item
-										v-for="(slot, i) in selectedEvent.slots"
-										:key="i"
-										class="slotListItem"
-										:disabled="slot.status === 'booked'"
-									>
-										<h3 class="slotItemTime"> Slot {{ selectedEvent.slot }} of {{ selectedEvent.slots}}</h3>
-										<v-spacer> </v-spacer>
-										<v-btn color="primary" class="bookBtn"  :disabled="selectedEvent.status != 'published'" @click="prebookSlot(slot)">
-											Book it!
+							</div>
+						</template>
+					</v-calendar>
+					<!-- tooltip window -->
+					<!--  -->
+					<!--  -->
+					<v-menu
+						v-model="sessionToolTip"
+						:close-on-content-click="false"
+						:activator="selectedElement"
+						offset-x
+						elevation="0"
+					>
+						<v-card class="toolTip pa-2" min-width="350px" max-width="450px" elvation="0">
+							<v-window v-model="toolTipWindow">
+								<!-- Window 0 -->
+								<v-window-item>
+									<div>
+										<h3 class="toolTipTitle">
+											{{ selectedEvent.name }}
+										</h3>
+										<v-card-text class="pt-0 pl-0 pb-1">
+											{{ formatDate(selectedEvent.start) }} @
+											{{ formatTime(selectedEvent.start) }}
+										</v-card-text>
+										<v-divider></v-divider>
+										<!-- If the service is mandtory fill display warning to the buyer -->
+										<div v-if="service.mandatoryFill">
+											<h3 class="mandatoryFillTitle">
+												<v-icon color="warning"> fas fa-exclamation-triangle</v-icon> Mandatory Fill
+											</h3>
+											<h3 class="mandatoryFillText">
+												If all slots are not filled before the event start time, All money will be refunded and the
+												session will be automatically canceled.
+											</h3>
+										</div>
+										<!-- List the slots available if the slot is booked = disabled -->
+										<v-list dense color="transparent">
+											<!-- loop through slots creating list item for each -->
+											<v-list-item
+												v-for="(slot, i) in selectedEvent.slots"
+												:key="i"
+												class="slotListItem"
+												:disabled="slot.status === 'booked'"
+											>
+												<h3 class="slotItemTime"> Slot {{ selectedEvent.slot }} of {{ selectedEvent.slots }}</h3>
+												<v-spacer> </v-spacer>
+												<v-btn
+													color="primary"
+													class="bookBtn"
+													:disabled="selectedEvent.status != 'published'"
+													@click="prebookSlot(slot)"
+												>
+													Book it!
+												</v-btn>
+											</v-list-item>
+										</v-list>
+									</div>
+								</v-window-item>
+
+								<!-- window 1 are you sure -->
+								<v-window-item>
+									<div>
+										<h3 class="toolTipTitle mb-2">
+											Are you sure?
+										</h3>
+										<!-- displaying the sevice  -->
+										<v-card-text class="pt-0 pl-0 pb-1">
+											booking {{ selectedEvent.name }} <br />
+											{{ formatDate(selectedEvent.start) }} @
+											{{ formatTime(selectedEvent.start) }}
+										</v-card-text>
+										<!-- 5 minute warning -->
+										<h3 class="mandatoryFillText pb-4 pl-0">
+											We will hold your spot for 5 minutes while you are redirected to checkout. If the time expires
+											before you complete checkout the session will be removed from holding and republished.
+										</h3>
+										<!-- Cancel Button -->
+										<v-btn @click="toolTipWindow = 0" class="mr-4">
+											<v-icon size=".8vw" class="mr-2"> fas fa-chevron-left</v-icon>
+											Back
 										</v-btn>
-									</v-list-item>
-								</v-list>
-							</div>
-						</v-window-item>
+										<!-- conditional button if the session is a slot -->
+										<v-btn @click="checkout(selectedSlot)">
+											Checkout Slot!
+											<v-icon size=".8vw" class="ml-2"> fas fa-chevron-right</v-icon>
+										</v-btn>
+									</div>
+								</v-window-item>
+							</v-window>
+						</v-card>
+					</v-menu>
+				</v-sheet>
 
-						<!-- window 1 are you sure -->
-						<v-window-item>
-							<div>
-								<h3 class="toolTipTitle mb-2">
-									Are you sure?
-								</h3>
-								<!-- displaying the sevice  -->
-								<v-card-text class="pt-0 pl-0 pb-1">
-									booking {{ selectedEvent.name }} <br />
-									{{ formatDate(selectedEvent.start) }} @
-									{{ formatTime(selectedEvent.start) }}
-								</v-card-text>
-								<!-- 5 minute warning -->
-								<h3 class="mandatoryFillText pb-4 pl-0">
-									We will hold your spot for 5 minutes while you are redirected to checkout. If the time expires before
-									you complete checkout the session will be removed from holding and republished.
-								</h3>
-								<!-- Cancel Button -->
-								<v-btn @click="toolTipWindow = 0" class="mr-4">
-									<v-icon size=".8vw" class="mr-2"> fas fa-chevron-left</v-icon>
-									Back
-								</v-btn>
-								<!-- conditional button if the session is a slot -->
-								<v-btn @click="checkout(selectedSlot)">
-									Checkout Slot!
-									<v-icon size=".8vw" class="ml-2"> fas fa-chevron-right</v-icon>
-								</v-btn>
-							</div>
-						</v-window-item>
-					</v-window>
-				</v-card>
-			</v-menu>
-		</v-sheet>
-
-		<p v-if="!sessions"> There are no openings for this service check back tomorrow.</p>
+				<p v-if="!sessions"> There are no openings for this service check back tomorrow.</p>
+			</v-col>
+		</v-row>
 	</div>
 </template>
 
@@ -134,12 +145,14 @@
 	import dayjs from 'dayjs'
 	import { formatter } from '../../plugins/sessionFormatter'
 	import LoadingOverlay from '../LoadingOverlay.vue'
+	import ServiceDetails from '@/components/User/ServiceDetails.vue'
 	var stripe = Stripe(
 		'pk_test_51HJUgfGoIl5NLNcQKTXPu3CKuckXq6vbUXxASrRZvrXgwtODSI9wFNWdZoo37LY3YXrrfMx2N7Nas1MWbWn7ddu100RWAa63mC'
 	)
 	export default {
 		components: {
 			LoadingOverlay,
+			ServiceDetails,
 		},
 		data: () => ({
 			selectedSlot: '',
@@ -279,11 +292,20 @@
 </script>
 
 <style scoped>
-	.floatRight{
+	.serviceSelectedRow{
+		max-height:420px;
+		overflow: hidden;
+	}
+	.detailsCol{
+		max-width: 25.526315789473685vw;
+		border-right: solid 1px white;
+		margin-top:40px;
+	}
+	.floatRight {
 		display: inline-block;
 	}
-	.floatLeft{
-		float:left;
+	.floatLeft {
+		float: left;
 	}
 	.slotListItem:hover {
 		background-color: #1e1e1e;
@@ -338,29 +360,35 @@
 		font: normal 700 1rem Poppins;
 		padding-right: 20px;
 		display: inline-block;
-		padding-bottom: .78125vw;
+		padding-bottom: 0.78125vw;
 		margin-top: -20px;
 	}
 	.serviceDescription {
 		color: #717171;
 		font: normal 700 1rem Poppins;
 		padding-right: 20px;
-		display:block;
+		display: block;
 		margin-top: -10px;
 	}
 	.availableHeader {
 		font: normal 600 1.5vw Poppins;
 	}
+	.backBtnCol{
+		max-width:4.2105263157894735vw;
+	}
 	.backBtn {
 		font: normal 600 1.2rem/1rem Poppins;
+	}
+	.backBtn:hover{
+		color:#FA4B6B !important;
 	}
 	.serviceHeader {
 		padding-right: 230px;
 		padding-left: 0;
 		padding-bottom: 0;
 	}
-	.bookBtn{
-		width:50%;
+	.bookBtn {
+		width: 50%;
 	}
 	.eventCard {
 		padding: 5px;

@@ -1,23 +1,37 @@
 <template>
     <v-row class="serviceRow">
-      <v-col class="serviceCol">
+      
+      <v-hover v-slot="{hover}"> 
+      <v-col class="serviceCol" @click="serviceClicked(service)">
         <!-- Tittle row -->
         <div class="serviceTitleDiv">
           <h1 class="serviceTitle"> {{service.serviceName}} </h1>
         </div>
         <!-- Image row -->
         <div class="serviceImageDiv">
+          
           <!-- price/length div -->
           <div class="serviceInfoDiv">
             <span class="serviceInfo"> ${{service.serviceCost}}</span>
-            <span class="serviceInfo"> 777min</span>
+            <span class="serviceInfo"> {{service.serviceLength}}min</span>
           </div>
+           <v-expand-transition>
+          <div
+            v-if="hover"
+            class=" descriptionDiv"
+          >
+            <h2 class="description"> {{service.serviceDescription}}</h2>
+          </div>
+        </v-expand-transition>
         </div>
         <!-- Details Row -->
-        <div class="serviceDetailsDiv">
+        <div class="serviceDetailsDiv mt-2">
+          <v-icon v-if="service.attendees > 1" class="mx-2"> fas fa-users </v-icon>
+          <span class="serviceDetails" > {{service.software}} </span>
           
         </div>
       </v-col>  
+      </v-hover>
     </v-row>
 </template>
 
@@ -39,6 +53,24 @@ export default {
 </script>
 
 <style scoped>
+.description{
+  font: normal 500 .78125vw Arboria;
+  height:100%;
+  color:white;
+}
+.descriptionDiv{
+  background-color: #11111194;
+  height: 7.45vw;
+}
+.serviceDetails{
+  font: normal 500 1.052vw Arboria;
+  color:#717171;
+  margin: 0 0.631578947368421vw;
+}
+.serviceDetailsDiv{
+  text-align: end;
+ 
+}
 .serviceCol:hover .serviceTitleDiv{
   width:100%;
   transition-duration: 1s;
