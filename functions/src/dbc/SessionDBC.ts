@@ -1,11 +1,12 @@
 import Session from '../models/Session'
-import { db } from '../config'
+import { db, increment, decrement } from '../config'
 
 const converter = {
   toFirestore(s: SessionDBC): FirebaseFirestore.DocumentData {
     return {
       sellerUid: s.sellerUid ? s.sellerUid : "",
-      slots: s.slots ? s.slots : "",
+      slots: s.slots ? s.slots : 1,
+      booked: s.booked ? s.booked : 1,
       serviceDocId: s.serviceDocId ? s.serviceDocId : "",
       mandatoryFill: s.mandatoryFill ? s.mandatoryFill : "",
       name: s.name ? s.name : "",
@@ -22,6 +23,7 @@ const converter = {
     return new SessionDBC(
       data.sellerUid,
       data.slots,
+      data.booked,
       data.serviceDocId,
       data.mandatoryFill,
       data.name,
@@ -42,6 +44,7 @@ export default class SessionDBC extends Session {
   constructor(
     sellerUid?: string,
     slots?: number,
+    booked?: number,
     serviceDocId?: string,
     mandatoryFill?: boolean,
     name?: string,
@@ -53,7 +56,7 @@ export default class SessionDBC extends Session {
     status?: string,
     ref?: FirebaseFirestore.DocumentReference
   ) {
-    super(sellerUid, slots, serviceDocId, mandatoryFill, name, color, serviceColor, start, end, id, status)
+    super(sellerUid, slots, booked, serviceDocId, mandatoryFill, name, color, serviceColor, start, end, id, status)
     this.ref = ref
   }
 
@@ -81,6 +84,22 @@ export default class SessionDBC extends Session {
       a.push(doc.data())
     })
     return a
+  }
+
+  public async increment(id: string): Promise<void> {
+    await increment({
+      ref: db.collection('tasks').doc(id),
+      field: 'booked',
+      amount: 1
+    })
+  }
+
+  public async decrement(id: string): Promise<void> {
+    await decrement({
+      ref: db.collection('tasks').doc(id),
+      field: 'booked',
+      amount: 1
+    })
   }
 
 }
