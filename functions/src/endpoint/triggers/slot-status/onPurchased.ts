@@ -1,5 +1,6 @@
 import * as functions from 'firebase-functions'
 import CreatorDBC from '../../../dbc/CreatorDBC'
+import ChatRoomDBC from '../../../dbc/ChatRoomDBC'
 import MailService from '../../../services/mailer/MailService'
 import TimeService from '../../../services/TimeService'
 
@@ -10,6 +11,7 @@ export const onSlotPurchased = functions
     const b = change.before.data()
     const a = change.after.data()
     if (b.status === 'holding' && a.status === 'purchased') {
+      await new ChatRoomDBC().addToRoom(a.buyerUid, a.parentSession)
 
       const creator = await new CreatorDBC(b.sellerUid).fetchByUid()
       const dateTime = new TimeService().toLocalDateTime(b.start, creator.timezone!)
@@ -20,7 +22,6 @@ export const onSlotPurchased = functions
         time: dateTime.time,
         date: dateTime.date
       })
-
     }
     else return
   })
