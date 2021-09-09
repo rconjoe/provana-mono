@@ -19,11 +19,16 @@ describe('Tests onSlotPurchased firestore trigger', () => {
       id: '12345',
       status: 'published'
     })
+    await db.collection('chats').doc('12345').set({
+      creator: 'dclKIs51l3dlJfULDlzcoDYkV7i2',
+      users: ['dclKIs51l3dlJfULDlzcoDYkV7i2']
+    })
   })
 
   afterAll(async () => {
     testEnv.cleanup()
     await db.collection('sessions').doc('12345').collection('slots').doc('12345678').delete()
+    await db.collection('chats').doc('12345').delete()
   })
 
 /**
@@ -31,7 +36,7 @@ describe('Tests onSlotPurchased firestore trigger', () => {
  * is set to an account you can check in the database.
  * (Don't worry changing the DB email won't affect your login. That comes from Auth API elsewhere.)
  */
-  it('sends and email on slot sold', async () => {
+  it('sends an email to creator and adds buyer to chat room on slot sold', async () => {
     const bSnap = testEnv.firestore.makeDocumentSnapshot({
       id: '12345678',
       name: 'jest test slot email thing',
@@ -67,5 +72,8 @@ describe('Tests onSlotPurchased firestore trigger', () => {
     const wrapped = testEnv.wrap(api.onSlotPurchased)
     const response = await wrapped(change)
     expect(response).toBe('Mail sent,')
+    const chat = await db.collection('chats').doc('12345').get()
+    expect(chat.exists).toBe(true)
+    expect(chat.data()!.users).toContain('54764576')
   })
 })
