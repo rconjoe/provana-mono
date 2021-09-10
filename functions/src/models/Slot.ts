@@ -3,6 +3,7 @@ export default class Slot {
   name: string | undefined
   slot: number  | undefined
   slots: number  | undefined
+  mandatoryFill: boolean | undefined
   start: number | undefined
   end: number | undefined
   sellerUid: string | undefined
@@ -18,6 +19,7 @@ export default class Slot {
     name?: string,
     slot?: number,
     slots?: number,
+    mandatoryFill?: boolean,
     start?: number,
     end?: number,
     sellerUid?: string,
@@ -32,6 +34,7 @@ export default class Slot {
     this.name = name
     this.slot = slot
     this.slots = slots
+    this.mandatoryFill = mandatoryFill
     this.start = start
     this.end = end
     this.sellerUid = sellerUid
