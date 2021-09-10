@@ -58,7 +58,7 @@ export var stripe: Stripe
       port: '12111'
     })
   }
-  else stripe = new Stripe(functions.config().stripe.secret, {
+  else stripe = new Stripe(functions.config().stripe.test_key, {
     apiVersion: '2020-08-27'
   })
 
