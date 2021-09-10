@@ -199,6 +199,7 @@
 			showEvent({ nativeEvent, event }) {
 				const open = () => {
 					this.selectedEvent = event
+          console.log(event)
 					this.selectedElement = nativeEvent.target
 					requestAnimationFrame(() =>
 						requestAnimationFrame(() => {
@@ -223,20 +224,18 @@
 			bindSlots() {
 				this.slots = []
 				const session = this.selectedEvent
-				if (session.slots > 1) {
-					const slots = db
-						.collection('sessions')
-						.doc(session.id)
-						.collection('slots')
-						.orderBy('slot')
-					slots.get().then((querySnapshot) => {
-						querySnapshot.forEach((doc) => {
-							const data = doc.data()
-							const slot = formatter(data)
-							this.slots.push(slot)
-						})
-					})
-				}
+        const slots = db
+          .collection('sessions')
+          .doc(session.id)
+          .collection('slots')
+          .orderBy('slot')
+        slots.get().then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            const data = doc.data()
+            const slot = formatter(data)
+            this.slots.push(slot)
+          })
+        })
 			},
 			// TODO: [PRV-222] fix this
 			prebookCheck() {
@@ -260,33 +259,22 @@
 				this.selectedSlot = e
 				this.toolTipWindow = 1
 			},
-			async checkout(session) {
-				// this.checkoutLoading = true
-				// await functions.httpsCallable('callableCreateCheckoutSession', {
-				// 	uid: this.$user.uid,
-				// 	username: this.$user.displayName,
-				// 	customer: this.$store.state.currentUser.customer,
-				// 	price: this.service.stripePrice,
-				// 	serviceCost: this.service.serviceCost,
-				// 	sessionId: session.id,
-				// 	parentSession: session.parentSession,
-				// 	slots: session.slots,
-				// }).then((resp) => {
-				// 	console.log(resp.data)
-				// 	this.checkoutLoading = false
-				// 	stripe.redirectToCheckout({ sessionId: resp.data.id })
-				// })
-				console.log({
+			async checkout(slot) {
+				this.checkoutloading = true
+				const _checkout = await functions.httpsCallable('checkout')
+        const checkout = await _checkout({
 					uid: this.$user.uid,
 					username: this.$user.displayName,
 					customer: this.$store.state.auth.currentUser.customer,
-					price: this.selectedEvent.stripePrice,
-					serviceCost: this.selectedEvent.serviceCost,
+          account: this.profile.account,
+					price: this.service.stripePrice,
+					serviceCost: this.service.serviceCost,
+					slotId: slot.id,
 					sessionId: this.selectedEvent.id,
-					parentSession: this.selectedEvent.parentSession,
-					slots: this.selectedEvent.slots,
 				})
-				console.log(session)
+				console.log(checkout.data)
+				this.checkoutloading = false
+				// 	stripe.redirecttocheckout({ sessionid: resp.data.id })
 			},
 		},
 	}
