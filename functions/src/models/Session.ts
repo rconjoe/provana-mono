@@ -1,6 +1,7 @@
 export default class Session {
   sellerUid: string | undefined
   slots: number | undefined
+  booked: number | undefined
   serviceDocId: string | undefined
   mandatoryFill: boolean | undefined
   name: string | undefined
@@ -14,6 +15,7 @@ export default class Session {
   constructor(
     sellerUid?: string,
     slots?: number,
+    booked?: number,
     serviceDocId?: string,
     mandatoryFill?: boolean,
     name?: string,
@@ -26,6 +28,7 @@ export default class Session {
   ) {
     this.sellerUid = sellerUid,
     this.slots = slots
+    this.booked = booked
     this.serviceDocId = serviceDocId,
     this.mandatoryFill = mandatoryFill,
     this.name = name,
