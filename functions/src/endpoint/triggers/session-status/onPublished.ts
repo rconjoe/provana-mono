@@ -16,6 +16,7 @@ export const onSessionPublished = functions
           a.name,
           i,
           a.slots,
+          a.mandatoryFill,
           a.start,
           a.end,
           a.sellerUid,
