@@ -8,9 +8,10 @@ describe('Tests onSlotPurchased firestore trigger', () => {
     api = require('../index.ts')
     await db.collection('sessions').doc('12345').set({
       sellerUid: 'dclKIs51l3dlJfULDlzcoDYkV7i2',
-      slots: 1,
+      slots: 2,
+      booked: 0,
       serviceDocId: '13579',
-      mandatoryFill: true,
+      mandatoryFill: false,
       name: 'jest test parent session',
       color: 'green',
       serviceColor: 'green',
@@ -28,20 +29,18 @@ describe('Tests onSlotPurchased firestore trigger', () => {
   afterAll(async () => {
     testEnv.cleanup()
     await db.collection('sessions').doc('12345').collection('slots').doc('12345678').delete()
+    await db.collection('sessions').doc('12345').delete()
     await db.collection('chats').doc('12345').delete()
+    await db.collection('tasks').doc('12345678').delete()
   })
 
-/**
- * This test will always pass. You'll need to set your UID below and make sure your email
- * is set to an account you can check in the database.
- * (Don't worry changing the DB email won't affect your login. That comes from Auth API elsewhere.)
- */
   it('sends an email to creator and adds buyer to chat room on slot sold', async () => {
     const bSnap = testEnv.firestore.makeDocumentSnapshot({
       id: '12345678',
       name: 'jest test slot email thing',
       slot: 1,
-      slots: 1,
+      slots: 2,
+      mandatoryFill: false,
       start: 1630520984,
       end: 1630521984,
       sellerUid: 'dclKIs51l3dlJfULDlzcoDYkV7i2',
@@ -56,7 +55,8 @@ describe('Tests onSlotPurchased firestore trigger', () => {
       id: '12345678',
       name: 'jest test slot email thing',
       slot: 1,
-      slots: 1,
+      slots: 2,
+      mandatoryFill: false,
       start: 1630520984,
       end: 1630521984,
       sellerUid: 'dclKIs51l3dlJfULDlzcoDYkV7i2',
@@ -64,7 +64,7 @@ describe('Tests onSlotPurchased firestore trigger', () => {
       buyerUid: '54764576',
       buyerUsername: 'buttington',
       paymentIntent: 'pi_12345',
-      status: 'purchased',
+      status: 'booked',
       parentSession: '12345'
     }, 'sessions/12345/slots/12345678')
 
@@ -75,5 +75,9 @@ describe('Tests onSlotPurchased firestore trigger', () => {
     const chat = await db.collection('chats').doc('12345').get()
     expect(chat.exists).toBe(true)
     expect(chat.data()!.users).toContain('54764576')
+    const task = await db.collection('tasks').doc('12345678').get()
+    expect(task.exists).toBe(true)
+    const session = await db.collection('sessions').doc('12345').get()
+    expect(session.data()!.booked).toBe(1)
   })
 })
