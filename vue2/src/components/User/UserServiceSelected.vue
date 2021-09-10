@@ -80,7 +80,7 @@
 										<v-list dense color="transparent">
 											<!-- loop through slots creating list item for each -->
 											<v-list-item
-												v-for="(slot, i) in selectedEvent.slots"
+												v-for="(slot, i) in slots"
 												:key="i"
 												class="slotListItem"
 												:disabled="slot.status === 'booked'"
@@ -261,7 +261,7 @@
 				this.toolTipWindow = 1
 			},
 			async checkout(session) {
-				this.checkoutLoading = true
+				// this.checkoutLoading = true
 				// await functions.httpsCallable('callableCreateCheckoutSession', {
 				// 	uid: this.$user.uid,
 				// 	username: this.$user.displayName,
@@ -286,6 +286,7 @@
 					parentSession: this.selectedEvent.parentSession,
 					slots: this.selectedEvent.slots,
 				})
+				console.log(session)
 			},
 		},
 	}
