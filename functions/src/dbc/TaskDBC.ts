@@ -15,12 +15,10 @@ export default class TaskDBC {
     this.ref = ref
   }
 
-  public async write(taskRecord: {
-    id: string,
-    path: string
-  }): Promise<void> {
-    await db.collection('tasks').doc(taskRecord.id).set({
-      path: taskRecord.path
+  public async write(task: string): Promise<void> {
+    if (this.id === undefined) throw new Error('set ID to TaskDBC before writing path')
+    await db.collection('tasks').doc(this.id!).set({
+      path: task
     })
     .catch(err => {
       throw new Error(err)
