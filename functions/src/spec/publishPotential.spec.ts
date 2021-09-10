@@ -18,8 +18,9 @@ describe('Tests publishPotential HTTPS endpoint', () => {
     await db.collection('sessions').doc('12345').set({
       sellerUid: '123abc',
       slots: 1,
+      booked: 0,
       serviceDocId: '67890',
-      mandatoryFill: true,
+      mandatoryFill: false,
       name: 'jest-test',
       color: 'grey',
       serviceColor: '#FFC0CB',
