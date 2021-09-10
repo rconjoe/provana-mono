@@ -75,6 +75,15 @@ export default class SessionDBC extends Session {
     })
   }
 
+  public async fetch(id: string): Promise<SessionDBC> {
+    const session = await db
+      .collection('sessions')
+      .doc(id)
+      .withConverter(converter)
+      .get()
+    return session.data()!
+  }
+
   private async fetchPotentials(): Promise<Array<SessionDBC>> {
     if (this.sellerUid === undefined) throw new Error('Missing sellerUid')
     let a: Array<SessionDBC> = []
@@ -88,7 +97,7 @@ export default class SessionDBC extends Session {
 
   public async increment(id: string): Promise<void> {
     await increment({
-      ref: db.collection('tasks').doc(id),
+      ref: db.collection('sessions').doc(id),
       field: 'booked',
       amount: 1
     })
@@ -96,7 +105,7 @@ export default class SessionDBC extends Session {
 
   public async decrement(id: string): Promise<void> {
     await decrement({
-      ref: db.collection('tasks').doc(id),
+      ref: db.collection('sessions').doc(id),
       field: 'booked',
       amount: 1
     })
