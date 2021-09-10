@@ -11,7 +11,6 @@ const checkFill = async (sessionId: string): Promise<void> => {
   const session = await new SessionDBC().fetch(sessionId)
   if (session.booked === session.slots) {
     const secondsUntil = session.start! - new TimeService().generate()
-    console.log(secondsUntil)
     const task = await new TaskService().scheduleSessionStart(sessionId, secondsUntil)
     await new TaskDBC(sessionId).write(task)
   }
@@ -20,7 +19,6 @@ const checkFill = async (sessionId: string): Promise<void> => {
 
 const scheduleSlotTask = async (slotId: string, start: number): Promise<void> => {
   const secondsUntil = start - new TimeService().generate()
-  console.log(secondsUntil)
   const task = await new TaskService().scheduleSlotStart(slotId, secondsUntil)
   return await new TaskDBC(slotId).write(task)
 }
