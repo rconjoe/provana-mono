@@ -15,15 +15,8 @@
             <span class="serviceInfo"> ${{service.serviceCost}}</span>
             <span class="serviceInfo"> {{service.serviceLength}}min</span>
           </div>
-           <v-expand-transition>
-          <div
-            v-if="hover"
-            class=" descriptionDiv"
-          >
-            <h2 class="description"> {{service.serviceDescription}}</h2>
-          </div>
-        </v-expand-transition>
         </div>
+
         <!-- Details Row -->
         <div class="serviceDetailsDiv mt-2">
           <v-icon v-if="service.attendees > 1" class="mx-2"> fas fa-users </v-icon>
@@ -73,7 +66,7 @@ export default {
 }
 .serviceCol:hover .serviceTitleDiv{
   width:100%;
-  transition-duration: 1s;
+  transition-duration: .5s;
   transition-timing-function: ease;
   
 }
@@ -113,7 +106,7 @@ export default {
   border-radius: 0 10px 0 10px;
   background-color: #E61B5B;
   width:15px;
-  transition-duration: 1s;
+  transition-duration: .3s;
 
 }
 .serviceTitle{

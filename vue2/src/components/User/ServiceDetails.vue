@@ -3,10 +3,14 @@
     <v-col class="detailsCol">
         <!-- serviceName -->
         <h1 class="serviceName"> {{service.serviceName}} </h1>
+
+        <!-- Row image/info -->
         <div class="row">
+            <!-- 1/2 service Image -->
             <v-col cols="6" class="serviceImgCol">
                 <v-img src="../../assets/ProvanaAlphaBadge-02.png" max-width="13.736842105263158vw" max-height="140" />
             </v-col>
+            <!-- 2/2 service info -->
             <v-col class="serviceInfoCol">  
                 <h1 class="serviceTerms"> Session Terms </h1>
                 <div class="serviceLengthDiv">
@@ -16,6 +20,7 @@
                 <h1 class="serviceSoftware"> {{service.software}} </h1>
             </v-col>
         </div>
+        <!-- Service description -->
         <h1 class="serviceDescription">{{service.serviceDescrption}} </h1>
     </v-col>
   </v-row>

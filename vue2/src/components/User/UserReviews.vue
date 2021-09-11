@@ -1,10 +1,8 @@
 <template>
-  <!-- Reviews col must be 6 to fit inside parent row aside Seller Feed -->
   <v-row class="reviewRow">
-    <!-- Review Header -->
     <v-col>
       <!-- iterate through reviews as card elements -->
-      <div v-if="Object.keys(reviews).length > 0">
+      <div v-if="reviews.length > 0">
         <v-card v-for="review in reviews" :key="review.date" color="transparent" flat class="pt-4 mb-3">
           <!-- review tittle row -->
           <v-col cols="12" class="d-flex justify-space-between py-0 px-0">
@@ -15,16 +13,19 @@
               <v-icon small class="mb-1">fas fa-star</v-icon>
             </h3>
           </v-col>
-          <!-- review message and date -->
+          <!-- review message-->
           <v-col class="pa-0">
             <p class="reviewDescription">
               {{ review.message }}
             </p>
           </v-col>
+          <!-- review date / serviceName -->
           <span class="reviewDate mr-4"> {{ review.date }}</span>
           <span class="reviewDate"> {{ review.service }} </span>
         </v-card>
       </div>
+
+      <!-- user has no reviews yet -->
       <div v-else>
         <v-card color="transparent">
           <h2 class="reviewTitle "> This user has no reviews submited yet </h2>
@@ -38,50 +39,50 @@
 export default {
   props: ['uid'],
   data: () => ({
-    reviews: {
-      1: {
+    reviews: [
+      {
         username: 'MR@NDERSON',
         rating: 4.9,
         date: 'Aug 30th 2020',
         service: 'Session 2',
         message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
       },
-      2: {
+      {
         username: 'MR@NDERSON',
         rating: 4.9,
         date: 'Sept 30th 2020',
         service: 'Session 1',
         message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
       },
-      3: {
+      {
         username: 'MR@NDERSON',
         rating: 4.9,
         date: 'Oct 30th 2020',
         service: 'Session 3',
         message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
       },
-      4: {
+      {
         username: 'MR@NDERSON',
         rating: 4.9,
         date: 'Nov 30th 2020',
         service: 'Session 1',
         message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
       },
-      5: {
+      {
         username: 'MR@NDERSON',
         rating: 4.9,
         date: 'Nov 30th 2020',
         service: 'Session 1',
         message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
       },
-      6: {
+      {
         username: 'MR@NDERSON',
         rating: 4.9,
         date: 'Nov 30th 2020',
         service: 'Session 1',
         message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
       },
-    },
+    ],
   }),
 };
 </script>

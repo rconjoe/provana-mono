@@ -11,31 +11,30 @@
 
 			<!-- Services row-->
 			<v-row class="servicesRow">
-				<v-col v-if="services" class=" servicesCol pr-0  " >
-          <v-slide-x-transition hide-on-leave>
-					<div v-if="servicesVisible" class="servicesDiv" key="services">
-            	<div class="servicesLeftBarDiv">
-						<h1 class="chooseSession"> Choose a session!</h1>
-					</div>
-						<UserService
-							@service-clicked="serviceClicked"
-							v-for="service in this.services"
-							:key="service.title"
-							:service="service"
-						/>
-					</div>
-      
-					<div v-else key="selectedService">
-						<UserServiceSelected @show-services="showServices" :service="selectedService" :profile="profile" />
-					</div>
-          </v-slide-x-transition>
+				<v-col v-if="services" class=" servicesCol pr-0  ">
+					<v-slide-x-transition hide-on-leave>
+						<div v-if="servicesVisible" class="servicesDiv" key="services">
+							<div class="servicesLeftBarDiv">
+								<h1 class="chooseSession"> Choose a session!</h1>
+							</div>
+							<UserService
+								@service-clicked="serviceClicked"
+								v-for="service in this.services"
+								:key="service.title"
+								:service="service"
+							/>
+						</div>
+
+						<!--Service Selected-->
+						<div v-else key="selectedService">
+							<UserServiceSelected @show-services="showServices" :service="selectedService" :profile="profile" />
+						</div>
+					</v-slide-x-transition>
 				</v-col>
-				<v-col v-else cols="6" class="servicesCol pr-0 ">
+				<v-col v-else class="servicesCol pr-0 ">
 					<p> This User is currently not offering any services.</p>
 				</v-col>
 			</v-row>
-
-		
 		</v-col>
 	</v-row>
 </template>
@@ -43,8 +42,6 @@
 <script>
 	import UserHeader from '@/components/User/UserHeader.vue'
 	import UserService from '@/components/User/UserService.vue'
-	import UserFeed from '@/components/User/UserFeed.vue'
-	import UserReviews from '@/components/User/UserReviews.vue'
 	import UserServiceSelected from '@/components/User/UserServiceSelected.vue'
 	import { db, storage } from '../plugins/firebase'
 	export default {
@@ -52,8 +49,6 @@
 		components: {
 			UserHeader,
 			UserService,
-			UserFeed,
-			UserReviews,
 			UserServiceSelected,
 		},
 		data: () => ({
@@ -102,7 +97,6 @@
 </script>
 
 <style scoped>
-
 	.servicesDiv {
 		display: inline-block;
 	}
@@ -118,7 +112,7 @@
 	.servicesLeftBarDiv {
 		max-width: 200px;
 		display: inline-block;
-    vertical-align: top;
+		vertical-align: top;
 	}
 	.avatarBorder {
 		border: 3px solid #fa4b6b;
