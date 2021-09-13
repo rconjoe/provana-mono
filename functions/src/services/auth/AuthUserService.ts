@@ -1,5 +1,5 @@
-import { Supporter } from '../../models/Supporter'
-import { Creator } from '../../models/Creator'
+import Supporter from '../../models/Supporter'
+import Creator from '../../models/Creator'
 import { auth } from '../../config'
 import { UserRecord } from 'firebase-functions/lib/providers/auth'
 

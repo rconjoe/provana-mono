@@ -1,5 +1,5 @@
 
-export class Invitation {
+export default class Invitation {
 
   id: string | undefined
   code: string | undefined

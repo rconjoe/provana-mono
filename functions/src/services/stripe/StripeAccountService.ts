@@ -1,8 +1,8 @@
-import { Creator } from '../../models/Creator'
+import Creator from '../../models/Creator'
 import { stripe } from '../../config'
 import Stripe from 'stripe'
 
-export class StripeAccountService {
+export default class StripeAccountService {
   public async create(_newAccount: Creator): Promise<Creator> {
     const account = await stripe.accounts.create({
       country: 'US',
@@ -32,6 +32,7 @@ export class StripeAccountService {
 
   public async verifyAccountCapabilities(accountId: string): Promise<boolean> {
     const account = await stripe.accounts.retrieve(accountId)
+    console.log(account)
     return account.details_submitted
   }
 }

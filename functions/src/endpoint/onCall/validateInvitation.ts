@@ -1,10 +1,10 @@
 import * as functions from 'firebase-functions'
-import { InvitationDBC } from '../../dbc/InvitationDBC'
+import InvitationDBC from '../../dbc/InvitationDBC'
 
 /**
  * Returns boolean with invitation code validity.
  */
 export const validateInvitation = functions.https.onCall(async (data, context): Promise<boolean> => {
-  const invitation = await new InvitationDBC().setCode(data.code)
+  const invitation = new InvitationDBC().setCode(data.code)
   return await invitation.validate()
 })

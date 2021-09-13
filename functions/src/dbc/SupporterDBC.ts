@@ -1,5 +1,5 @@
 import { db } from '../config'
-import { Supporter } from '../models/Supporter'
+import Supporter from '../models/Supporter'
 
 const converter = {
   toFirestore(supporter: SupporterDBC): FirebaseFirestore.DocumentData {
@@ -31,7 +31,7 @@ const converter = {
   }
 }
 
-export class SupporterDBC extends Supporter {
+export default class SupporterDBC extends Supporter {
 
   ref: FirebaseFirestore.DocumentReference | undefined
 

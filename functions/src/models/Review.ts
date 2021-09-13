@@ -7,7 +7,7 @@
  * @class Review
  * @typedef {Review}
  */
-export class Review {
+export default class Review {
 
 
     /**

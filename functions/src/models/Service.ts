@@ -1,4 +1,4 @@
-export class Service {
+export default class Service {
 
   id: string | undefined
   serviceName: string | undefined

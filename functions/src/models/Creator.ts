@@ -1,4 +1,4 @@
-export class Creator {
+export default class Creator {
 
   uid: string | undefined
   customer: string | undefined

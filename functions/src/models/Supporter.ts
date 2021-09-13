@@ -1,4 +1,4 @@
-export class Supporter {
+export default class Supporter {
 
   uid: string | undefined
   customer: string | undefined

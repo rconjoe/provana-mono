@@ -1,5 +1,5 @@
 import { db } from '../config'
-import { Service } from '../models/Service'
+import Service from '../models/Service'
 
 const converter = {
   toFirestore(service: ServiceDBC): FirebaseFirestore.DocumentData {
@@ -42,7 +42,7 @@ const converter = {
   }
 }
 
-export class ServiceDBC extends Service {
+export default class ServiceDBC extends Service {
 
   ref: FirebaseFirestore.DocumentReference | undefined
 
@@ -140,7 +140,7 @@ export class ServiceDBC extends Service {
   public async update(field: string, value: any): Promise<FirebaseFirestore.WriteResult> {
     if (this.id === undefined || this.id === "") throw new Error('requires ID')
     return await db.collection('services').doc(this.id).update({
-      field: value
+      [field]: value
     })
     .catch((err) => {
       throw new Error(err)

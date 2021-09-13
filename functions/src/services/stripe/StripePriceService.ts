@@ -1,8 +1,8 @@
-import { Service } from '../../models/Service'
-import { StripeProductService } from './StripeProductService'
+import Service from '../../models/Service'
+import StripeProductService from './StripeProductService'
 import { stripe } from '../../config'
 
-export class StripePriceService {
+export default class StripePriceService {
   public async create(service: Service): Promise<string> {
     const product = await new StripeProductService().create(service)
     const price = await stripe.prices.create({
