@@ -7,7 +7,8 @@
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "test": "echo 'use the bash scripts'"
+    "test": "echo 'use the bash scripts'",
+    "docs": "jsdoc -c jsdoc.json"
   },
   "engines": {
     "node": "12"
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",
+    "better-docs": "^2.3.2",
     "firebase-functions-test": "^0.3.1",
     "jest": "^27.2.0",
     "nock": "^13.1.3",

@@ -350,19 +350,14 @@
 				})
 			},
 			async updateSocials() {
-				console.log('made it to updateSocials()')
 				this.socialLoading = !this.socialLoading
-				// const setTwitter = functions.httpsCallable('setTwitter')
-				// const setFacebook = functions.httpsCallable('setFacebook')
-				// const setYoutube = functions.httpsCallable('setYoutube')
-				// const setTwitch = functions.httpsCallable('setTwitch')
 				const setTwitter = db.collection(this.$store.state.auth.claims.type).doc(this.uid);
 				const setFacebook = db.collection(this.$store.state.auth.claims.type).doc(this.uid);
 				const setYoutube = db.collection(this.$store.state.auth.claims.type).doc(this.uid);
 				const setTwitch = db.collection(this.$store.state.auth.claims.type).doc(this.uid);
 				if (this.form.socials.twitter !== '') {
 					console.log('made it to twitter if')
-					await db.collection(this.$store.state.auth.claims.type).doc(this.uid).set({twitter: this.form.socials.twitter},{merge:true})
+					await setTwitter.set({twitter:this.form.socials.twitter},{merge:true})
 				}
 				if (this.form.socials.facebook !== '') {
 					await setFacebook.set({facebook: this.form.socials.facebook},{merge:true})
@@ -420,15 +415,13 @@
 			},
 			// gets called on successful photo upload, updates avatar and banner URL strings on profile objects
 			async updatePhotoString(downloadUrl, type) {
-				// we have to tell the api call what kind of user this is
-				let collection = this.seller ? 'sellers' : 'users'
-				const updatePhoto = functions.httpsCallable('callableUpdatePhoto')
-				await updatePhoto({
+				const updatePhoto = db.collection(this.$store.state.auth.claims.type);
+				await updatePhoto.set({
 					collection: collection,
 					uid: this.$user.uid,
 					photo: downloadUrl,
 					type: type,
-				})
+				},{merge:true})
 					.catch((err) => {
 						console.error(err)
 					})
