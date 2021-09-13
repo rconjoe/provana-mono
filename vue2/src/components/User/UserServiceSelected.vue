@@ -199,7 +199,6 @@
 			showEvent({ nativeEvent, event }) {
 				const open = () => {
 					this.selectedEvent = event
-          console.log(event)
 					this.selectedElement = nativeEvent.target
 					requestAnimationFrame(() =>
 						requestAnimationFrame(() => {
@@ -260,21 +259,21 @@
 				this.toolTipWindow = 1
 			},
 			async checkout(slot) {
-				this.checkoutloading = true
-				const _checkout = await functions.httpsCallable('checkout')
-        const checkout = await _checkout({
+				this.checkoutLoading = true
+				const checkout = await functions.httpsCallable('checkout')
+        		const response = await checkout({
 					uid: this.$user.uid,
 					username: this.$user.displayName,
 					customer: this.$store.state.auth.currentUser.customer,
-          account: this.profile.account,
+          			account: this.profile.account,
 					price: this.service.stripePrice,
 					serviceCost: this.service.serviceCost,
 					slotId: slot.id,
 					sessionId: this.selectedEvent.id,
 				})
-				console.log(checkout.data)
-				this.checkoutloading = false
-				// 	stripe.redirecttocheckout({ sessionid: resp.data.id })
+				console.log(response.data)
+				this.checkoutLoading = false
+					stripe.redirectToCheckout({ sessionId: response.data})
 			},
 		},
 	}
