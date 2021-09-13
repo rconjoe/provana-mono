@@ -95,6 +95,14 @@ export default class SessionDBC extends Session {
     return a
   }
 
+  public async update(data: any): Promise<void> {
+    if(this.ref === undefined) throw new Error('Need ref to update')
+    await this.ref.update({...data})
+    .catch(err => {
+      throw new Error(err)
+    })
+  }
+
   public async increment(id: string): Promise<void> {
     await increment({
       ref: db.collection('sessions').doc(id),
