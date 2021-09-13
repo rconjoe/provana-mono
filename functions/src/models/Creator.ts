@@ -1,3 +1,12 @@
+
+/**
+ * Class that creates a new Creator object
+ * @date 9/13/2021 - 4:15:29 PM
+ *
+ * @export
+ * @class Creator
+ * @typedef {Creator}
+ */
 export default class Creator {
 
   uid: string | undefined
