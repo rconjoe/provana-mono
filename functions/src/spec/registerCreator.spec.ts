@@ -18,6 +18,8 @@ describe('Tests registerCreator', () => {
 
   afterAll(async () => {
     testEnv.cleanup()
+    const user = await auth.getUserByEmail('creator@jest.com')
+    await auth.deleteUser(user.uid)
 
     const cleanupQuery = await db.
       collection('creators')
@@ -27,7 +29,6 @@ describe('Tests registerCreator', () => {
     const data = doc.data()
     await stripe.customers.del(data.customer)
     await stripe.accounts.del(data.account)
-    await auth.deleteUser(data.uid)
     await doc.ref.delete()
     await db.collection('invitations').doc('13371337').delete()
   })
