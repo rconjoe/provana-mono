@@ -1,5 +1,6 @@
 import Session from '../models/Session'
-import { db, increment, decrement } from '../config'
+import { db } from '../config'
+import { increment, decrement } from '../util'
 
 const converter = {
   toFirestore(s: SessionDBC): FirebaseFirestore.DocumentData {
