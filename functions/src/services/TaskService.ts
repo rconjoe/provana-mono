@@ -1,20 +1,12 @@
 import { CloudTasksClient } from '@google-cloud/tasks'
-import { credentials } from '@grpc/grpc-js'
+import { taskcfg } from '../config'
 import * as protos from '@google-cloud/tasks/build/protos/protos'
 
 export default class TaskService {
   client: CloudTasksClient | undefined
 
   constructor() {
-    // https://github.com/aertje/cloud-tasks-emulator
-    if (process.env.NODE_ENV === 'test') {
-      this.client = new CloudTasksClient({
-        port: 8001,
-        servicePath: 'localhost',
-        sslCreds: credentials.createInsecure()
-      })
-    }
-    else this.client = new CloudTasksClient()
+    this.client = new CloudTasksClient(taskcfg)
   }
 
   public async onCheckout(slotId: string): Promise<string> {
