@@ -1,10 +1,9 @@
 
 /**
  * Exports the class Creator
- *
- * @export
  * @class Creator
  * @typedef {Creator}
+ * @module Creator
  */
 export default class Creator {
 
@@ -28,7 +27,6 @@ export default class Creator {
 
   
   /**
-   * Creates an instance of Creator.
    *
    * @constructor
    * @param {?string} [uid] Firebase UID property
@@ -55,7 +53,7 @@ export default class Creator {
    *     A-->C;
    *     B-->D;
    *     C-->D;
-   *     D-->Exit;
+   *     D-->test;
    */
   constructor(
     uid?: string,
@@ -104,7 +102,7 @@ export default class Creator {
    * @param {string} password
    * @param {string} code
    * @param {string} username
-   * @returns {Creator}
+   * @returns an updated instance of the Creator object that was created
    */
   public setRegisterData(email: string, password: string, code: string, username: string): Creator {
     this.email = email,
