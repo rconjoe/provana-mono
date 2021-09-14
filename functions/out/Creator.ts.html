@@ -68,7 +68,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="module.exports_module.exports.html">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#setBuyerUid">setBuyerUid</a></li><li><a href="global.html#setDate">setDate</a></li><li><a href="global.html#setMessage">setMessage</a></li><li><a href="global.html#setRating">setRating</a></li><li><a href="global.html#setServiceName">setServiceName</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="module.exports_module.exports.html">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#setBuyerUid">setBuyerUid</a></li><li><a href="global.html#setDate">setDate</a></li><li><a href="global.html#setMessage">setMessage</a></li><li><a href="global.html#setRating">setRating</a></li><li><a href="global.html#setRegisterData">setRegisterData</a></li><li><a href="global.html#setServiceName">setServiceName</a></li></ul></div>
                 
             </nav>
         </div>
@@ -86,6 +86,13 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>
+/**
+ * Exports the class Creator
+ *
+ * @export
+ * @class Creator
+ * @typedef {Creator}
+ */
 export default class Creator {
 
   uid: string | undefined
@@ -109,26 +116,25 @@ export default class Creator {
   
   /**
    * Creates an instance of Creator.
-   * @date 9/14/2021 - 10:31:40 AM
    *
    * @constructor
-   * @param {?string} [uid]
-   * @param {?string} [customer]
-   * @param {?string} [account]
-   * @param {?boolean} [onboarded]
-   * @param {?boolean} [partner]
-   * @param {?string} [email]
-   * @param {?string} [temp]
-   * @param {?string} [code]
-   * @param {?string} [username]
-   * @param {?string} [timezone]
-   * @param {?string} [avatar]
-   * @param {?string} [banner]
-   * @param {?string} [twitter]
-   * @param {?string} [twitch]
-   * @param {?string} [youtube]
-   * @param {?string} [facebook]
-   * @param {?boolean} [online]
+   * @param {?string} [uid] Firebase UID property
+   * @param {?string} [customer] Stripe Customer id property from the Stripe Accounts api
+   * @param {?string} [account] Stripe account id property from the Stripe Accounts api
+   * @param {?boolean} [onboarded] Boolean if the user is onboarded with stripe
+   * @param {?boolean} [partner] Boolean if the user is a alpha partner or not
+   * @param {?string} [email] The user's email address
+   * @param {?string} [temp] Where we store the user's password for a short time during the sign up process
+   * @param {?string} [code] The partner code given by the discord bot used to sign up as an alpha partner
+   * @param {?string} [username] The username chosen by the user
+   * @param {?string} [timezone] The user's time zone, its picked for them upon first login, and can be changed later
+   * @param {?string} [avatar] The user's profile avitar picture
+   * @param {?string} [banner] The user's storefront banner picture
+   * @param {?string} [twitter] The user's twitter handle
+   * @param {?string} [twitch] User's twitch channel name
+   * @param {?string} [youtube] User's youtube channel name
+   * @param {?string} [facebook] User's Facebook profile 
+   * @param {?boolean} [online] Boolean that flips if a user is currently on the website
    * 
    * @mermaid
    *   graph TD;
@@ -136,6 +142,7 @@ export default class Creator {
    *     A-->C;
    *     B-->D;
    *     C-->D;
+   *     D-->Exit;
    */
   constructor(
     uid?: string,
@@ -175,6 +182,17 @@ export default class Creator {
       this.online = online
     }
 
+    
+  /**
+   * Setter method that sets email, password, partner code, and username on the object
+   *
+   * @public
+   * @param {string} email
+   * @param {string} password
+   * @param {string} code
+   * @param {string} username
+   * @returns {Creator}
+   */
   public setRegisterData(email: string, password: string, code: string, username: string): Creator {
     this.email = email,
     this.temp = password,
@@ -182,7 +200,6 @@ export default class Creator {
     this.username = username
     return this
   }
-
 }
 </code></pre>
         </article>
