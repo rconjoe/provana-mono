@@ -1,3 +1,11 @@
+
+/**
+ * Service Class
+ *
+ * @class Service
+ * @typedef {Service}
+ * @module Service
+ */
 export default class Service {
 
   id: string | undefined
@@ -15,6 +23,26 @@ export default class Service {
   stripePrice: string | undefined
   active: boolean | undefined
 
+  
+  /**
+   * Creates an instance of Service.
+   *
+   * @constructor
+   * @param {?string} [id] Firebase document id in the services collection
+   * @param {?string} [serviceName] Name of the service 
+   * @param {?string} [serviceDescription] Description of the service
+   * @param {?number} [serviceCost] Cost of the service 
+   * @param {?number} [serviceLength] Total time the service will be held
+   * @param {?Array<string>} [tags] Tags used for searching for services
+   * @param {?string} [color] Color of the service on the calendar 
+   * @param {?string} [software] Software and or game that will be used during the service
+   * @param {?number} [attendees] Number of attendees that will be in the service excluding the Creator
+   * @param {?boolean} [mandatoryFill] Boolean of if all slots must be sold for the service to not be canceled
+   * @param {?Array<string>} [sessionDocIdArray] Array of firebase document id's of the sessions attached to the service
+   * @param {?string} [uid] Firebase uid of the Creator of the Service
+   * @param {?string} [stripePrice] Price on stripe of the service
+   * @param {?boolean} [active] Boolean of if the service session has been posted to the calendar
+   */
   constructor(
     id?: string,
     serviceName?: string,
