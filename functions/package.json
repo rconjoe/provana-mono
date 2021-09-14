@@ -28,6 +28,7 @@
     "better-docs": "^2.3.2",
     "firebase-functions-test": "^0.3.1",
     "jest": "^27.2.0",
+    "jsdoc": "^3.6.7",
     "jsdoc-mermaid": "^1.0.0",
     "jsdocs": "^1.0.0",
     "nock": "^13.1.3",

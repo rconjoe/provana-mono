@@ -68,7 +68,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="module.exports_module.exports.html">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#setBuyerUid">setBuyerUid</a></li><li><a href="global.html#setDate">setDate</a></li><li><a href="global.html#setMessage">setMessage</a></li><li><a href="global.html#setRating">setRating</a></li><li><a href="global.html#setRegisterData">setRegisterData</a></li><li><a href="global.html#setServiceName">setServiceName</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-Creator.html">Creator</a></li></ul><h3>Classes</h3><ul><li><a href="module.exports_module.exports.html">exports</a></li><li><a href="module-Creator.html">Creator</a></li></ul><h3>Global</h3><ul><li><a href="global.html#setBuyerUid">setBuyerUid</a></li><li><a href="global.html#setDate">setDate</a></li><li><a href="global.html#setMessage">setMessage</a></li><li><a href="global.html#setRating">setRating</a></li><li><a href="global.html#setServiceName">setServiceName</a></li></ul></div>
                 
             </nav>
         </div>
@@ -88,10 +88,9 @@
             <pre class="prettyprint source linenums"><code>
 /**
  * Exports the class Creator
- *
- * @export
  * @class Creator
  * @typedef {Creator}
+ * @module Creator
  */
 export default class Creator {
 
@@ -115,7 +114,6 @@ export default class Creator {
 
   
   /**
-   * Creates an instance of Creator.
    *
    * @constructor
    * @param {?string} [uid] Firebase UID property
@@ -142,7 +140,7 @@ export default class Creator {
    *     A-->C;
    *     B-->D;
    *     C-->D;
-   *     D-->Exit;
+   *     D-->test;
    */
   constructor(
     uid?: string,
@@ -191,7 +189,7 @@ export default class Creator {
    * @param {string} password
    * @param {string} code
    * @param {string} username
-   * @returns {Creator}
+   * @returns an updated instance of the Creator object that was created
    */
   public setRegisterData(email: string, password: string, code: string, username: string): Creator {
     this.email = email,
