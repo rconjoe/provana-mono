@@ -21,6 +21,10 @@ export default class TaskService {
     return await this.schedule(this.buildRequest('session-start', sessionId, secondsUntil))
   }
 
+  public async scheduleCapture(slotId: string, secondsUntil: number): Promise<string> {
+    return await this.schedule(this.buildRequest('capture', slotId, secondsUntil))
+  }
+
   private async schedule(request: protos.google.cloud.tasks.v2beta3.ICreateTaskRequest)
   : Promise<string> {
     const [ task ] = await this.client!.createTask(request)
@@ -48,7 +52,9 @@ export default class TaskService {
         url = 'https://google.com'
         seconds = secondsUntil!
         break
-      // ...
+      case 'capture':
+        url = 'https://google.com'
+        seconds = secondsUntil!
       default:
         url = 'crazy.net'
         seconds = 10
