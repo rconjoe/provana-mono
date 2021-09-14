@@ -39,7 +39,7 @@ export default class Creator {
    * @param {?string} [code] The partner code given by the discord bot used to sign up as an alpha partner
    * @param {?string} [username] The username chosen by the user
    * @param {?string} [timezone] The user's time zone, its picked for them upon first login, and can be changed later
-   * @param {?string} [avatar] The user's profile avitar picture
+   * @param {?string} [avatar] The user's profile avitar picture url
    * @param {?string} [banner] The user's storefront banner picture
    * @param {?string} [twitter] The user's twitter handle
    * @param {?string} [twitch] User's twitch channel name
