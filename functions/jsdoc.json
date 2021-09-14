@@ -6,7 +6,8 @@
         "allowUnknownTags": ["optional"]
     },
     "plugins": [
-        "node_modules/better-docs/typescript"
+        "node_modules/better-docs/typescript",
+        "node_modules/jsdoc-mermaid"
     ],
     "source": {
         "include":"./src/models",

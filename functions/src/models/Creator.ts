@@ -1,12 +1,4 @@
 
-/**
- * Class that creates a new Creator object
- * @date 9/13/2021 - 4:15:29 PM
- *
- * @export
- * @class Creator
- * @typedef {Creator}
- */
 export default class Creator {
 
   uid: string | undefined
@@ -27,6 +19,37 @@ export default class Creator {
   facebook: string | undefined
   online: boolean | undefined
 
+  
+  /**
+   * Creates an instance of Creator.
+   * @date 9/14/2021 - 10:31:40 AM
+   *
+   * @constructor
+   * @param {?string} [uid]
+   * @param {?string} [customer]
+   * @param {?string} [account]
+   * @param {?boolean} [onboarded]
+   * @param {?boolean} [partner]
+   * @param {?string} [email]
+   * @param {?string} [temp]
+   * @param {?string} [code]
+   * @param {?string} [username]
+   * @param {?string} [timezone]
+   * @param {?string} [avatar]
+   * @param {?string} [banner]
+   * @param {?string} [twitter]
+   * @param {?string} [twitch]
+   * @param {?string} [youtube]
+   * @param {?string} [facebook]
+   * @param {?boolean} [online]
+   * 
+   * @mermaid
+   *   graph TD;
+   *     A-->B;
+   *     A-->C;
+   *     B-->D;
+   *     C-->D;
+   */
   constructor(
     uid?: string,
     customer?: string,
