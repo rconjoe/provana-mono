@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<LoadingOverlay v-if="checkoutLoading" />
+		<LoadingOverlay v-if="checkoutLoading" message="Please wait while we redirect you for payment." />
 		<v-row class="serviceSelectedRow">
 			<!-- col 1/3 back button -->
 			<v-col class="backBtnCol">

@@ -1,6 +1,6 @@
 <template>
 <div>
-  <LoadingOverlay v-if="onboarded === false && redirectLoading === true" />
+  <LoadingOverlay v-if="onboarded === false && redirectLoading === true" message="Please wait while you are redirected."/>
   <h1>Get paid up to 15 days faster with Stripe and Provana.GG</h1>
   <h3>
     Wish your customers could pay you on the spot? We’ve teamed up with Stripe so you can accept online invoice payments via credit card, debit card, or Apple Pay, to get the cash flowing in without having to go to great lengths
