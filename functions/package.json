@@ -8,7 +8,7 @@
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "test": "echo 'use the bash scripts'",
-    "docs": "jsdoc -c jsdoc.json"
+    "docs": "node_modules/jsdocs/bin/jsdocs -c jsdoc.json"
   },
   "engines": {
     "node": "12"
