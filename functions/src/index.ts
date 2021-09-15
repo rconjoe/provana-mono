@@ -28,3 +28,4 @@ export { confirmCheckoutComplete } from './endpoint/onRequest/confirmCheckoutCom
 export { checkoutComplete } from './endpoint/onCall/checkoutComplete'
 export { startSlot } from './endpoint/onRequest/startSlot'
 export { onSlotActive } from './endpoint/triggers/slot-status/onActive'
+export { capture } from './endpoint/onRequest/capture'
