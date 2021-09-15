@@ -1,7 +1,7 @@
 <template>
 	<div class="wrapper">
 		<v-overlay class="overlay" color="#111111" :value="show" style="z-index:9" opacity=".97">
-    <h3 class="waitText"> Please wait while we redirect you for payment...</h3>
+    <h3 class="waitText"> {{message}}</h3>
 		<div class="bar">
 			<v-progress-linear :value="show" indeterminate absolute> </v-progress-linear>
 		</div>
@@ -12,6 +12,7 @@
 <script>
 	export default {
 		name: 'LoadingOverlay',
+		props:['message'],
 		data: () => ({
 			show: true,
 		}),

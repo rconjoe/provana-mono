@@ -9,7 +9,7 @@ import Support from "../views/Support.vue"
 import Contact from '../views/Contact.vue'
 import PaymentSuccess from '../views/PaymentSuccess.vue'
 import PaymentFailure from '../views/PaymentFailure.vue'
-
+import onboardRetry from '../views/onboardRetry.vue'
 
 export const routes = [
   {
@@ -85,4 +85,9 @@ export const routes = [
     name: "paymentFailure",
     component: PaymentFailure
   },
+  {
+    path: "/onboardRetry",
+    name: "onboardRetry",
+    component: onboardRetry
+  }
 ];

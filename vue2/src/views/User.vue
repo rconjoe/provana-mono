@@ -40,9 +40,9 @@
 </template>
 
 <script>
-	import UserHeader from '@/components/User/UserHeader.vue'
+	import UserHeader from '@/components/User/UserHeader/UserHeader.vue'
 	import UserService from '@/components/User/UserService.vue'
-	import UserServiceSelected from '@/components/User/UserServiceSelected.vue'
+	import UserServiceSelected from '@/components/User/UserServiceSelected/UserServiceSelected.vue'
 	import { db, storage } from '../plugins/firebase'
 	export default {
 		name: 'User',

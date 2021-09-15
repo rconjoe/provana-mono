@@ -1,40 +1,33 @@
 <template>
 	<div>
-		<LoadingOverlay v-if="checkoutLoading" />
+		<LoadingOverlay v-if="checkoutLoading" message="Please wait while we redirect you for payment." />
 		<v-row class="serviceSelectedRow">
+			<!-- col 1/3 back button -->
 			<v-col class="backBtnCol">
 				<v-btn class="backBtn pa-1  " @click="showServices" small color="#333333" text> &#60; Back </v-btn>
 			</v-col>
+
+			<!-- Col 2/3 is the service details -->
 			<v-col class="detailsCol">
 				<ServiceDetails :service="service" />
 			</v-col>
+
+			<!-- Col 3/3 Calendar -->
 			<v-col class="scheduleCol">
 				<!-- Calendar header -->
-				<v-sheet height="70" color="transparent">
-					<v-toolbar flat color="transparent" class="mb-6">
-						<h1 class="availableHeader" v-if="sessions"> Choose a spot this week! </h1>
-						<h1 class="availableHeader" v-else>Oh No! :(</h1>
+				<CalHeader @prev="prev" @next="next" />
 
-						<v-btn fab text color="grey darken-2" @click="prev">
-							<v-icon>
-								fas fa-chevron-left
-							</v-icon>
-						</v-btn>
-
-						<h3 class=" mr-2" v-if="$refs.calendar">
-							{{ $refs.calendar.title }}
-						</h3>
-
-						<v-btn fab text color="grey darken-2" @click="next">
-							<v-icon>
-								fas fa-chevron-right
-							</v-icon>
-						</v-btn>
-					</v-toolbar>
-				</v-sheet>
 				<!-- actual Calendar -->
 				<v-sheet v-if="sessions" height="400" color="transparent" class="calendarContainer">
-					<v-calendar ref="calendar" v-model="focus" type="week" :events="sessions" @click:event="showEvent">
+					<v-calendar
+						ref="calendar"
+						v-model="focus"
+						type="week"
+						:events="sessions"
+						@click:event="showEvent"
+						:day-format="weekdayFormat"
+						:weekday-format="dateFormat"
+					>
 						<template v-slot:event="{ event, start }">
 							<div v-if="start" class="eventCard">
 								<h3 class="pt-0 white--text text-truncate eventName">
@@ -43,9 +36,8 @@
 							</div>
 						</template>
 					</v-calendar>
+
 					<!-- tooltip window -->
-					<!--  -->
-					<!--  -->
 					<v-menu
 						v-model="sessionToolTip"
 						:close-on-content-click="false"
@@ -56,78 +48,27 @@
 						<v-card class="toolTip pa-2" min-width="350px" max-width="450px" elvation="0">
 							<v-window v-model="toolTipWindow">
 								<!-- Window 0 -->
+								<!-- Booking view -->
 								<v-window-item>
-									<div>
-										<h3 class="toolTipTitle">
-											{{ selectedEvent.name }}
-										</h3>
-										<v-card-text class="pt-0 pl-0 pb-1">
-											{{ formatDate(selectedEvent.start) }} @
-											{{ formatTime(selectedEvent.start) }}
-										</v-card-text>
-										<v-divider></v-divider>
-										<!-- If the service is mandtory fill display warning to the buyer -->
-										<div v-if="service.mandatoryFill">
-											<h3 class="mandatoryFillTitle">
-												<v-icon color="warning"> fas fa-exclamation-triangle</v-icon> Mandatory Fill
-											</h3>
-											<h3 class="mandatoryFillText">
-												If all slots are not filled before the event start time, All money will be refunded and the
-												session will be automatically canceled.
-											</h3>
-										</div>
-										<!-- List the slots available if the slot is booked = disabled -->
-										<v-list dense color="transparent">
-											<!-- loop through slots creating list item for each -->
-											<v-list-item
-												v-for="(slot, i) in slots"
-												:key="i"
-												class="slotListItem"
-												:disabled="slot.status === 'booked'"
-											>
-												<h3 class="slotItemTime"> Slot {{ selectedEvent.slot }} of {{ selectedEvent.slots }}</h3>
-												<v-spacer> </v-spacer>
-												<v-btn
-													color="primary"
-													class="bookBtn"
-													:disabled="selectedEvent.status != 'published'"
-													@click="prebookSlot(slot)"
-												>
-													Book it!
-												</v-btn>
-											</v-list-item>
-										</v-list>
-									</div>
+									<BookSessionWindow
+										:serviceName="selectedEvent.name"
+										:slots="slots"
+										:startTime="formatTime(selectedEvent.start)"
+										:startDate="formatDate(selectedEvent.start)"
+										:mandatory="service.mandatoryFill"
+										@prebook-slot="prebookSlot"
+									/>
 								</v-window-item>
 
-								<!-- window 1 are you sure -->
+								<!-- window 1 Confirm Checkout-->
 								<v-window-item>
-									<div>
-										<h3 class="toolTipTitle mb-2">
-											Are you sure?
-										</h3>
-										<!-- displaying the sevice  -->
-										<v-card-text class="pt-0 pl-0 pb-1">
-											booking {{ selectedEvent.name }} <br />
-											{{ formatDate(selectedEvent.start) }} @
-											{{ formatTime(selectedEvent.start) }}
-										</v-card-text>
-										<!-- 5 minute warning -->
-										<h3 class="mandatoryFillText pb-4 pl-0">
-											We will hold your spot for 5 minutes while you are redirected to checkout. If the time expires
-											before you complete checkout the session will be removed from holding and republished.
-										</h3>
-										<!-- Cancel Button -->
-										<v-btn @click="toolTipWindow = 0" class="mr-4">
-											<v-icon size=".8vw" class="mr-2"> fas fa-chevron-left</v-icon>
-											Back
-										</v-btn>
-										<!-- conditional button if the session is a slot -->
-										<v-btn @click="checkout(selectedSlot)">
-											Checkout Slot!
-											<v-icon size=".8vw" class="ml-2"> fas fa-chevron-right</v-icon>
-										</v-btn>
-									</div>
+									<CheckoutSessionWindow
+										:serviceName="selectedEvent.name"
+										:startTime="formatTime(selectedEvent.start)"
+										:startDate="formatDate(selectedEvent.start)"
+										@checkout="checkout"
+										@back="back"
+									/>
 								</v-window-item>
 							</v-window>
 						</v-card>
@@ -141,16 +82,22 @@
 </template>
 
 <script>
-	import { functions, db } from '../../plugins/firebase'
+	import { functions, db } from '../../../plugins/firebase'
 	import dayjs from 'dayjs'
-	import { formatter } from '../../plugins/sessionFormatter'
-	import LoadingOverlay from '../LoadingOverlay.vue'
+	import { formatter } from '../../../plugins/sessionFormatter'
+	import LoadingOverlay from '../../LoadingOverlay.vue'
 	import ServiceDetails from '@/components/User/ServiceDetails.vue'
+	import BookSessionWindow from '../UserServiceSelected/BookSessionWindow.vue'
+	import CheckoutSessionWindow from '../UserServiceSelected/CheckoutSessionWindow.vue'
+	import CalHeader from '../UserServiceSelected/CalHeader.vue'
 	var stripe = Stripe(
 		'pk_test_51HJUgfGoIl5NLNcQKTXPu3CKuckXq6vbUXxASrRZvrXgwtODSI9wFNWdZoo37LY3YXrrfMx2N7Nas1MWbWn7ddu100RWAa63mC'
 	)
 	export default {
 		components: {
+			CalHeader,
+			BookSessionWindow,
+			CheckoutSessionWindow,
 			LoadingOverlay,
 			ServiceDetails,
 		},
@@ -184,6 +131,9 @@
 			})
 		},
 		methods: {
+			back() {
+				this.toolTipWindow = 0
+			},
 			formatTime(e) {
 				return dayjs(e).format('h:mm a')
 			},
@@ -199,16 +149,17 @@
 			showEvent({ nativeEvent, event }) {
 				const open = () => {
 					this.selectedEvent = event
-          console.log(event)
 					this.selectedElement = nativeEvent.target
 					requestAnimationFrame(() =>
 						requestAnimationFrame(() => {
 							this.sessionToolTip = true
+							this.toolTipWindow = 0
 						})
 					)
 				}
 				if (this.sessionToolTip) {
 					this.sessionToolTip = false
+					this.toolTipWindow = 0
 					requestAnimationFrame(() => requestAnimationFrame(() => open()))
 				} else {
 					open()
@@ -221,21 +172,27 @@
 			next() {
 				this.$refs.calendar.next()
 			},
+			dateFormat(time) {
+				return ''
+			},
+			weekdayFormat(time) {
+				return dayjs(time.date).format('M/DD')
+			},
 			bindSlots() {
 				this.slots = []
 				const session = this.selectedEvent
-        const slots = db
-          .collection('sessions')
-          .doc(session.id)
-          .collection('slots')
-          .orderBy('slot')
-        slots.get().then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            const data = doc.data()
-            const slot = formatter(data)
-            this.slots.push(slot)
-          })
-        })
+				const slots = db
+					.collection('sessions')
+					.doc(session.id)
+					.collection('slots')
+					.orderBy('slot')
+				slots.get().then((querySnapshot) => {
+					querySnapshot.forEach((doc) => {
+						const data = doc.data()
+						const slot = formatter(data)
+						this.slots.push(slot)
+					})
+				})
 			},
 			// TODO: [PRV-222] fix this
 			prebookCheck() {
@@ -259,36 +216,36 @@
 				this.selectedSlot = e
 				this.toolTipWindow = 1
 			},
-			async checkout(slot) {
-				this.checkoutloading = true
-				const _checkout = await functions.httpsCallable('checkout')
-        const checkout = await _checkout({
+			async checkout() {
+				this.checkoutLoading = true
+				const checkout = await functions.httpsCallable('checkout')
+				const response = await checkout({
 					uid: this.$user.uid,
 					username: this.$user.displayName,
 					customer: this.$store.state.auth.currentUser.customer,
-          account: this.profile.account,
+					account: this.profile.account,
 					price: this.service.stripePrice,
 					serviceCost: this.service.serviceCost,
-					slotId: slot.id,
+					slotId: this.selectedSlot.id,
 					sessionId: this.selectedEvent.id,
 				})
-				console.log(checkout.data)
-				this.checkoutloading = false
-				// 	stripe.redirecttocheckout({ sessionid: resp.data.id })
+				console.log(response.data)
+				this.checkoutLoading = false
+				stripe.redirectToCheckout({ sessionId: response.data })
 			},
 		},
 	}
 </script>
 
 <style scoped>
-	.serviceSelectedRow{
-		max-height:420px;
+	.serviceSelectedRow {
+		max-height: 420px;
 		overflow: hidden;
 	}
-	.detailsCol{
+	.detailsCol {
 		max-width: 25.526315789473685vw;
 		border-right: solid 1px white;
-		margin-top:40px;
+		margin-top: 40px;
 	}
 	.floatRight {
 		display: inline-block;
@@ -306,11 +263,7 @@
 		margin-left: 10px;
 		background-color: #111111ef;
 	}
-	.mandatoryFillText {
-		padding-left: 0.7vw;
-		font: normal 500 0.78125vw Arboria;
-		color: #717171;
-	}
+
 	.slotItemTime {
 		margin-right: 1vw;
 		font: normal 600 0.78125vw Poppins;
@@ -362,14 +315,14 @@
 	.availableHeader {
 		font: normal 600 1.5vw Poppins;
 	}
-	.backBtnCol{
-		max-width:4.2105263157894735vw;
+	.backBtnCol {
+		max-width: 4.2105263157894735vw;
 	}
 	.backBtn {
 		font: normal 600 1.2rem/1rem Poppins;
 	}
-	.backBtn:hover{
-		color:#FA4B6B !important;
+	.backBtn:hover {
+		color: #fa4b6b !important;
 	}
 	.serviceHeader {
 		padding-right: 230px;
@@ -399,6 +352,15 @@ MASSIVE collection of border styles to change line colors seperating days. */
 	.theme--dark.v-calendar-daily {
 		border-left: none;
 		border-top: none;
+	}
+	/* Day selected */
+	>>> .theme--dark.v-btn.v-btn--has-bg {
+		background-color: transparent;
+	}
+	>>> .v-calendar-daily_head-day-label > .v-btn > .v-btn__content {
+		font: normal 500 1.0416666666666667vw Poppins;
+		letter-spacing: -0.052083333333333336vw;
+		color: #666666;
 	}
 	/* empty block on top of time slots */
 	>>> .theme--dark.v-calendar-daily .v-calendar-daily__intervals-head {
