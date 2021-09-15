@@ -65,6 +65,9 @@ node_modules/
 # dotenv environment variables file
 .env
 
+#out dir for jsdoc documentation
+functions/out
+
 .history
 functions/dist
 functions/test-creds.json

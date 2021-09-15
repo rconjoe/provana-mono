@@ -1,5 +1,6 @@
 import ChatRoom from '../models/ChatRoom'
-import { db, addToArray } from '../config'
+import { db } from '../config'
+import { addToArray } from '../util'
 
 // const converter: FirebaseFirestore.FirestoreDataConverter = {
 //   toFirestore(r: ChatRoomDBC): FirebaseFirestore.DocumentData {

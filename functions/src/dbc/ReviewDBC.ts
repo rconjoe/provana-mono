@@ -1,5 +1,5 @@
 import { db } from "../config";
-import { Review } from "../models/Review";
+import Review from "../models/Review";
 
 const converter = {
     toFirestore(review: ReviewDBC): FirebaseFirestore.DocumentData {
@@ -29,7 +29,7 @@ const converter = {
 
 
 
-export class ReviewDBC extends Review {
+export default class ReviewDBC extends Review {
 
     private ref: FirebaseFirestore.DocumentReference | undefined;
 

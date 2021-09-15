@@ -1,6 +1,6 @@
 import { db } from '../config'
-import { Creator } from '../models/Creator'
-import { InvitationDBC } from '../dbc/InvitationDBC'
+import Creator from '../models/Creator'
+import InvitationDBC from '../dbc/InvitationDBC'
 
 const converter = {
   toFirestore(creator: CreatorDBC): FirebaseFirestore.DocumentData {

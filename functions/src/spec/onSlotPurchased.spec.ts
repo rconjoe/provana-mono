@@ -6,10 +6,14 @@ describe('Tests onSlotPurchased firestore trigger', () => {
 
   beforeAll(async() => {
     api = require('../index.ts')
+    await db.collection('creators').doc('abc123').set({
+      
+    })
+
     await db.collection('sessions').doc('12345').set({
-      sellerUid: 'dclKIs51l3dlJfULDlzcoDYkV7i2',
+      sellerUid: 'abc123',
       slots: 2,
-      booked: 0,
+      booked: 1,
       serviceDocId: '13579',
       mandatoryFill: false,
       name: 'jest test parent session',
@@ -21,8 +25,8 @@ describe('Tests onSlotPurchased firestore trigger', () => {
       status: 'published'
     })
     await db.collection('chats').doc('12345').set({
-      creator: 'dclKIs51l3dlJfULDlzcoDYkV7i2',
-      users: ['dclKIs51l3dlJfULDlzcoDYkV7i2']
+      creator: 'abc123',
+      users: ['abc123']
     })
   })
 
@@ -32,6 +36,7 @@ describe('Tests onSlotPurchased firestore trigger', () => {
     await db.collection('sessions').doc('12345').delete()
     await db.collection('chats').doc('12345').delete()
     await db.collection('tasks').doc('12345678').delete()
+    await db.collection('creators').doc('abc123').delete()
   })
 
   it('sends an email to creator and adds buyer to chat room on slot sold', async () => {
@@ -43,7 +48,7 @@ describe('Tests onSlotPurchased firestore trigger', () => {
       mandatoryFill: false,
       start: 1630520984,
       end: 1630521984,
-      sellerUid: 'dclKIs51l3dlJfULDlzcoDYkV7i2',
+      sellerUid: 'abc123',
       serviceDocId: '13579',
       buyerUid: '54764576',
       buyerUsername: 'buttington',
@@ -59,7 +64,7 @@ describe('Tests onSlotPurchased firestore trigger', () => {
       mandatoryFill: false,
       start: 1630520984,
       end: 1630521984,
-      sellerUid: 'dclKIs51l3dlJfULDlzcoDYkV7i2',
+      sellerUid: 'abc123',
       serviceDocId: '13579',
       buyerUid: '54764576',
       buyerUsername: 'buttington',
@@ -78,6 +83,7 @@ describe('Tests onSlotPurchased firestore trigger', () => {
     const task = await db.collection('tasks').doc('12345678').get()
     expect(task.exists).toBe(true)
     const session = await db.collection('sessions').doc('12345').get()
+    expect(session.data()!.status).toBe('full')
     expect(session.data()!.booked).toBe(1)
   })
 })

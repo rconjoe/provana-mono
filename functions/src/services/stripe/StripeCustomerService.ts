@@ -1,9 +1,9 @@
-import { Creator } from '../../models/Creator'
-import { Supporter } from '../../models/Supporter'
+import Creator from '../../models/Creator'
+import Supporter from '../../models/Supporter'
 import { stripe } from '../../config'
 
 
-export class StripeCustomerService {
+export default class StripeCustomerService {
   public async newSupporter(_newCustomer: Supporter): Promise<Supporter> {
     const customer = await stripe.customers.create({
       email: _newCustomer.email,

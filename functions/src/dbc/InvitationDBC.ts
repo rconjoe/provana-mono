@@ -1,6 +1,6 @@
 import { db } from '../config'
-import { Invitation } from '../models/Invitation'
-import { Creator } from '../models/Creator'
+import Invitation from '../models/Invitation'
+import Creator from '../models/Creator'
 import TimeService from '../services/TimeService'
 
 const converter = {
@@ -26,7 +26,7 @@ const converter = {
   }
 }
 
-export class InvitationDBC extends Invitation {
+export default class InvitationDBC extends Invitation {
 
   id: string | undefined
   code: string | undefined

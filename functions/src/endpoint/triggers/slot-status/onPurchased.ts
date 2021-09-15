@@ -10,6 +10,7 @@ import TaskDBC from '../../../dbc/TaskDBC'
 const checkFill = async (sessionId: string): Promise<void> => {
   const session = await new SessionDBC().fetch(sessionId)
   if (session.booked === session.slots) {
+    await session.update({ status: 'full' })
     const secondsUntil = session.start! - new TimeService().generate()
     const task = await new TaskService().scheduleSessionStart(sessionId, secondsUntil)
     await new TaskDBC(sessionId).write(task)

@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions'
-import { ServiceDBC } from '../../dbc/ServiceDBC'
-import { StripePriceService } from '../../services/stripe/StripePriceService'
+import ServiceDBC from '../../dbc/ServiceDBC'
+import StripePriceService from '../../services/stripe/StripePriceService'
 
 export const createService = functions.https.onCall(async (data, context) => {
   const service = new ServiceDBC().callData(

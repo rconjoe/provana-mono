@@ -1,4 +1,12 @@
-export class Supporter {
+
+/**
+ * Export of the Supporter Class
+ *
+ * @class Supporter
+ * @typedef {Supporter}
+ * @module Supporter
+ */
+export default class Supporter {
 
   uid: string | undefined
   customer: string | undefined
@@ -9,7 +17,22 @@ export class Supporter {
   avatar: string | undefined
   banner: string | undefined
   online: boolean | undefined
-
+  
+  
+  /**
+   * Creates an instance of Supporter.
+   *
+   * @constructor
+   * @param {?string} [uid] Firebase uid of the Supporter
+   * @param {?string} [customer] Stripe Customer id property from the Stripe Accounts api
+   * @param {?string} [email] Email of the Supporter
+   * @param {?string} [temp] Where we store the Supporter's password for a short time during the sign up process
+   * @param {?string} [username] Username chosen by the Supporter
+   * @param {?string} [timezone] The supporter's time zone, its picked for them upon first login, and can be changed later
+   * @param {?string} [avatar] The Supporter's profile avitar picture url
+   * @param {?string} [banner] The Supporter's banner picture url
+   * @param {?boolean} [online] Boolean that flips if a user is currently on the website
+   */
   constructor(
     uid?: string,
     customer?: string,
@@ -32,6 +55,16 @@ export class Supporter {
       this.online = online
     }
 
+    
+  /**
+   * Setter for email, password and username, of the Supporter, needed for the sign up process
+   *
+   * @public
+   * @param {string} email
+   * @param {string} password
+   * @param {string} username
+   * @returns {Supporter}
+   */
   public setRegisterData(email: string, password: string, username: string): Supporter {
     this.uid = "",
     this.customer = "",

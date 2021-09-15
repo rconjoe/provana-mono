@@ -1,5 +1,6 @@
 import Session from '../models/Session'
-import { db, increment, decrement } from '../config'
+import { db } from '../config'
+import { increment, decrement } from '../util'
 
 const converter = {
   toFirestore(s: SessionDBC): FirebaseFirestore.DocumentData {
@@ -93,6 +94,14 @@ export default class SessionDBC extends Session {
       a.push(doc.data())
     })
     return a
+  }
+
+  public async update(data: any): Promise<void> {
+    if(this.ref === undefined) throw new Error('Need ref to update')
+    await this.ref.update({...data})
+    .catch(err => {
+      throw new Error(err)
+    })
   }
 
   public async increment(id: string): Promise<void> {
