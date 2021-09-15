@@ -53,6 +53,7 @@ export default class Creator {
    *     A-->B;
    *     A-->C;
    *     B-->D;
+   *     B-->A;
    *     C-->D;
    *     D-->test;
    */
