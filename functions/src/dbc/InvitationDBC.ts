@@ -35,12 +35,13 @@ const converter = {
 
 /**
  * Description placeholder
- * @date 9/15/2021 - 2:52:41 PM
  *
- * @export
  * @class InvitationDBC
  * @typedef {InvitationDBC}
  * @extends {Invitation}
+ * @module InvitationDBC
+ * @category src
+ * @subcategory dbc
  */
 export default class InvitationDBC extends Invitation {
 
