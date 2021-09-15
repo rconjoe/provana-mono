@@ -5,6 +5,8 @@
  * @class Session
  * @typedef {Session}
  * @module Session
+ * @category src
+ * @subcategory models
  */
 export default class Session {
   sellerUid: string | undefined

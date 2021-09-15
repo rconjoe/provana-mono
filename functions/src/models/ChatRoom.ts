@@ -4,6 +4,8 @@
  * @class ChatRoom
  * @typedef {ChatRoom}
  * @module ChatRoom
+ * @category src
+ * @subcategory models
  */
 export default class ChatRoom {
   users: Array<string> | undefined

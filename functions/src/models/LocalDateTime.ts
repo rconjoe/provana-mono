@@ -4,6 +4,8 @@
  *
  * @interface LocalDateTime
  * @typedef {LocalDateTime}
+ * @category src
+ * @subcategory models
  */
 interface LocalDateTime {
   

@@ -5,6 +5,8 @@
  * @class Service
  * @typedef {Service}
  * @module Service
+ * @category src
+ * @subcategory models
  */
 export default class Service {
 

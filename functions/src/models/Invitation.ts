@@ -4,6 +4,8 @@
  * @class Invitation
  * @typedef {Invitation}
  * @module Invintation
+ * @category src
+ * @subcategory models
  */
 export default class Invitation {
 

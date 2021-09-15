@@ -4,6 +4,8 @@
  * @class Review
  * @typedef {Review}
  * @module Review
+ * @category src
+ * @subcategory models
  */
 export default class Review {
 

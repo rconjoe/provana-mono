@@ -20,10 +20,32 @@ import { db, addToArray } from '../config'
 //   }
 // }
 
+
+/**
+ * Export for ChatRoomDBC
+ *
+ * @module ChatRoomDBC
+ * @class ChatRoomDBC
+ * @typedef {ChatRoomDBC}
+ * @extends {ChatRoom}
+ * @module ChatRoomDBC
+ * @category src
+ * @subcategory dbc
+ */
 export default class ChatRoomDBC extends ChatRoom {
   messages: FirebaseFirestore.CollectionReference | undefined
   ref: FirebaseFirestore.DocumentReference | undefined
 
+  
+  /**
+   * Creates an instance of ChatRoomDBC.
+   *
+   * @constructor
+   * @param {?Array<string>} [users] Array of Firebase uid's
+   * @param {?string} [creator] Creator's Firebase uid
+   * @param {?FirebaseFirestore.CollectionReference} [messages] Firebase collection ref for that chatroom
+   * @param {?FirebaseFirestore.DocumentReference} [ref] Firebase document ref to the chatroom doc
+   */
   constructor(
     users?: Array<string>,
     creator?: string,
@@ -35,6 +57,19 @@ export default class ChatRoomDBC extends ChatRoom {
     this.ref = ref
   }
 
+  
+  /**
+   * Creates a new doc in the Firebase collection 'chats', then sets the creator and title on the document, then finally adds the Creator's Firebase uid to the users array
+   *
+   * @public
+   * @async
+   * @param {{
+      id: string,
+      creator: string,
+      title: string
+    }} data
+   * @returns {Promise<void>}
+   */
   public async initialize(data: {
     id: string,
     creator: string,
@@ -53,6 +88,17 @@ export default class ChatRoomDBC extends ChatRoom {
       value: data.creator
     })
   }
+
+  
+  /**
+   * Adds a new supporter Firebase uid to the users array on Firestore document, uses addToArray() in config.ts
+   *
+   * @public
+   * @async
+   * @param {string} uid
+   * @param {string} room
+   * @returns {Promise<void>}
+   */
   public async addToRoom(uid: string, room: string): Promise<void> {
     await addToArray({
       ref: db.collection('chats').doc(room),
