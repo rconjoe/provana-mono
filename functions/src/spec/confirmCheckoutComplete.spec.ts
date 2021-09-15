@@ -32,7 +32,6 @@ describe('Tests confirmCheckoutComplete HTTP onRequest endpoint called by cloud 
 
   it('dry run', async () => {
     const req = { body: '67890' }
-    console.log(req)
     const res = {
       sendStatus: (statusCode: number) => {
         console.log(statusCode)
