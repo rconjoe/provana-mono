@@ -39,11 +39,11 @@ const converter = {
 
 /**
  * Export for the SupporterDBC class
- *
- * @module SupporterDBC
+ * 
  * @class SupporterDBC
  * @typedef {SupporterDBC}
  * @extends {Supporter}
+ * @module SupporterDBC
  * @category src
  * @subcategory dbc
  */
