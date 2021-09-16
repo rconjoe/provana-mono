@@ -37,10 +37,11 @@ const converter = {
 /**
  * Export for the ReviewDBC class
  *
- * @module Review
+ *
  * @class ReviewDBC
  * @typedef {ReviewDBC}
  * @extends {Review}
+ * @module ReviewDBC
  * @category src
  * @subcategory dbc
  */
