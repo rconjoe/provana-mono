@@ -52,10 +52,10 @@ const converter = {
 /**
  * Export for the ServiceDBC object
  *
- * @module Service
  * @class ServiceDBC
  * @typedef {ServiceDBC}
  * @extends {Service}
+ * @module ServiceDBC
  * @category src
  * @subcategory dbc
  */
