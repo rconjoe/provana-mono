@@ -140,5 +140,8 @@ describe('Tests capture HTTP onRequest endpoint', () => {
       },
     }
     await api.capture(req, res)
+    const slot = await db.collection('sessions').doc('12345')
+      .collection('slots').doc('67890').get()
+    expect(slot.data()!.status).toBe('succeeded')
   })
 })

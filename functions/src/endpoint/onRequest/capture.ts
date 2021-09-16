@@ -16,5 +16,6 @@ export const capture = functions.https.onRequest(async (req, res) => {
   if (captured.status !== 'succeeded') {
     throw new Error(`Payment failed! ${captured.id} status ${captured.status}`)
   }
+  await slot.update({ status: 'succeeded' })
   res.sendStatus(200)
 })
