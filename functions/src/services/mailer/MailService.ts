@@ -52,6 +52,8 @@ export default class MailService {
  *
  * @interface SlotSold
  * @typedef {SlotSold}
+ * @category src
+ * @subcategory services/mailer
  */
 interface SlotSold {
   username: string,
