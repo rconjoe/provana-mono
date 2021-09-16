@@ -29,7 +29,7 @@ export default class Slot {
    * Creates an instance of Slot.
    *
    * @constructor
-   * @param {?string} [id] Firebase document id for this session
+   * @param {?string} [id] Firebase document id for this slot document
    * @param {?string} [name] Name of the Service
    * @param {?number} [slot] Which slot this is out of all the slots
    * @param {?number} [slots] Number of slots total in the session
