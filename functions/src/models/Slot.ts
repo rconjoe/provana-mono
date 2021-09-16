@@ -5,6 +5,8 @@
  * @class Slot
  * @typedef {Slot}
  * @module Slot
+ * @category src
+ * @subcategory models
  */
 export default class Slot {
   id: string | undefined

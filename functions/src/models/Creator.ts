@@ -1,9 +1,10 @@
 
 /**
  * Exports the class Creator
- * @class Creator
  * @typedef {Creator}
  * @module Creator
+ * @category src
+ * @subcategory models
  */
 export default class Creator {
 
@@ -52,6 +53,7 @@ export default class Creator {
    *     A-->B;
    *     A-->C;
    *     B-->D;
+   *     B-->A;
    *     C-->D;
    *     D-->test;
    */

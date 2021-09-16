@@ -5,6 +5,8 @@
  * @class Supporter
  * @typedef {Supporter}
  * @module Supporter
+ * @category src
+ * @subcategory models
  */
 export default class Supporter {
 

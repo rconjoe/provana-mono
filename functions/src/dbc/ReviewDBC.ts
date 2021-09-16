@@ -1,6 +1,11 @@
 import { db } from "../config";
 import Review from "../models/Review";
 
+/**
+ * Converter for either mapping data to a Firestore document snapshot or from Firestore to ReviewDBC object
+ * 
+ * @returns {{ toFirestore(invitation: InvitationDBC): any; fromFirestore(snapshot: any): InvitationDBC; }}
+ */
 const converter = {
     toFirestore(review: ReviewDBC): FirebaseFirestore.DocumentData {
         return {
@@ -29,10 +34,33 @@ const converter = {
 
 
 
+/**
+ * Export for the ReviewDBC class
+ *
+ * @module Review
+ * @class ReviewDBC
+ * @typedef {ReviewDBC}
+ * @extends {Review}
+ * @category src
+ * @subcategory dbc
+ */
 export default class ReviewDBC extends Review {
 
     private ref: FirebaseFirestore.DocumentReference | undefined;
 
+    
+    /**
+     * Creates an instance of ReviewDBC.
+     *
+     * @constructor
+     * @param {?(string | undefined)} [sellerUid] Creator's Firebase uid
+     * @param {?(string | undefined)} [buyerUid] Supporter's Firebase uid
+     * @param {?(string | undefined)} [message] Message left by the Supporter about the session
+     * @param {?(Date | undefined)} [date] Date that the review was left
+     * @param {?(number | undefined)} [rating] Rating 1-5 that the Supporter left for the session
+     * @param {?(string | undefined)} [serviceName] Name of the service that the supporter is reviewing
+     * @param {?(FirebaseFirestore.DocumentReference | undefined)} [ref] Firestore document reference that points to the document we want to access
+     */
     constructor(
         sellerUid?: string | undefined,
         buyerUid?: string | undefined,
@@ -46,6 +74,12 @@ export default class ReviewDBC extends Review {
         this.ref = ref;
     }
 
+    
+    /**
+     * Method that creates a new Review object from the ReviewDBC object
+     *
+     * @returns {Review}
+     */
     toModel():Review {
         return new Review(
             this.sellerUid,
@@ -57,6 +91,15 @@ export default class ReviewDBC extends Review {
         )
     }
 
+    
+    /**
+     * Method that takes a Review object and writes a new Firestore document in the collection 'reviews' that contains the data from the Review object
+     *
+     * @public
+     * @async
+     * @param {Review} review
+     * @returns {Promise<FirebaseFirestore.WriteResult>}
+     */
     public async writeNew(review: Review): Promise<FirebaseFirestore.WriteResult> {
         if(review.sellerUid === null || review.sellerUid === undefined) throw new Error('Missing SellerUid')
 
@@ -76,11 +119,27 @@ export default class ReviewDBC extends Review {
             })
     }
 
+    
+    /**
+     * Setter that sets the Creator's uid
+     *
+     * @public
+     * @param {string} sellerUid
+     * @returns {ReviewDBC}
+     */
     public setSellerUid(sellerUid: string): ReviewDBC {
         this.sellerUid = sellerUid
         return this
     }
 
+    
+    /**
+     * Method that gest the 20 most recent reviews left for that Creator
+     *
+     * @public
+     * @async
+     * @returns {Promise<Array<Review>>}
+     */
     public async getRecentReviews(): Promise<Array<Review>> {
         if(this === null || this.sellerUid === undefined) throw new Error('Missing Seller Uid');
         let reviewArr: Array<Review> = []
@@ -96,6 +155,14 @@ export default class ReviewDBC extends Review {
         return reviewArr
     }
 
+    
+    /**
+     * Method that gets the reviews for a Creator and averages out all of their review ratings to give a final rating between 1-5
+     *
+     * @public
+     * @async
+     * @returns {Promise<number>}
+     */
     public async getReviewScore(): Promise<number> {
 
         if(this === null || this.sellerUid === undefined) throw new Error('Missing Seller Uid');
