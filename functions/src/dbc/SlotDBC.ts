@@ -138,17 +138,17 @@ export default class SlotDBC extends Slot {
     return q.docs[0].data()
   }
 
-  public async complete(): Promise<void> {
-    if (this.ref === undefined) throw new Error('Ref requied to move slot to completed.')
-    await db
-      .collection('completed')
-      .doc(this.id!)
-      .withConverter(converter)
-      .set(this)
-    .catch(err => {
-      throw new Error(err)
-    })
-    await this.ref.delete()
-  }
+  // public async complete(): Promise<void> {
+  //   if (this.ref === undefined) throw new Error('Ref requied to move slot to completed.')
+  //   await db
+  //     .collection('completed')
+  //     .doc(this.id!)
+  //     .withConverter(converter)
+  //     .set(this)
+  //   .catch(err => {
+  //     throw new Error(err)
+  //   })
+  //   await this.ref.delete()
+  // }
 
 }
