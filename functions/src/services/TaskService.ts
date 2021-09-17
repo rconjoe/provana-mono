@@ -95,7 +95,7 @@ export default class TaskService {
 
   
   /**
-   * Takes what kind of task, the task payload, and the secunds until the task needs to be fired, and sorts through a logic tree to build out the request and fufill all needed field
+   * takes a type which is the name of the queue the task needs to be put in, the task payload, and the seconds until the task needs to be fired, and sorts through a logic tree to build out the request and fufill all needed field
    * to build a CreateTaskRequest to pass to the schedule() method
    *
    * @private
