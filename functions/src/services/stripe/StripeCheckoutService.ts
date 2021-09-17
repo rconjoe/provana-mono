@@ -92,7 +92,7 @@ export default class StripeCheckoutService {
 
   
   /**
-   * Calls the Stripe Checkout api and returns the checkout session object
+   *  Takes a Stripe checkout id and calls the Stripe Checkout api and returns the checkout session object
    *
    * @public
    * @async
