@@ -8,7 +8,7 @@ import { stripe } from '../../config'
  *
  * @class StripeCustomerService
  * @typedef {StripeCustomerService}
- * @module StripeCUstomerService
+ * @module StripeCustomerService
  * @category src
  * @subcategory services/stripe
  */
