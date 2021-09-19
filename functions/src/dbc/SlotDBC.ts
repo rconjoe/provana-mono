@@ -221,17 +221,29 @@ export default class SlotDBC extends Slot {
     return q.docs[0].data()
   }
 
-  // public async complete(): Promise<void> {
-  //   if (this.ref === undefined) throw new Error('Ref requied to move slot to completed.')
-  //   await db
-  //     .collection('completed')
-  //     .doc(this.id!)
-  //     .withConverter(converter)
-  //     .set(this)
-  //   .catch(err => {
-  //     throw new Error(err)
-  //   })
-  //   await this.ref.delete()
-  // }
+  public async fetchByParent(parentSession: string): Promise<Array<SlotDBC>> {
+    let slots: Array<SlotDBC> = []
+    const q = await db
+      .collection('sessions')
+      .doc(parentSession)
+      .collection('slots')
+      .withConverter(converter)
+      .get()
+    if (q.empty) throw new Error(`No slots for session ${parentSession}`)
+    q.docs.forEach(slot => {
+      slots.push(slot.data())
+    })
+    return slots
+  }
+
+  public async republish(): Promise<void> {
+    if (this.ref === undefined) throw new Error('Need ref to republish')
+    this.ref.update({
+      status: 'published',
+      buyerUid: '',
+      buyerUsername: '',
+      paymentIntent: ''
+    })
+  }
 
 }
