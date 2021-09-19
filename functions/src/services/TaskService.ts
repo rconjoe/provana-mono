@@ -34,6 +34,13 @@ export default class TaskService {
     return task.name!
   }
 
+  public async cancel(path: string) {
+    await this.client!.deleteTask({name: path})
+      .catch(err => {
+        throw new Error(err)
+      })
+  }
+
   private buildRequest(type: string, payload: string, secondsUntil?: number)
   : protos.google.cloud.tasks.v2beta3.ICreateTaskRequest {
     let url: string
