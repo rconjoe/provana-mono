@@ -2,6 +2,8 @@ import { Change } from 'firebase-functions'
 import SlotDBC from '../../../dbc/SlotDBC'
 import SessionDBC from '../../../dbc/SessionDBC'
 import ChatRoomDBC from '../../../dbc/ChatRoomDBC'
+import TaskDBC from '../../../dbc/TaskDBC'
+import TaskService from '../../../services/TaskService'
 
 export default class SessionStatusHandler {
   before: SessionDBC | undefined
@@ -18,6 +20,9 @@ export default class SessionStatusHandler {
     }
     else if (bStatus === 'published' && aStatus === 'full') {
       this.onFull()
+    }
+    else if (bStatus === 'full' && aStatus === 'published') {
+      this.onSlotCancel()
     }
   }
 
@@ -69,6 +74,11 @@ export default class SessionStatusHandler {
   }
 
   private async onFull(): Promise<void> {
-    // haha whatever ( •́ ⌣ •̀ )⌐╦╦═─
+    // send notifications ( •́ ⌣ •̀ )⌐╦╦═─
+  }
+
+  private async onSlotCancel(): Promise<void> {
+    const task = await new TaskDBC(this.after!.id!).retrieve()
+    await new TaskService().cancel(task)
   }
 }
