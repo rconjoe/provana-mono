@@ -2,21 +2,67 @@ import { CloudTasksClient } from '@google-cloud/tasks'
 import { taskcfg } from '../config'
 import * as protos from '@google-cloud/tasks/build/protos/protos'
 
+
+/**
+ * Export for the TaskService class
+ * @date 9/17/2021 - 11:57:28 AM
+ *
+ * @class TaskService
+ * @typedef {TaskService}
+ * @module TaskService
+ * @category src
+ * @subcategory services
+ */
 export default class TaskService {
   client: CloudTasksClient | undefined
 
+  
+  /**
+   * Creates an instance of TaskService when node is in the 'test' enviornment or just creates a new CloudTaskClient object.
+   *
+   * @constructor
+   */
   constructor() {
     this.client = new CloudTasksClient(taskcfg)
   }
 
+  
+  /**
+   * Take a slot id and calls this.schedule() and this.buildRequest to create a no-abandoned-checkouts task
+   *
+   * @public
+   * @async
+   * @param {string} slotId
+   * @returns {Promise<string>}
+   */
   public async onCheckout(slotId: string): Promise<string> {
     return await this.schedule(this.buildRequest('no-abandoned-checkouts', slotId))
   }
 
+  
+  /**
+   * takes a firestore document id that points to a slot, and the seconds until the session starts, and calls this.schedule() and this.buildRequest to create a slot-start task
+   *
+   * @public
+   * @async
+   * @param {string} slotId
+   * @param {number} secondsUntil
+   * @returns {Promise<string>}
+   */
   public async scheduleSlotStart(slotId: string, secondsUntil: number): Promise<string> {
     return await this.schedule(this.buildRequest('slot-start', slotId, secondsUntil))
   }
 
+  
+  /**
+   * takes a firestore document id that points to a session, and the seconds until the session starts, and calls this.schedule() and this.buildRequest to create a session-start task
+   *
+   * @public
+   * @async
+   * @param {string} sessionId
+   * @param {number} secondsUntil
+   * @returns {Promise<string>}
+   */
   public async scheduleSessionStart(sessionId: string, secondsUntil: number): Promise<string> {
     return await this.schedule(this.buildRequest('session-start', sessionId, secondsUntil))
   }
@@ -25,6 +71,15 @@ export default class TaskService {
     return await this.schedule(this.buildRequest('capture', slotId, secondsUntil))
   }
 
+  
+  /**
+   * Takes a CreateTaskRequest, and uses the CloudTaskClient to create a new task and returns the task's name
+   *
+   * @private
+   * @async
+   * @param {protos.google.cloud.tasks.v2beta3.ICreateTaskRequest} request
+   * @returns {Promise<string>}
+   */
   private async schedule(request: protos.google.cloud.tasks.v2beta3.ICreateTaskRequest)
   : Promise<string> {
     const [ task ] = await this.client!.createTask(request)
@@ -40,7 +95,17 @@ export default class TaskService {
         throw new Error(err)
       })
   }
-
+  
+  /**
+   * takes a type which is the name of the queue the task needs to be put in, the task payload, and the seconds until the task needs to be fired, and sorts through a logic tree to build out the request and fufill all needed field
+   * to build a CreateTaskRequest to pass to the schedule() method
+   *
+   * @private
+   * @param {string} type
+   * @param {string} payload
+   * @param {?number} [secondsUntil]
+   * @returns {protos.google.cloud.tasks.v2beta3.ICreateTaskRequest}
+   */
   private buildRequest(type: string, payload: string, secondsUntil?: number)
   : protos.google.cloud.tasks.v2beta3.ICreateTaskRequest {
     let url: string
