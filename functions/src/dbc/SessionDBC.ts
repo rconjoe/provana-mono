@@ -207,4 +207,12 @@ export default class SessionDBC extends Session {
     })
   }
 
+  public async onSlotCancel(sessionId: string): Promise<void> {
+    const session = await this.fetch(sessionId)
+    if (session.status !== 'full') return
+    else {
+      await this.update({ status: 'published' })
+    }
+  }
+
 }
