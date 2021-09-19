@@ -99,15 +99,8 @@ export default class SlotStatusHandler {
     await new SessionDBC().decrement(a.parentSession!)
     await new ChatRoomDBC().removeFromRoom(a.buyerUid!, a.parentSession!)
     await new StripePaymentIntentService().cancel(a.paymentIntent!)
-    a.mandatoryFill ? this.republishSession(a.parentSession!) : this.cancelSlotTask(a.id!)
+    a.mandatoryFill ? await new SessionDBC().onSlotCancel(a.parentSession!) : this.cancelSlotTask(a.id!)
     await a.republish()
-  }
-
-  private async republishSession(sessionId: string): Promise<void> {
-    const session = await new SessionDBC().fetch(sessionId)
-    session.update({ status: 'published' })
-    const task = await new TaskDBC(sessionId).retrieve()
-    await new TaskService().cancel(task)
   }
 
   private async cancelSlotTask(slotId: string): Promise<void> {
