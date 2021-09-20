@@ -1,5 +1,6 @@
 import ChatRoom from '../models/ChatRoom'
-import { db, addToArray } from '../config'
+import { db } from '../config'
+import { addToArray, removeFromArray } from '../util'
 
 // const converter: FirebaseFirestore.FirestoreDataConverter = {
 //   toFirestore(r: ChatRoomDBC): FirebaseFirestore.DocumentData {
@@ -101,6 +102,14 @@ export default class ChatRoomDBC extends ChatRoom {
    */
   public async addToRoom(uid: string, room: string): Promise<void> {
     await addToArray({
+      ref: db.collection('chats').doc(room),
+      field: 'users',
+      value: uid
+    })
+  }
+
+  public async removeFromRoom(uid: string, room: string): Promise<void> {
+    await removeFromArray({
       ref: db.collection('chats').doc(room),
       field: 'users',
       value: uid

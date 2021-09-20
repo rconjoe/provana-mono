@@ -124,8 +124,7 @@ describe('Tests endpoint stripeCompleteOnboard', () => {
 
       })
     const wrapped = testEnv.wrap(api.stripeCompleteOnboard)
-    const response = await wrapped({uid: '13371337'})
-    console.log(response)
+    await wrapped({uid: '13371337'})
     const doc = await db.collection('creators').doc('13371337').get()
     expect(doc.data()!.onboarded).toBe(true)
   })

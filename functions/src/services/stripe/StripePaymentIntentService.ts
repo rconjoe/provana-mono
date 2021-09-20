@@ -58,4 +58,12 @@ export default class StripePaymentIntentService {
       throw new Error(err)
     })
   }
+
+  public async capture(id: string): Promise<Stripe.PaymentIntent> {
+    return await stripe.paymentIntents.capture(id)
+    .catch(err => {
+      throw new Error(err)
+    })
+
+  }
 }

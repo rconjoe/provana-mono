@@ -13,7 +13,7 @@
 				<span class="userTitle"> {{ profile.tagline }} </span>
 				<div :class="alphaHover ? 'alphaBadgeDivHover' : 'alphaBadgeDiv'">
 					<div class="alphaHoverDiv" @mouseover="alphaHover = true" @mouseleave="alphaHover = false">
-						<img class="provanaAlpha" src="../../assets/ProvanaAlphaBadge-02.png" />
+						<img class="provanaAlpha" src="../../../assets/ProvanaAlphaBadge-02.png" />
 					</div>
 					<v-fade-transition>
 						<span v-if="alphaHover" class="alphaPartner"> Alpha Partner</span>
@@ -50,9 +50,9 @@
 </template>
 
 <script>
-	import UserAbout from '@/components/User/UserAbout.vue'
-	import UserSocials from '@/components/User/UserSocials.vue'
-	import UserReviews from '@/components/User/UserReviews.vue'
+	import UserAbout from '@/components/User/UserHeader/UserAbout.vue'
+	import UserSocials from '@/components/User/UserHeader/UserSocials.vue'
+	import UserReviews from '@/components/User/UserHeader/UserReviews.vue'
 	export default {
 		components: { UserAbout, UserSocials, UserReviews },
 		props: ['profile'],

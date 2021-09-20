@@ -1,5 +1,6 @@
 import Session from '../models/Session'
-import { db, increment, decrement } from '../config'
+import { db } from '../config'
+import { increment, decrement } from '../util'
 
 
 /**
@@ -164,6 +165,14 @@ export default class SessionDBC extends Session {
     return a
   }
 
+  public async update(data: any): Promise<void> {
+    if(this.ref === undefined) throw new Error('Need ref to update')
+    await this.ref.update({...data})
+    .catch(err => {
+      throw new Error(err)
+    })
+  }
+
   
   /**
    * Takes a Firestore document id, and goes to that document and updates the booked field by +1
@@ -196,6 +205,14 @@ export default class SessionDBC extends Session {
       field: 'booked',
       amount: 1
     })
+  }
+
+  public async onSlotCancel(sessionId: string): Promise<void> {
+    const session = await this.fetch(sessionId)
+    if (session.status !== 'full') return
+    else {
+      await this.update({ status: 'published' })
+    }
   }
 
 }

@@ -1,7 +1,7 @@
 <template>
     <v-row class="serviceRow">
       
-      <v-hover v-slot="{hover}"> 
+       
       <v-col class="serviceCol" @click="serviceClicked(service)">
         <!-- Tittle row -->
         <div class="serviceTitleDiv">
@@ -24,7 +24,6 @@
           
         </div>
       </v-col>  
-      </v-hover>
     </v-row>
 </template>
 

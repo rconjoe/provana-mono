@@ -1,5 +1,5 @@
 import { CloudTasksClient } from '@google-cloud/tasks'
-import { credentials } from '@grpc/grpc-js'
+import { taskcfg } from '../config'
 import * as protos from '@google-cloud/tasks/build/protos/protos'
 
 
@@ -23,15 +23,7 @@ export default class TaskService {
    * @constructor
    */
   constructor() {
-    // https://github.com/aertje/cloud-tasks-emulator
-    if (process.env.NODE_ENV === 'test') {
-      this.client = new CloudTasksClient({
-        port: 8001,
-        servicePath: 'localhost',
-        sslCreds: credentials.createInsecure()
-      })
-    }
-    else this.client = new CloudTasksClient()
+    this.client = new CloudTasksClient(taskcfg)
   }
 
   
@@ -75,6 +67,10 @@ export default class TaskService {
     return await this.schedule(this.buildRequest('session-start', sessionId, secondsUntil))
   }
 
+  public async scheduleCapture(slotId: string, secondsUntil: number): Promise<string> {
+    return await this.schedule(this.buildRequest('capture', slotId, secondsUntil))
+  }
+
   
   /**
    * Takes a CreateTaskRequest, and uses the CloudTaskClient to create a new task and returns the task's name
@@ -93,6 +89,12 @@ export default class TaskService {
     return task.name!
   }
 
+  public async cancel(path: string) {
+    await this.client!.deleteTask({name: path})
+      .catch(err => {
+        throw new Error(err)
+      })
+  }
   
   /**
    * takes a type which is the name of the queue the task needs to be put in, the task payload, and the seconds until the task needs to be fired, and sorts through a logic tree to build out the request and fufill all needed field
@@ -122,7 +124,9 @@ export default class TaskService {
         url = 'https://google.com'
         seconds = secondsUntil!
         break
-      // ...
+      case 'capture':
+        url = 'https://google.com'
+        seconds = secondsUntil!
       default:
         url = 'crazy.net'
         seconds = 10

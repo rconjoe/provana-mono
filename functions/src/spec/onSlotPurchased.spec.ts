@@ -1,83 +1,57 @@
 import { testEnv } from './env.spec'
 import { db } from '../config'
+import * as dayjs from 'dayjs'
 
-describe('Tests onSlotPurchased firestore trigger', () => {
+describe('Tests slot status watcher for onPurchased functionality', () => {
   let api: any
 
-  beforeAll(async() => {
+  beforeAll(async () => {
     api = require('../index.ts')
-    await db.collection('sessions').doc('12345').set({
-      sellerUid: 'dclKIs51l3dlJfULDlzcoDYkV7i2',
-      slots: 2,
-      booked: 0,
-      serviceDocId: '13579',
-      mandatoryFill: false,
-      name: 'jest test parent session',
-      color: 'green',
-      serviceColor: 'green',
-      start: 1630520984,
-      end: 1630521984,
-      id: '12345',
-      status: 'published'
-    })
-    await db.collection('chats').doc('12345').set({
-      creator: 'dclKIs51l3dlJfULDlzcoDYkV7i2',
-      users: ['dclKIs51l3dlJfULDlzcoDYkV7i2']
-    })
+
   })
 
   afterAll(async () => {
     testEnv.cleanup()
-    await db.collection('sessions').doc('12345').collection('slots').doc('12345678').delete()
-    await db.collection('sessions').doc('12345').delete()
-    await db.collection('chats').doc('12345').delete()
-    await db.collection('tasks').doc('12345678').delete()
   })
 
-  it('sends an email to creator and adds buyer to chat room on slot sold', async () => {
-    const bSnap = testEnv.firestore.makeDocumentSnapshot({
-      id: '12345678',
-      name: 'jest test slot email thing',
+  it('Purchases a non-mandatoryFill session', async () => {
+    const now = dayjs().unix()
+    const before = testEnv.firestore.makeDocumentSnapshot({
+      id: '67890',
+      name: 'jest test slot',
       slot: 1,
       slots: 2,
       mandatoryFill: false,
-      start: 1630520984,
-      end: 1630521984,
-      sellerUid: 'dclKIs51l3dlJfULDlzcoDYkV7i2',
-      serviceDocId: '13579',
-      buyerUid: '54764576',
+      start: 300 + now,
+      end: 7200 + now,
+      sellerUid: '123abc',
+      serviceDocId: '13371337',
+      buyerUid: '456def',
       buyerUsername: 'buttington',
-      paymentIntent: 'pi_12345',
+      paymentIntent: 'pi_123',
       status: 'holding',
       parentSession: '12345'
-    }, 'sessions/12345/slots/12345678')
-    const aSnap = testEnv.firestore.makeDocumentSnapshot({
-      id: '12345678',
-      name: 'jest test slot email thing',
+    }, 'sessions/12345/slots/67890')
+
+    const after = testEnv.firestore.makeDocumentSnapshot({
+      id: '67890',
+      name: 'jest test slot',
       slot: 1,
       slots: 2,
       mandatoryFill: false,
-      start: 1630520984,
-      end: 1630521984,
-      sellerUid: 'dclKIs51l3dlJfULDlzcoDYkV7i2',
-      serviceDocId: '13579',
-      buyerUid: '54764576',
+      start: 300 + now,
+      end: 7200 + now,
+      sellerUid: '123abc',
+      serviceDocId: '13371337',
+      buyerUid: '456def',
       buyerUsername: 'buttington',
-      paymentIntent: 'pi_12345',
+      paymentIntent: 'pi_123',
       status: 'booked',
       parentSession: '12345'
-    }, 'sessions/12345/slots/12345678')
+    }, 'sessions/12345/slots/67890')
+    const change = testEnv.makeChange(before, after)
 
-    const change = testEnv.makeChange(bSnap, aSnap)
-    const wrapped = testEnv.wrap(api.onSlotPurchased)
-    const response = await wrapped(change)
-    expect(response).toBe('Mail sent,')
-    const chat = await db.collection('chats').doc('12345').get()
-    expect(chat.exists).toBe(true)
-    expect(chat.data()!.users).toContain('54764576')
-    const task = await db.collection('tasks').doc('12345678').get()
-    expect(task.exists).toBe(true)
-    const session = await db.collection('sessions').doc('12345').get()
-    expect(session.data()!.booked).toBe(1)
+    const wrapped = testEnv.wrap(api.onSlotUpdate)
   })
+
 })
