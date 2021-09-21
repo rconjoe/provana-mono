@@ -9,48 +9,30 @@ export const notifications = {
 
   state: () => ({
     notifications: [],
-    disputes: [],
-    online: false,
+      online: false,
   }),
 
   mutations: {
     SET_NOTIF(state, data) {
-      state.notifications.push(data)
+      state.notifications.push(data);
     },
-    SET_DISPUTE(state, data) {
-      state.disputes.push(data)
-    },
-    RESET_NOTIF(state) {
+    CLEAR_NOTIF(state, data) {
       state.notifications = []
-      state.disputes = []
-    },
+    }
   },
 
   actions: {
-    bindNotifs({ commit, dispatch }) {
-      db.collection(store.state.auth.claims.type)
-        .doc(store.state.auth.currentUser.uid)
-        .collection('notifications')
-        .orderBy('time')
+     bindNotifs({commit, dispatch}) {
+      db.collection('notifications')
+        .doc(store.state.auth.claims.user_id)
+        .collection('notif')
       .onSnapshot((snapshot) => {
-        commit('RESET_NOTIF')
-        snapshot.forEach((notif) => {
-          const data = notif.data()
-          dispatch('formatter', data)
+        commit('CLEAR_NOTIF')
+        
+        snapshot.forEach((doc) => {
+          commit('SET_NOTIF', doc.data());
         })
       })
-    },
-
-    formatter({commit}, rawNotif) {
-      switch(rawNotif.category) {
-        case 'disputed-sale':
-          commit('SET_DISPUTE', rawNotif)
-          return
-        default:
-          commit('SET_NOTIF', rawNotif)
-          return
-      }
-    },
-
+    }
   }
 }
