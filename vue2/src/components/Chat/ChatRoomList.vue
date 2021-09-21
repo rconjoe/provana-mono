@@ -55,7 +55,11 @@ export default {
     .onSnapshot((querySnapshot) => {
       this.rooms = [],
       querySnapshot.forEach((doc) => {
-        this.rooms.push(doc.data())
+        const room = {
+          ...doc.data(),
+          roomId:doc.id
+        }
+        this.rooms.push(room)
       })
     })
   },
