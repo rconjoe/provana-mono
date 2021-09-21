@@ -27,7 +27,7 @@
 
 <script>
 import ChatRoomList from '@/components/Chat/ChatRoomList';
-import ChatConversation from '@/components/Chat/ChatConversation';
+import ChatConversation from './ChatConversation/ChatConversation.vue';
 export default {
   name:'ChatBox',
   components: { ChatRoomList,ChatConversation },
