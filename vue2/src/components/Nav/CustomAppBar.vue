@@ -12,12 +12,12 @@
 		>
 			<v-list>
 				<v-list-item v-for="(item, index) in notifications" :key="index">
-					<v-card class="notificationCard mb-1" color="#333333" width="300px" @click="item.read = true">
+					<v-card class="notificationCard mb-1" color="#333333" width="300px" @click="item.read = true,  item.unread == false">
 						<v-card-text class="py-1 d-flex align-center">
 							<v-avatar v-if="!item.read" color="primary" size="10px" class="mr-2"></v-avatar>
 							<v-avatar v-else color="#1e1e1e" size="10px" class="mr-2"></v-avatar>
 							<div class="d-flex flex-column notificationContentDiv">
-								<h3> notif </h3>
+								<h3>{{ item.category }}</h3>
 								<h4>{{ item.content }}</h4>
 							</div>
 						</v-card-text>
@@ -118,7 +118,7 @@
 		}),
 		computed: {
 			read() {
-				if (this.notifications.some((e) => e.unread === true)) {
+				if (this.notifications.some((e) => e.unread === true && e.read == false)) {
 					return true
 				} else {
 					return false
