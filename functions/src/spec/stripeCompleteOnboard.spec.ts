@@ -1,6 +1,6 @@
 import { testEnv } from './env.spec'
 import { db } from '../config'
-import nock = require('nock')
+import StripeAccountsMock from './nock/StripeAccountsMock'
 
 describe('Tests endpoint stripeCompleteOnboard', () => {
   let api: any
@@ -29,100 +29,7 @@ describe('Tests endpoint stripeCompleteOnboard', () => {
   })
 
   it('Set onboarded: true in auth claims if stripe account was successfully onboarded', async () => {
-    nock('http://localhost:12113')
-      .persist()
-      .get('/v1/accounts/acct_1J3vLj2eEzjDrkTw')
-      .reply(200, {
-        business_profile: {
-          mcc: null,
-          name: null,
-          product_description: null,
-          support_address: null,
-          support_email: null,
-          support_phone: null,
-          support_url: null,
-          url: null
-
-        },
-        business_type: null,
-        capabilities: { card_payments: 'active', transfers: 'active'  },
-        charges_enabled: false,
-        controller: { type: 'account'  },
-        country: 'US',
-        created: 1234567890,
-        default_currency: 'usd',
-        // this fucking line
-        details_submitted: true,
-        //
-        email: 'site@stripe.com',
-        external_accounts: {
-          data: [ [Object]  ],
-          has_more: false,
-          object: 'list',
-          url: '/v1/accounts/acct_1J3vLj2eEzjDrkTw/external_accounts'
-
-        },
-        id: 'acct_1J3vLj2eEzjDrkTw',
-        metadata: {},
-        object: 'account',
-        payouts_enabled: false,
-        requirements: {
-          current_deadline: null,
-          currently_due: [
-            'business_profile.product_description',
-            'business_profile.support_phone',
-            'business_profile.url',
-            'external_account',
-            'tos_acceptance.date',
-            'tos_acceptance.ip'
-
-          ],
-          disabled_reason: 'requirements.past_due',
-          errors: [],
-          eventually_due: [
-            'business_profile.product_description',
-            'business_profile.support_phone',
-            'business_profile.url',
-            'external_account',
-            'tos_acceptance.date',
-            'tos_acceptance.ip'
-
-          ],
-          past_due: [],
-          pending_verification: []
-
-        },
-        settings: {
-          bacs_debit_payments: {},
-          branding: {
-            icon: null,
-            logo: null,
-            primary_color: null,
-            secondary_color: null
-
-          },
-          card_issuing: { tos_acceptance: [Object]  },
-          card_payments: { decline_on: [Object], statement_descriptor_prefix: null  },
-          dashboard: { display_name: null, timezone: 'Etc/UTC'  },
-          payments: {
-            statement_descriptor: null,
-            statement_descriptor_kana: null,
-            statement_descriptor_kanji: null
-
-          },
-          payouts: {
-            debit_negative_balances: true,
-            schedule: [Object],
-            statement_descriptor: null
-
-          },
-          sepa_debit_payments: {}
-
-        },
-        tos_acceptance: { date: null, ip: null, user_agent: null  },
-        type: 'standard'
-
-      })
+    new StripeAccountsMock().returnGoodAccount()
     const wrapped = testEnv.wrap(api.stripeCompleteOnboard)
     await wrapped({uid: '13371337'})
     const doc = await db.collection('creators').doc('13371337').get()
