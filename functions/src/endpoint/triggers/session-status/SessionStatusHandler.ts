@@ -4,6 +4,7 @@ import SessionDBC from '../../../dbc/SessionDBC'
 import ChatRoomDBC from '../../../dbc/ChatRoomDBC'
 import TaskDBC from '../../../dbc/TaskDBC'
 import TaskService from '../../../services/TaskService'
+import TimeService from '../../../services/TimeService'
 
 export default class SessionStatusHandler {
   before: SessionDBC | undefined
@@ -22,7 +23,7 @@ export default class SessionStatusHandler {
       this.onFull()
     }
     else if (bStatus === 'full' && aStatus === 'published') {
-      this.onSlotCancel()
+      this.onSlotCancelWhenFull()
     }
   }
 
@@ -71,13 +72,19 @@ export default class SessionStatusHandler {
       creator: a.sellerUid!,
       title: a.name!
     })
+    return
   }
 
   private async onFull(): Promise<void> {
-    // send notifications ( •́ ⌣ •̀ )⌐╦╦═─
+    const a = this.after!
+    if (a.mandatoryFill === true) {
+      const secondsUntil = new TimeService().generate()
+      const task = await new TaskService().scheduleSessionStart(a.id!, secondsUntil)
+      await new TaskDBC(a.id!).write(task)
+    }
   }
 
-  private async onSlotCancel(): Promise<void> {
+  private async onSlotCancelWhenFull(): Promise<void> {
     const task = await new TaskDBC(this.after!.id!).retrieve()
     await new TaskService().cancel(task)
   }
