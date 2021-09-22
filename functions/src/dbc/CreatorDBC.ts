@@ -198,9 +198,10 @@ export default class CreatorDBC extends Creator {
    * @async
    * @returns {Promise<Creator>}
    */
-  public async fetchByUid(): Promise<Creator> {
-    const creator = await db.collection('creators').doc(this.uid!).withConverter(converter).get()
-    if (creator.exists === false) throw new Error('Creator not found in firestore.')
+  public async fetchByUid(uid?: string): Promise<CreatorDBC> {
+    const _uid = uid ? uid : this.uid!
+    const creator = await db.collection('creators').doc(_uid).withConverter(converter).get()
+    if (creator.data() === undefined) throw new Error('Creator not found in firestore.')
     return creator.data()!
   }
 
