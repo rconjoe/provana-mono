@@ -67,6 +67,16 @@ export default class TaskService {
     return await this.schedule(this.buildRequest('session-start', sessionId, secondsUntil))
   }
 
+  
+  /**
+   * Takes the firebase document id of a slot, and the number of seconds untill the task will be executed, and schedules a new 'capture' task
+   *
+   * @public
+   * @async
+   * @param {string} slotId
+   * @param {number} secondsUntil
+   * @returns {Promise<string>}
+   */
   public async scheduleCapture(slotId: string, secondsUntil: number): Promise<string> {
     return await this.schedule(this.buildRequest('capture', slotId, secondsUntil))
   }
@@ -89,6 +99,14 @@ export default class TaskService {
     return task.name!
   }
 
+  
+  /**
+   * Takes the absolute path in the project to the cloud task and deletes the task at the path provided
+   *
+   * @public
+   * @async
+   * @param {string} path
+   */
   public async cancel(path: string) {
     await this.client!.deleteTask({name: path})
       .catch(err => {
