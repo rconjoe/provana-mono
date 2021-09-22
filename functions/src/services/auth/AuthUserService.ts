@@ -108,4 +108,9 @@ export default class AuthUserService {
     if (!user.email) throw new Error('This user does not have an email and has probably been deleted')
     return user.email
   }
+
+  public async typeOf(uid: string): Promise<string> {
+    const user = await this.getUser(uid)
+    return user.customClaims!.type!
+  }
 }
