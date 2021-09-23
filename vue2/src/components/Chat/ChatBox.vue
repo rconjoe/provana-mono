@@ -60,7 +60,7 @@ export default {
 }
 
 .fixedChat {
-  width: 400px;
+  max-width: 400px;
   position: fixed;
   bottom: 0;
   right: 10px;
@@ -74,7 +74,6 @@ export default {
 }
 .chatBox {
   margin-bottom: 0;
-  overflow-y:hide;
-  height:30px;
+  overflow-y:hidden;
 }
 </style>
