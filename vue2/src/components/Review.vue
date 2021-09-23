@@ -32,7 +32,7 @@
         cancel
       </v-btn> -->
 			<v-spacer></v-spacer>
-			<v-btn color="secondary" @click="createReview" class="btnCTA">
+			<v-btn color="secondary" @click="createReview" class="btnCTA" :disabled="(rating = null)">
 				Submit Review
 			</v-btn>
 		</v-card-actions>
@@ -58,7 +58,7 @@
 			async createReview() {
 				await db
 					.collection('reviews')
-          .doc(this.review.reviewDocId)
+					.doc(this.review.reviewDocId)
 					.set({
 						sellerUid: this.review.sellerUid,
 						buyerUid: this.$user.uid,
