@@ -36,54 +36,24 @@
 </template>
 
 <script>
+import { functions } from '../../../plugins/firebase'
+
 export default {
   props: ['uid'],
   data: () => ({
-    reviews: [
-      {
-        username: 'MR@NDERSON',
-        rating: 4.9,
-        date: 'Aug 30th 2020',
-        service: 'Session 2',
-        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
-      },
-      {
-        username: 'MR@NDERSON',
-        rating: 4.9,
-        date: 'Sept 30th 2020',
-        service: 'Session 1',
-        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
-      },
-      {
-        username: 'MR@NDERSON',
-        rating: 4.9,
-        date: 'Oct 30th 2020',
-        service: 'Session 3',
-        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
-      },
-      {
-        username: 'MR@NDERSON',
-        rating: 4.9,
-        date: 'Nov 30th 2020',
-        service: 'Session 1',
-        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
-      },
-      {
-        username: 'MR@NDERSON',
-        rating: 4.9,
-        date: 'Nov 30th 2020',
-        service: 'Session 1',
-        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
-      },
-      {
-        username: 'MR@NDERSON',
-        rating: 4.9,
-        date: 'Nov 30th 2020',
-        service: 'Session 1',
-        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.',
-      },
-    ],
+    reviews:[]
   }),
+  mounted(){
+    this.getRecentReviews()
+  },
+  methods:{
+    async getRecentReviews() {
+            console.log('started')
+            const getReviews = functions.httpsCallable('getRecentReviews')
+            const response = await getReviews({ sellerUid: this.$user.uid })
+            this.reviews.push(...response.data)
+        }
+  }
 };
 </script>
 
