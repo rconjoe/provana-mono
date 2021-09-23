@@ -8,11 +8,11 @@
 						<v-icon class="pa-0" size="1.3vw" color="primary"> fas fa-chevron-left </v-icon>
 					</v-btn>
 					<!-- Username -->
-					<div class="titleDiv" @click="toggleEdit">
-						<span class="pl-2 convoTitle text-truncate"
+					<span class="pl-2 convoTitle text-truncate"
 							>{{ title }}
-							<!-- TODO: move this over all the way to the right and expand title -->
 						</span>
+					<div class="titleDiv" @click="toggleEdit" v-if="creator">
+						
 						<v-icon small color="primary" class="ml-0 pencil">
 							fas fa-pencil-alt
 						</v-icon>
@@ -42,7 +42,7 @@
 
 <script>
 	export default {
-		props: ['title','editTitle'],
+		props: ['title','editTitle','creator'],
         data: () => ({
             newTitle:''
         }),

@@ -4,6 +4,7 @@
 		<ConvoToolbar
 			:title="chatroom.title"
 			:editTitle="editTitle"
+			:creator="this.$user.uid === chatroom.creator"
 			@toggle-edit="toggleEdit"
 			@change-title="changeTitle"
 			@back-to-rooms="backToRooms"
