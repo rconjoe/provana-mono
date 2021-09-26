@@ -86,7 +86,8 @@ export default class NotificationDBC {
     await db.collection('notifications')
       .doc(this.uid)
       .collection('notif')
+      .doc(this.uid)
       .withConverter(converter)
-      .doc()
+    .set(this)
   }
 }
