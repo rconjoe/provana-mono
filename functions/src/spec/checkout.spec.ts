@@ -1,5 +1,6 @@
 import { testEnv } from './env.spec'
 import { db } from '../config'
+
 describe('Tests checkout session generation endpoint', () => {
   let api: any
 

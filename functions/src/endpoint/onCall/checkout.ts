@@ -1,7 +1,6 @@
 import * as functions from 'firebase-functions'
 import StripeCheckoutService from '../../services/stripe/StripeCheckoutService'
 import SlotDBC from '../../dbc/SlotDBC'
-import TaskService from '../../services/TaskService'
 
 export const checkout = functions.https.onCall(async (data, context): Promise<string> => {
   const checkout = await new StripeCheckoutService().createCheckout({
@@ -21,6 +20,5 @@ export const checkout = functions.https.onCall(async (data, context): Promise<st
     buyerUid: data.uid,
     buyerUsername: data.username
   })
-  await new TaskService().onCheckout(slot.id!)
   return checkout.id
 })

@@ -1,9 +1,7 @@
 import { Change } from 'firebase-functions'
 import SlotDBC from '../../../dbc/SlotDBC'
 import SessionDBC from '../../../dbc/SessionDBC'
-import CreatorDBC from '../../../dbc/CreatorDBC'
 import ChatRoomDBC from '../../../dbc/ChatRoomDBC'
-import MailService from '../../../services/mailer/MailService'
 import TimeService from '../../../services/TimeService'
 import TaskService from '../../../services/TaskService'
 import TaskDBC from '../../../dbc/TaskDBC'
@@ -18,7 +16,10 @@ export default class SlotStatusHandler {
     this.after = this.toDbc(change.after)
     const bStatus = this.before.status
     const aStatus = this.after.status
-    if (bStatus === 'holding' && aStatus === 'booked') {
+    if (bStatus === 'published' && aStatus === 'holding') {
+      this.onHolding()
+    }
+    else if (bStatus === 'holding' && aStatus === 'booked') {
       this.onPurchase()
     }
     else if (bStatus === 'booked' && aStatus === 'active') {
@@ -53,20 +54,27 @@ export default class SlotStatusHandler {
     )
   }
 
-  private async onPurchase(): Promise<string> {
+  private async onHolding(): Promise<void> {
+    await new TaskService().onCheckout(this.after!.id!)
+  }
+
+  private async onPurchase(): Promise<void> {
     const a = this.after!
     await new SessionDBC().increment(a.parentSession!)
     await new ChatRoomDBC().addToRoom(a.buyerUid!, a.parentSession!)
     a.mandatoryFill ? await this.checkFill() : await this.scheduleSlotStart()
-    const creator = await new CreatorDBC(a.sellerUid).fetchByUid()
-    const dateTime = new TimeService().toLocalDateTime(a.start!, creator.timezone!)
-    return await new MailService(creator.email!).slotSold({
-      username: creator.username!,
-      service: a.name!,
-      buyer: a.buyerUsername!,
-      time: dateTime.time,
-      date: dateTime.date
-    })
+    
+    // Here we need to be sending notification and potentially mail etc etc:
+    //
+    // const creator = await new CreatorDBC(a.sellerUid).fetchByUid()
+    // const dateTime = new TimeService().toLocalDateTime(a.start!, creator.timezone!)
+    // return await new MailService(creator.email!).slotSold({
+    //   username: creator.username!,
+    //   service: a.name!,
+    //   buyer: a.buyerUsername!,
+    //   time: dateTime.time,
+    //   date: dateTime.date
+    // })
   }
 
   private async checkFill(): Promise<void> {
@@ -74,9 +82,6 @@ export default class SlotStatusHandler {
     const session = await new SessionDBC().fetch(id)
     if (session.booked === session.slots) {
       await session.update({ status: 'full' })
-      const secondsUntil = session.start! - new TimeService().generate()
-      const task = await new TaskService().scheduleSessionStart(id, secondsUntil)
-      await new TaskDBC(id).write(task)
     }
   }
 
@@ -109,5 +114,6 @@ export default class SlotStatusHandler {
   }
 
   private async onDispute(): Promise<void> {
+    console.log('disputed')
   }
 }

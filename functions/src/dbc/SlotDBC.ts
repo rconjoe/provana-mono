@@ -8,7 +8,7 @@ import { db } from '../config'
  *
  * @type {{ toFirestore(s: any): any; fromFirestore(snapshot: any): SlotDBC; }}
  */
-const converter = {
+const converter: FirebaseFirestore.FirestoreDataConverter<SlotDBC> = {
   toFirestore(s: Slot): FirebaseFirestore.DocumentData {
     return {
       id: s.id ? s.id : "",

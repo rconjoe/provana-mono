@@ -76,4 +76,5 @@ functions/.runtimeconfig.json
 .vscode
 vue2/node_modules
 vue2/dist
-.DS_Store
+functions/.vimspector.json
+functions/src/endpoint/.vimspector.json

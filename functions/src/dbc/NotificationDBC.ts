@@ -44,7 +44,7 @@ export default class NotificationDBC {
   accType: string
   time: number
   category: string
-  content: object
+  content: string
   unread: boolean
 
   
@@ -56,7 +56,7 @@ export default class NotificationDBC {
    * @param {string} accType The user's account type either Creator or Supporter
    * @param {number} time Time in unix format that the notificatin was fired
    * @param {string} category Category of the notification
-   * @param {object} content Object that contains all the details to be displayed in the notification
+   * @param {string} content String of the notifcation text 
    * @param {boolean} unread Boolean that is false as long as the user has not opened the notification
    */
   constructor(
@@ -64,7 +64,7 @@ export default class NotificationDBC {
     accType: string,
     time: number,
     category: string,
-    content: object,
+    content: string,
     unread: boolean
   ) {
     this.uid = uid
@@ -77,7 +77,7 @@ export default class NotificationDBC {
 
   
   /**
-   * Method that sets a new document in the Firestore collection 'notifications' named after the user's Firebase uid
+   * Method that sets a new document in the Firestore collection 'notifications' named after the user's Firebase uid and then into a sub collection inside that doc named "notif"
    *
    * @async
    * @returns {Promise<void>}
@@ -85,7 +85,8 @@ export default class NotificationDBC {
   async send(): Promise<void> {
     await db.collection('notifications')
       .doc(this.uid)
+      .collection('notif')
       .withConverter(converter)
-      .set(this)
+      .doc()
   }
 }

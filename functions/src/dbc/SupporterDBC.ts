@@ -126,4 +126,12 @@ export default class SupporterDBC extends Supporter {
         throw new Error(err)
       })
   }
+
+  public async fetchByUid(uid: string): Promise<SupporterDBC> {
+    const doc = await db.collection('supporters')
+      .doc(uid)
+      .withConverter(converter)
+      .get()
+    return doc.data()!
+  }
 }

@@ -2,7 +2,7 @@ import ChatRoom from '../models/ChatRoom'
 import { db } from '../config'
 import { addToArray, removeFromArray } from '../util'
 
-// const converter: FirebaseFirestore.FirestoreDataConverter = {
+// const converter: FirebaseFirestore.FirestoreDataConverter<ChatRoomDBC> = {
 //   toFirestore(r: ChatRoomDBC): FirebaseFirestore.DocumentData {
 //     return {
 //       users: r.users ? r.users : [],
@@ -59,18 +59,6 @@ export default class ChatRoomDBC extends ChatRoom {
   }
 
   
-  /**
-   * Creates a new doc in the Firebase collection 'chats', then sets the creator and title on the document, then finally adds the Creator's Firebase uid to the users array
-   *
-   * @public
-   * @async
-   * @param {{
-      id: string,
-      creator: string,
-      title: string
-    }} data
-   * @returns {Promise<void>}
-   */
   public async initialize(data: {
     id: string,
     creator: string,
@@ -81,13 +69,10 @@ export default class ChatRoomDBC extends ChatRoom {
       .doc(data.id)
     await this.ref.set({
       creator: data.creator,
-      title: data.title
+      title: data.title,
+      users: []
     })
-    await addToArray({
-      ref: this.ref,
-      field: 'users',
-      value: data.creator
-    })
+    await this.addToRoom(data.creator, data.id)
   }
 
   

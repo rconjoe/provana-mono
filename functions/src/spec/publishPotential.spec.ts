@@ -11,13 +11,13 @@ describe('Tests publishPotential HTTPS endpoint', () => {
 
   afterAll(async () => {
     testEnv.cleanup()
-    await db.collection('sessions').doc('12345').delete()
+    // await db.collection('sessions').doc('12345').delete()
   })
 
   it('Sets any potential session to published and update its color', async () => {
     await db.collection('sessions').doc('12345').set({
       sellerUid: '123abc',
-      slots: 1,
+      slots: 3,
       booked: 0,
       serviceDocId: '67890',
       mandatoryFill: false,
