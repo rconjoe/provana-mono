@@ -101,7 +101,7 @@
 							</v-carousel>
 						</div>
 						<h3 class="imageText">Start turning incentives into experiences.</h3>
-						<v-btn class="btnCTA" color="primary"> Make an account</v-btn>
+						<v-btn class="btnCTA" color="primary" to="/register"> Make an account</v-btn>
 					</v-col>
 				</v-row>
 			</div>
@@ -120,7 +120,6 @@
 					<!-- 1/2 col Image -->
 					<v-col>
 						<div class="weDifferentImage">
-							<h1>hi</h1>
 						</div>
 					</v-col>
 					<!-- 2/2 Col Customization list -->
