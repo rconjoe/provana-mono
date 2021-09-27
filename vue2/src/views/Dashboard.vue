@@ -71,7 +71,7 @@ import { db } from '../plugins/firebase';
 import { mapState } from 'vuex'
 import ChatBox from '@/components/Chat/ChatBox.vue';
 import DashboardHome from '@/components/DashboardComponents/DashboardHome.vue';
-import DashboardAccount from '@/components/DashboardComponents/DashboardAccount.vue';
+import DashboardAccount from '@/components/DashboardComponents/DashboardAccount/DashboardAccount.vue';
 import DashboardService from '@/components/DashboardComponents/DashboardService.vue';
 import DashboardPayments from '@/components/DashboardComponents/DashboardPayments.vue';
 import DashboardContact from '@/components/DashboardComponents/DashboardContact.vue';
