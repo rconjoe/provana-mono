@@ -3,9 +3,28 @@ service cloud.firestore {
     match /{document=**} {
       allow read, write: if request.time < timestamp.date(2021, 9, 8);
     }
+
+    match /invitations/{invitationId} {
+      allow read;
+      allow write;
+    }
+
+    match /supporters/{supporterId} {
+      allow read;
+      allow create;
+      allow update: if request.auth.uid == resource.id;
+    }
+
+    match /creators/{creatorId} {
+      allow read;
+      allow create;
+      allow update: if request.auth.uid == resource.id;
+    }
+
     match /sessions/{sessionId} {
       allow read;
-      allow write: if request.auth.uid == resource.data.sellerUid;
+      allow create: if request.auth != null && exists(/databases/$(database)/documents/creators/$(request.auth.uid))
+      allow update: if request.auth.uid == resource.data.sellerUid;
 
       match /slots/{slotId} {
         allow read, write: if request.auth.uid == resource.data.sellerUid;
