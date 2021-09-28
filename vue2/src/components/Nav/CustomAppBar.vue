@@ -101,7 +101,7 @@
 				},
 				{
 					label: 'About Provana',
-					url: '/#whatIsProvana',
+					url: '/about',
 				},
 				{
 					label: 'Partnerships',
