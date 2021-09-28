@@ -9,7 +9,7 @@
 			<v-row>
 				<v-col class="sectionCol">
 					<h1 class="windowHeader">Stripe Account</h1>
-					<ConnectWithStripe v-if="onboarded === false" :onboarded='onboarded' />
+					
                     <h3 class="subText"> PlaceholderText </h3>
 				</v-col>
 			</v-row>
@@ -25,13 +25,8 @@
 </template>
 
 <script>
-import ConnectWithStripe from './ConnectWithStripe.vue'
 export default {
 	name: 'DashboardPayments',
-
-	components: {
-		ConnectWithStripe,
-	},
 
 	data: () => ({
 		onboarded: null,

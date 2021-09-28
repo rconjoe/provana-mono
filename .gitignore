@@ -65,6 +65,9 @@ node_modules/
 # dotenv environment variables file
 .env
 
+#out dir for jsdoc documentation
+functions/out
+
 .history
 functions/dist
 functions/test-creds.json
@@ -73,4 +76,5 @@ functions/.runtimeconfig.json
 .vscode
 vue2/node_modules
 vue2/dist
-.DS_Store
+functions/.vimspector.json
+functions/src/endpoint/.vimspector.json

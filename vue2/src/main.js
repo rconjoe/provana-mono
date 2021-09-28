@@ -5,6 +5,7 @@ import vuetify from './plugins/vuetify';
 import { routes } from './router/index'
 import { store } from './store/index'
 import { auth } from './plugins/firebase'
+import { db } from './plugins/firebase'
 
 // turn off development mode warning
 Vue.config.productionTip = false
@@ -36,7 +37,6 @@ router.beforeEach(async (to, from, next) => {
     }
 })
 
-
 // instantiate vue app, but don't mount it:
 const app = new Vue({
   router: router,
@@ -59,54 +59,28 @@ Vue.mixin({
   }
 })
 
-// mount the app inside this auth state watcher.
-// onAuthStateChanged returns the new user object every time there is a change in auth state.
-// we put the user object everywhere it needs to be in the vue app BEFORE we mount the app:
-
-// when our auth state changes, take the new user object (or null on logout) and do the following:
 auth.onAuthStateChanged(async (user) => {
-
   const isAuthed = Boolean(user);
   const { meta } = router.history.current;
-
-
-  // turn on loading bar
   store.commit('loading/SET_LOADING', true)
 
   if (isAuthed) {
-    // set username, email, and UID to vuex store
-    store.commit('auth/SET_USER', {
-      displayName: user.displayName,
-      email: user.email,
-      uid: user.uid,
-      photoURL: user.photoURL
-    })
-
-    // other than the above three fields, our JWT's contain custom claims that must be fetched from the server:
     await auth.currentUser.getIdTokenResult()
-      .then((idTokenResult) => {
-        store.commit('auth/SET_CLAIMS', {
-          type: idTokenResult.claims.type,
-        })
+      .then(async (idTokenResult) => {
+        store.commit('auth/SET_CLAIMS', idTokenResult.claims)
+        await store.dispatch('auth/bindProfile', user.uid)
+        Vue.prototype.$user = user
+        Vue.prototype.$user.type = idTokenResult.claims.type
       })
-    store.dispatch('notifications/setOnline')
     }
 
-    store.dispatch('tz/setTimezone')
-
-    // turn off loading bar
+    await store.dispatch('auth/setTimezone')
     store.commit('loading/SET_LOADING', false)
-
-    // set the user object to a vue prototype, enabling this.$user globally
-    Vue.prototype.$user = user;
-
     if (isAuthed && meta.isPublicOnly) {
       router.push('/dashboard')
     }
     else if (!isAuthed && meta.isPrivate) {
       router.push('/login')
     }
-
-    // mount the vue app to the DOM, beginning component lifecycles
     app.$mount('#app')
 })

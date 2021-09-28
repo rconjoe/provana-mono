@@ -20,9 +20,8 @@ export default {
                       auth.signOut()
                       .then(() => {
                           // clear cookie to prevent immediate re-login
-                          this.$store.commit('error/SET_ERROR','You Have logged out and will be redirected.')
+                          this.$store.commit('error/SET_ERROR','You have logged out and will be redirected.')
                           this.$store.commit('error/SET_SHOW_ERROR',true)
-                          this.$cookie.remove('provanaUID')
                           window.location = '/'
                           
                       })

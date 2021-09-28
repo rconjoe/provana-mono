@@ -1,8 +1,8 @@
 import * as functions from 'firebase-functions'
-import { Creator } from '../../models/Creator'
+import Creator from '../../models/Creator'
 import AuthUserService from '../../services/auth/AuthUserService'
-import { StripeCustomerService } from '../../services/stripe/StripeCustomerService'
-import { StripeAccountService } from '../../services/stripe/StripeAccountService'
+import StripeCustomerService from '../../services/stripe/StripeCustomerService'
+import StripeAccountService from '../../services/stripe/StripeAccountService'
 import CreatorDBC from '../../dbc/CreatorDBC'
 
 export const registerCreator = functions.https.onCall(async (data, context) => {

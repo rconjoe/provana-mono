@@ -1,87 +1,32 @@
 
 /**
  * Class that contains all the informatino about a rating
- * @date 8/17/2021 - 3:00:26 PM
- *
- * @export
  * @class Review
  * @typedef {Review}
+ * @module Review
+ * @category src
+ * @subcategory models
  */
-export class Review {
+export default class Review {
 
-
-    /**
-     * Seller UID needed to either GET the reviews from database or PUT a new one in the collection
-     * @date 8/17/2021 - 3:00:48 PM
-     *
-     * @public
-     * @type {string}
-     */
     public sellerUid?: string;
-
-
-    /**
-     * Optional Buyer UID used to GET the information about them to save on the review
-     * @date 8/17/2021 - 3:01:25 PM
-     *
-     * @public
-     * @type {?string}
-     */
     public buyerUid?: string;
-
-
-    /**
-     * Optional message from a supporter to be saved on the review
-     * @date 8/17/2021 - 3:01:54 PM
-     *
-     * @public
-     * @type {?string}
-     */
     public message?: string;
-
-
-    /**
-     * Optional the date that a review was written
-     * @date 8/17/2021 - 3:02:28 PM
-     *
-     * @public
-     * @type {?Date}
-     */
     public date?: Date;
-
-
-    /**
-     * Optional the rating a supporter gave the service
-     * @date 8/17/2021 - 3:02:46 PM
-     *
-     * @public
-     * @type {?number}
-     */
     public rating?: number;
-
-
-    /**
-     * Optional the name of the service that the review was written for
-     * @date 8/17/2021 - 3:03:04 PM
-     *
-     * @public
-     * @type {?string}
-     */
     public serviceName?: string;
 
 
     /**
      * Creates an instance of Review.
-     * @date 8/17/2021 - 3:03:23 PM
-     *
      * @constructor
      * @public
-     * @param {string} sellerUid
-     * @param {?string} [buyerUid]
-     * @param {?string} [message]
-     * @param {?Date} [date]
-     * @param {?number} [rating]
-     * @param {?string} [serviceName]
+     * @param {string} sellerUid Firebase UID of the Creator who rendered the service
+     * @param {?string} [buyerUid] Firebase UID of the Supporter who purchased the service
+     * @param {?string} [message] Message the Supporter left about the service 
+     * @param {?Date} [date] Date that the review was written
+     * @param {?number} [rating] Raiting 1-5 of the service, left by the Supporter
+     * @param {?string} [serviceName] Name of the service that the Supporter was reviewing
      */
     public constructor(sellerUid?: string, buyerUid?: string, message?: string, date?: Date, rating?: number, serviceName?: string) {
         this.sellerUid = sellerUid;
@@ -95,7 +40,6 @@ export class Review {
 
     /**
      * Setter for the BuyerUid atribute
-     * @date 8/17/2021 - 3:03:34 PM
      *
      * @public
      * @param {string} buyerUid
@@ -107,7 +51,6 @@ export class Review {
 
     /**
      * Setter for the message atrabute
-     * @date 8/17/2021 - 3:03:45 PM
      *
      * @public
      * @param {string} message
@@ -119,7 +62,6 @@ export class Review {
 
     /**
      * Setter for the date atribute
-     * @date 8/17/2021 - 3:04:19 PM
      *
      * @public
      * @param {Date} date
@@ -131,7 +73,6 @@ export class Review {
 
     /**
      * Setter for the rating atribute
-     * @date 8/17/2021 - 3:04:30 PM
      *
      * @public
      * @param {number} rating
@@ -143,7 +84,6 @@ export class Review {
 
     /**
      * Setter for the serviceName atribute
-     * @date 8/17/2021 - 3:04:46 PM
      *
      * @public
      * @param {string} serviceName

@@ -20,6 +20,11 @@ export { createService } from './endpoint/onCall/createService'
 export { writeNewReview } from './endpoint/onCall/writeNewReview';
 export { getRecentReviews } from './endpoint/onCall/getRecentReviews';
 export { getReviewScore } from './endpoint/onCall/getReviewScore';
+export { onSessionUpdate } from './endpoint/triggers/session-status/onSessionUpdate'
+export { onSlotUpdate } from './endpoint/triggers/slot-status/onSlotUpdate'
 export { publishPotential } from './endpoint/onCall/publishPotential'
-export { onSessionPublished } from './endpoint/triggers/session-status/onPublished'
-export { onSlotPurchased } from './endpoint/triggers/slot-status/onPurchased'
+export { checkout } from './endpoint/onCall/checkout'
+export { confirmCheckoutComplete } from './endpoint/onRequest/confirmCheckoutComplete'
+export { checkoutComplete } from './endpoint/onCall/checkoutComplete'
+export { startSlot } from './endpoint/onRequest/startSlot'
+export { capture } from './endpoint/onRequest/capture'

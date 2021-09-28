@@ -38,7 +38,6 @@ describe('Generates an account link for a non-onboarded creator account', () => 
     const wrapped = testEnv.wrap(api.stripeAccountOnboard)
     const response = await wrapped({uid: user.uid})
     expect(response.object).toBe('account_link')
-    expect(response.url).toContain('https://connect.stripe.com/express/onboarding/')
+    expect(response.url).toContain('https://richardm-manage-mydev.dev.stripe.me/setup/s/')
   })
-
 })

@@ -17,6 +17,10 @@
           <OnboardOverlay />
       </Overlay>
 
+      <!-- Review overlay -->
+      <Overlay :show="reviews.length > 1">
+          <Review :review="reviews[0]" />
+      </Overlay>
       <!-- Column wraps all dashboard windows. -->
       <v-col class="pa-0 DashCol">
         <!-- Dashboard components are displayed using seperate window-items. We can't loop them because each window has different components. -->
@@ -67,19 +71,21 @@ import { db } from '../plugins/firebase';
 import { mapState } from 'vuex'
 import ChatBox from '@/components/Chat/ChatBox.vue';
 import DashboardHome from '@/components/DashboardComponents/DashboardHome.vue';
-import DashboardAccount from '@/components/DashboardComponents/DashboardAccount.vue';
+import DashboardAccount from '@/components/DashboardComponents/DashboardAccount/DashboardAccount.vue';
 import DashboardService from '@/components/DashboardComponents/DashboardService.vue';
 import DashboardPayments from '@/components/DashboardComponents/DashboardPayments.vue';
 import DashboardContact from '@/components/DashboardComponents/DashboardContact.vue';
 import DashboardNavDrawer from '@/components/DashboardComponents/DashboardNavDrawer.vue';
 import DashboardNavMobile from '@/components/DashboardComponents/DashboardNavMobile.vue';
 import OnboardOverlay from '@/components/DashboardComponents/OnboardOverlay.vue';
+import Review from '../components/Review.vue'
 import Overlay from '@/components/ReusableComponents/Overlay.vue';
 
 export default {
   name: 'Dashboard',
 
   components: {
+    Review,
     ChatBox,
     DashboardHome,
     DashboardAccount,
@@ -93,7 +99,16 @@ export default {
   },
 
   data: () => ({
-    profile: {},
+    reviewTest:{
+      sellerUid: 'XVmdlCxlqvXY5JNucHthmDYsRRj2',
+			buyerUid: 'gb5D9dEioCOAWVViKgxL79xR4XZ2',
+			date: 34432242,
+			message: 'test Message',
+      rating: 4,
+      seller:'Dustin10',
+			serviceName: 'TestService',
+    },
+    reviews:[],
     drawer: null,
     window: 0,
     onboarded:true,
@@ -153,7 +168,8 @@ export default {
       }
     },
     ...mapState({
-      claims: state => state.auth.claims
+      claims: state => state.auth.claims,
+      profile: state => state.auth.currentUser
     })
   },
   mounted() {
@@ -161,6 +177,21 @@ export default {
     .onSnapshot((profile) => {
       this.profile = profile.data()
     })
+
+    db.collection('reviews')
+				.where('sellerUid', '==', this.$user.uid)
+				.where('rating', '==', null)
+				.onSnapshot((querySnapshot) => {
+					this.review = []
+					querySnapshot.forEach((doc) => {
+						const review = 
+              {
+                reviewDocId: doc.id,
+                ...doc.data()
+              }
+						this.reviews.push(review)
+					})
+				})
   },
   methods: {
     updateWindow(toggle) {

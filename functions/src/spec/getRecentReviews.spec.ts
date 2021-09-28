@@ -13,7 +13,7 @@ describe('Tests getRecentReviews', () => {
         sellerUid:'56789',
         buyerUid: i,
         rating: 5,
-        messageh :'this is a jest test message',
+        message :'this is a jest test message',
         date: dayjs().unix(),
         serviceName: `test review #${i}`
       })
@@ -32,7 +32,6 @@ describe('Tests getRecentReviews', () => {
   it('should be able to get the last 20 most recent reviews',async () => {
     const wrapped = testEnv.wrap(api.getRecentReviews)
     const response = await wrapped({sellerUid: '56789'})
-    console.log(response)
     expect(response.length).toBe(5)
     expect(response[0].message).toBe('this is a jest test message')
   })

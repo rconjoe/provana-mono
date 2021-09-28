@@ -29,7 +29,7 @@ var stripe = Stripe("pk_test_51HJUgfGoIl5NLNcQKTXPu3CKuckXq6vbUXxASrRZvrXgwtODSI
 export default {
     name: "PaymentSuccess",
 
-    // this is prop passed from vue router see router/index.js
+    // prop of the checkout session ID comes from vue router
     props: ['checkoutSessionId'],
 
     data: () => ({
@@ -37,17 +37,14 @@ export default {
 
     async mounted() {
         this.retrievePaymentResult()
+        console.log(checkoutSessionId)
     },
 
     methods: {
         async retrievePaymentResult() {
-            const retrievePaymentCallable = functions.httpsCallable('callableRetrievePaymentResult')
-            await retrievePaymentCallable({ checkoutSession: this.checkoutSessionId })
-            .then(resp => {
-                if (resp.data === 'requires_capture') {
-                    console.log('yaaay')
-                }
-            })
+            const checkoutComplete = functions.httpsCallable('checkoutComplete')
+            const response = await checkoutComplete({ checkoutId: this.checkoutSessionId })
+            console.log(response.data)
         }
     }
 }
