@@ -91,7 +91,7 @@
 						// get the url and send it to API to write to user's profile object
 						uploadAvatar.snapshot.ref.getDownloadURL().then(async (downloadUrl) => {
 							this.avatarUrl = downloadUrl
-							this.updatePhotoString(downloadUrl, 'avatar')
+							this.updateAvatar(downloadUrl)
 						})
 						this.avatarEdit = !this.avatarEdit
 						this.avatarLoading = false
@@ -99,18 +99,22 @@
 				)
 			},
 			// gets called on successful photo upload, updates avatar and banner URL strings on profile objects
-			async updatePhotoString(downloadUrl, type) {
-				const updatePhoto = db.collection(this.$store.state.auth.claims.type)
-				await updatePhoto
-					.set(
-						{
-							collection: this.$store.state.auth.claims.type,
-							uid: this.$user.uid,
-							photo: downloadUrl,
-							type: type,
-						},
-						{ merge: true }
-					)
+			async updateAvatar(downloadUrl) {
+				 await db.collection(this.$store.state.auth.claims.type)
+				 	.doc(this.$user.uid)
+					.update({
+						avatar: downloadUrl
+					})
+					.catch((err) => {
+						console.error(err)
+					})
+			},
+			async updateBanner(downloadUrl) {
+				 await db.collection(this.$store.state.auth.claims.type)
+				 	.doc(this.$user.uid)
+					.update({
+						banner: downloadUrl
+					})
 					.catch((err) => {
 						console.error(err)
 					})
@@ -135,7 +139,7 @@
 					() => {
 						uploadBanner.snapshot.ref.getDownloadURL().then(async (downloadUrl) => {
 							this.bannerUrl = downloadUrl
-							this.updatePhotoString(downloadUrl, 'banner')
+							this.updateBanner(downloadUrl)
 						})
 						this.bannerEdit = !this.bannerEdit
 						this.bannerLoading = false
