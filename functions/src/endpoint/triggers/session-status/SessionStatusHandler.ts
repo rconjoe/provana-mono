@@ -5,6 +5,7 @@ import ChatRoomDBC from '../../../dbc/ChatRoomDBC'
 import TaskDBC from '../../../dbc/TaskDBC'
 import TaskService from '../../../services/TaskService'
 import TimeService from '../../../services/TimeService'
+import NotificationDBC from '../../../dbc/NotificationDBC'
 
 export default class SessionStatusHandler {
   before: SessionDBC | undefined
@@ -24,6 +25,12 @@ export default class SessionStatusHandler {
     }
     else if (bStatus === 'full' && aStatus === 'published') {
       this.onSlotCancelWhenFull()
+    }
+    else if (bStatus === 'published' && aStatus === 'active') {
+      this.onActive();
+    }
+    else if (bStatus === 'full' && aStatus === 'active') {
+      this.onActive();
     }
   }
 
@@ -73,6 +80,11 @@ export default class SessionStatusHandler {
       title: a.name!
     })
     return
+  }
+
+  private async onActive(): Promise<void> {
+    const a = this.after!
+    const notif = new NotificationDBC(a.sellerUid!,"Cancellation","A user has cancled their session with you, please check your dashboard",true);
   }
 
   private async onFull(): Promise<void> {

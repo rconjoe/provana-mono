@@ -1,4 +1,5 @@
 import { db } from '../config'
+import TimeService from '../services/TimeService'
 
 /**
  * Converter for either mapping data to a Firestore document snapshot or from Firestore to a NotificationDBC object
@@ -10,7 +11,6 @@ const converter = {
     return {
       uid: n.uid,
       time: n.time,
-      accType: n.accType,
       category: n.category,
       content: n.content,
       unread: n.unread
@@ -20,7 +20,6 @@ const converter = {
     const data = snapshot.data()
     return new NotificationDBC(
       data.uid,
-      data.accType,
       data.time,
       data.category,
       data.content,
@@ -41,8 +40,7 @@ const converter = {
  */
 export default class NotificationDBC {
   uid: string
-  accType: string
-  time: number
+  time?: number
   category: string
   content: string
   unread: boolean
@@ -53,7 +51,6 @@ export default class NotificationDBC {
    *
    * @constructor
    * @param {string} uid The user's Firebase uid
-   * @param {string} accType The user's account type either Creator or Supporter
    * @param {number} time Time in unix format that the notificatin was fired
    * @param {string} category Category of the notification
    * @param {string} content String of the notifcation text 
@@ -61,14 +58,12 @@ export default class NotificationDBC {
    */
   constructor(
     uid: string,
-    accType: string,
-    time: number,
     category: string,
     content: string,
-    unread: boolean
+    unread: boolean,
+    time?: number
   ) {
     this.uid = uid
-    this.accType = accType
     this.time = time
     this.category = category
     this.content = content
@@ -83,6 +78,7 @@ export default class NotificationDBC {
    * @returns {Promise<void>}
    */
   async send(): Promise<void> {
+    this.time = new TimeService().generate();
     await db.collection('notifications')
       .doc(this.uid)
       .collection('notif')

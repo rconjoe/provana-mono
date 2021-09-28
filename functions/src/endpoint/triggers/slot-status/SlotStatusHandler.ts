@@ -6,6 +6,8 @@ import TimeService from '../../../services/TimeService'
 import TaskService from '../../../services/TaskService'
 import TaskDBC from '../../../dbc/TaskDBC'
 import StripePaymentIntentService from '../../../services/stripe/StripePaymentIntentService'
+import NotificationDBC from '../../../dbc/NotificationDBC';
+
 
 export default class SlotStatusHandler {
   before: SlotDBC | undefined
@@ -75,6 +77,7 @@ export default class SlotStatusHandler {
     //   time: dateTime.time,
     //   date: dateTime.date
     // })
+    const notif = new NotificationDBC(a.sellerUid!,"Session Purchased!","A user has purchased a session with you, please check your dashboard",true);
   }
 
   private async checkFill(): Promise<void> {
