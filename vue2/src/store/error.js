@@ -27,7 +27,10 @@ export const error = {
     },
 
     SET_ERROR(state, data) {
-      state.data = {...data}
+      state.data.message = data.message;
+      state.data.color = data.color;
+      state.data.icon = data.icon
+      state.data.show = data.show
     }
   },
 
