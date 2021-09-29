@@ -12,7 +12,7 @@ describe('Tests the send method of the NotificationDBC', () => {
 
     it('Creates a new notification in Firestore', async () => {
 
-        const notifDBC = new NotificationDBC('abc123',"jest test",123456,"jest test","this is a jest test notification",true);
+        const notifDBC = new NotificationDBC('abc123',"jest test", 'this is a jest test notification', true, 123456);
 
         await notifDBC.send();
         const testNotifQuery = await db.collection('notifications').doc("abc123").collection('notif').get();
@@ -21,7 +21,6 @@ describe('Tests the send method of the NotificationDBC', () => {
         const testNotif = testNotifDocArray[0].data();
 
         expect(testNotif.uid).toBe('abc123');
-        expect(testNotif.accType).toBe('jest test');
         expect(testNotif.time).toBe(123456);
         expect(testNotif.category).toBe("jest test");
         expect(testNotif.content).toBe('this is a jest test notification');
