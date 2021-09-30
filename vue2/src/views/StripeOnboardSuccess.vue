@@ -22,7 +22,7 @@
     <v-col class="eyesCol">
         <v-img class="eyes" src="../assets/ProvanaEyes_Login.png"> </v-img>
         <h4 class="btnText"> Let’s goooooooo…</h4>
-        <v-btn color="primary" class="stripeBtn">Check them out</v-btn>
+        <router-link to="/dashboard"><v-btn color="primary" class="stripeBtn">Check them out</v-btn></router-link>
     </v-col>
 </v-row>
 </template>
@@ -47,6 +47,10 @@ export default {
             const stripeCompleteOnboard = functions.httpsCallable('stripeCompleteOnboard');
             const success =  await stripeCompleteOnboard({uid: this.$user.uid})
             success ? null : console.error('Error completing onboard!')
+        },
+
+        redirect() {
+            
         }
     },
 
