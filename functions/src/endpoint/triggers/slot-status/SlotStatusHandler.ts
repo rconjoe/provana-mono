@@ -77,7 +77,7 @@ export default class SlotStatusHandler {
     //   time: dateTime.time,
     //   date: dateTime.date
     // })
-    const notif = new NotificationDBC(a.sellerUid!,"Session Purchased!","A user has purchased a session with you, please check your dashboard",true);
+    await new NotificationDBC(a.sellerUid!,"Session Purchased!","A user has purchased a session with you, please check your dashboard",true).send()
   }
 
   private async checkFill(): Promise<void> {
