@@ -53,6 +53,7 @@
 		data: () => ({
 			rating: null,
 			message: '',
+			profile:{},
 		}),
 		methods: {
 			async createReview() {
@@ -62,6 +63,7 @@
 					.set({
 						sellerUid: this.review.sellerUid,
 						buyerUid: this.$user.uid,
+						buyerName: this.$store.state.auth.currentUser.username,
 						date: dayjs().unix(),
 						message: `${this.message}`,
 						rating: this.rating,
