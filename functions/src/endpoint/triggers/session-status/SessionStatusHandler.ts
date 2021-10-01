@@ -58,17 +58,24 @@ export default class SessionStatusHandler {
           await new TaskDBC(this.session.id!).write(task)
         }
       break
+      case 'cancelled':
+        // ...
+      break
     }
   }
 
     public async full(): Promise<void> {
-      if (this.session.status === 'active') {
-        await new NotificationDBC(
-          this.session.sellerUid!,
-          'Starting',
-          'Your session is starting now!',
-          true
-        ).send()
+      switch (this.session.status) {
+        case 'active':
+          await new NotificationDBC(
+            this.session.sellerUid!,
+            'Starting',
+            `You've filled up one of your sessions. Nice job!`,
+            true
+          ).send()
+        case 'cancelled': 
+          // decide how much of deletion and notif/mail handling goes here (ideally most/all of it)
+        break
       }
     }
 
@@ -76,9 +83,6 @@ export default class SessionStatusHandler {
     switch (this.session.status) {
       case 'succeeded': 
         // we still need this session to stick around for review purposes
-        break
-      case 'cancelled':
-        // decide how much of deletion and notif/mail handling goes here (ideally most/all of it)
         break
     }
   }
