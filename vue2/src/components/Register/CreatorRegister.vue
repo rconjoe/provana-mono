@@ -132,7 +132,7 @@ export default {
         } else if (resp.data === true) {
           return this.window = 1
         } else {
-          return this.$store.commit('error/SET_ERROR', "unknown error", resp.data)
+          return this.$store.commit('error/SET_ERROR',{message: 'unknown error'})
         }
       })
       this.$store.commit('loading/SET_LOADING', false)

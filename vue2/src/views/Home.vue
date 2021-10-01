@@ -32,7 +32,7 @@
 								<div class="heroTextDiv">
 									<h2 class="heroText1"> 1v1 The Rocket League Gods at </h2>
 									<h2 class="heroText2"> PRIDESTARK GAMING </h2>
-									<v-btn class="homeBtn btnCTA" color="primary"> Make an account</v-btn>
+									<v-btn class="homeBtn btnCTA" color="primary" @click="makeAnAccount()"> Make an account</v-btn>
 								</div>
 							</v-col>
 						</v-row>
@@ -49,6 +49,12 @@
 
 	export default {
 		components: { AboutPage },
+
+		methods: {
+			makeAnAccount() {
+				window.location = '/register'
+			},
+		}
 	}
 </script>
 

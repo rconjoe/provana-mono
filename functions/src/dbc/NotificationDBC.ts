@@ -1,34 +1,5 @@
 import { db } from '../config'
-
-/**
- * Converter for either mapping data to a Firestore document snapshot or from Firestore to a NotificationDBC object
- * 
- * @returns {{ toFirestore(invitation: InvitationDBC): any; fromFirestore(snapshot: any): InvitationDBC; }}
- */
-const converter = {
-  toFirestore(n: NotificationDBC): FirebaseFirestore.DocumentData {
-    return {
-      uid: n.uid,
-      time: n.time,
-      accType: n.accType,
-      category: n.category,
-      content: n.content,
-      unread: n.unread
-    }
-  },
-  fromFirestore(snapshot: FirebaseFirestore.QueryDocumentSnapshot): NotificationDBC {
-    const data = snapshot.data()
-    return new NotificationDBC(
-      data.uid,
-      data.accType,
-      data.time,
-      data.category,
-      data.content,
-      data.unread
-    )
-  }
-}
-
+import TimeService from '../services/TimeService'
 
 /**
  * Export for the NotificationDBC class
@@ -41,11 +12,10 @@ const converter = {
  */
 export default class NotificationDBC {
   uid: string
-  accType: string
-  time: number
   category: string
   content: string
   unread: boolean
+  time?: number | undefined
 
   
   /**
@@ -53,7 +23,6 @@ export default class NotificationDBC {
    *
    * @constructor
    * @param {string} uid The user's Firebase uid
-   * @param {string} accType The user's account type either Creator or Supporter
    * @param {number} time Time in unix format that the notificatin was fired
    * @param {string} category Category of the notification
    * @param {string} content String of the notifcation text 
@@ -61,18 +30,15 @@ export default class NotificationDBC {
    */
   constructor(
     uid: string,
-    accType: string,
-    time: number,
     category: string,
     content: string,
-    unread: boolean
+    unread: boolean,
   ) {
     this.uid = uid
-    this.accType = accType
-    this.time = time
     this.category = category
     this.content = content
     this.unread = unread
+    this.time = new TimeService().generate()
   }
 
   
@@ -86,8 +52,9 @@ export default class NotificationDBC {
     await db.collection('notifications')
       .doc(this.uid)
       .collection('notif')
-      .doc(this.uid)
-      .withConverter(converter)
-    .set(this)
+    .add({...this})
+    .catch(err => {
+      throw new Error(err)
+    })
   }
 }

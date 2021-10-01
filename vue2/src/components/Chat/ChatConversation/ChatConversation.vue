@@ -86,6 +86,7 @@
 						at: dayjs().unix(),
 						text: `${message}`,
 						room: this.chatroom.roomId,
+						avatar: this.$user.avatar
 					})
 					.catch((err) => {
 						console.error(`Error sending that message: ${err}`)
