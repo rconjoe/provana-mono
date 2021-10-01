@@ -56,6 +56,7 @@
 			servicesVisible: true,
 			selectedService: '',
 			services: [],
+			reviews:[],
 			loading: false,
 			postData: '',
 			profile: {},
@@ -72,19 +73,19 @@
 			},
 		},
 		async mounted() {
-			const q = await db
-				.collection('creators')
-				.where('username', '==', this.$attrs.username)
-				.get()
-			this.profile = q.docs[0].data()
+			// set profile
+			this.profile = this.$store.state.auth.currentUser
+
+			// fetch services
 			db.collection('services')
-				.where('uid', '==', this.profile.uid)
+				.where('uid', '==', this.$user.uid)
 				.onSnapshot((snap) => {
 					snap.forEach((doc) => this.services.push(doc.data()))
 				})
 		},
 
 		methods: {
+			
 			showServices() {
 				this.servicesVisible = true
 			},
