@@ -10,7 +10,6 @@
 			<!-- UserInfo -->
 			<div class="headerDiv">
 				<h2 class="userText"> {{ profile.username }}</h2>
-				<span class="userTitle"> {{ profile.tagline }} </span>
 				<div :class="alphaHover ? 'alphaBadgeDivHover' : 'alphaBadgeDiv'">
 					<div class="alphaHoverDiv" @mouseover="alphaHover = true" @mouseleave="alphaHover = false">
 						<img class="provanaAlpha" src="../../../assets/ProvanaAlphaBadge-02.png" />
@@ -19,6 +18,7 @@
 						<span v-if="alphaHover" class="alphaPartner"> Alpha Partner</span>
 					</v-fade-transition>
 				</div>
+				<span class="userTitle"> {{ profile.tagline }} </span>
 
 				<!-- review row -->
 				<a @click="showReview = true"> <span class="ratingLink"> Reviews </span> </a>
@@ -30,10 +30,10 @@
 						<div class="iconDiv">
 							<v-icon class="exitReview" @click="showReview = false" right> fas fa-times</v-icon>
 						</div>
-						<UserReviews :uid="profile.uid" />
+						<UserReviews :reviews="reviews" />
 					</div>
 				</v-expand-transition>
-				
+
 				<!-- Socials -->
 				<div class="pl-0 socialsDiv">
 					<UserSocials
@@ -50,7 +50,8 @@
 </template>
 
 <script>
-	import UserAbout from '@/components/User/UserHeader/UserAbout.vue'
+	import {functions} from '../../../plugins/firebase'
+ 	import UserAbout from '@/components/User/UserHeader/UserAbout.vue'
 	import UserSocials from '@/components/User/UserHeader/UserSocials.vue'
 	import UserReviews from '@/components/User/UserHeader/UserReviews.vue'
 	export default {
@@ -59,7 +60,19 @@
 		data: () => ({
 			alphaHover: false,
 			showReview: false,
+			reviews: [],
 		}),
+		mounted() {
+			this.getRecentReviews()
+		},
+		methods: {
+			async getRecentReviews() {
+				console.log('started')
+				const getReviews = functions.httpsCallable('getRecentReviews')
+				const response = await getReviews({ sellerUid: this.$user.uid })
+				this.reviews.push(...response.data)
+			},
+		},
 	}
 </script>
 
@@ -149,10 +162,9 @@
 		display: inline-block;
 		width: auto;
 		transition: width 1s ease;
-
 		background-color: white;
 		border-radius: 5px;
-		padding-right: 0.10416666666666667vw;
+		padding-right: 0.37vw;
 		height: 1.3020833333333333vw;
 	}
 	.alphaPartner {
