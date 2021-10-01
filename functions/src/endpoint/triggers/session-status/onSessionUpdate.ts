@@ -30,6 +30,9 @@ export const onSessionUpdate = functions
         break
       case 'published':
         await handler.published()
+        if ((_.status !== 'full') && (_.slots == _.booked)) {
+          await session.update({ status: 'full' })
+        }
         break
       case 'full':
         await handler.full()
