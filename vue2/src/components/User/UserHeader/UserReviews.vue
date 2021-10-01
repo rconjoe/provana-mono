@@ -39,21 +39,8 @@
 import { functions } from '../../../plugins/firebase'
 
 export default {
-  props: ['uid'],
-  data: () => ({
-    reviews:[]
-  }),
-  mounted(){
-    this.getRecentReviews()
-  },
-  methods:{
-    async getRecentReviews() {
-            console.log('started')
-            const getReviews = functions.httpsCallable('getRecentReviews')
-            const response = await getReviews({ sellerUid: this.$user.uid })
-            this.reviews.push(...response.data)
-        }
-  }
+  props: ['reviews'],
+  
 };
 </script>
 

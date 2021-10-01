@@ -69,11 +69,9 @@
 		</v-app-bar>
 
 		<!-- login Overlay -->
-		<Overlay :show="false">
-			<v-card width="1020px" color="#111111" class="loginCard pb-3">
-			<Login />
-			</v-card>
-		</Overlay>
+		<v-overlay :value="loginDialog" opacity=".7">
+			<LoginOverlay  @close-login="closeLoginDialog"/>
+		</v-overlay>
 		<!-- DisputDialog -->
 		<DisputeDialog v-if="topDispute" :dispute="topDispute" />
 	</div>
@@ -85,14 +83,16 @@
 	import LoginBtn from '@/components/Nav/LoginBtn.vue'
 	import Logout from '@/components/Nav/Logout.vue'
 	import DisputeDialog from '@/components/Nav/DisputeDialog.vue'
+	import LoginOverlay from '../Nav/LoginOverlay/LoginOverlay.vue'
 	import { mapState } from 'vuex'
 	export default {
 		name: 'CustomAppBar',
-		components: { LoginBtn, Logout, DisputeDialog,Overlay, Login },
+		components: { LoginBtn, Logout, DisputeDialog,Overlay, Login,LoginOverlay },
 		data: () => ({
 			appNavDrawer: false,
 			iconActive: false,
 			disputeDialog: true,
+			loginDialog:true,
 			items: [],
 			links: [
 				{
@@ -139,7 +139,9 @@
 			this.$store.dispatch('notifications/bindNotifs')
 		},
 		methods: {
-		
+			closeLoginDialog(){
+				this.loginDialog = !this.loginDialog
+			}
 		},
 	}
 </script>
