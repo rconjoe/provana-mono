@@ -1,8 +1,8 @@
 <template>
 <div>
-    <router-link to="/login" > Login</router-link>
+    <a @click="openLogin" > Login</a>
     <span class="slash mx-2"> / </span>
-    <router-link to="/register" > Register</router-link>
+    <a @click="openLogin" > Register</a>
 </div>
 
 </template>
@@ -10,6 +10,11 @@
 <script>
 export default {
     name: "LoginBtn",
+    methods:{
+        openLogin(){
+            this.$emit('open-login')
+        }
+    }
 }
 </script>
 <style scoped>
