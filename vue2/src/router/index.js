@@ -37,25 +37,9 @@ export const routes = [
       },
     },
   {
-    path:"/Register",
-    name:"Register",
-    component: Register,
-    meta: {
-      isPublicOnly: true
-    }
-  },
-  {
     path: "/onboardSuccess",
     name: "StripeOnboardSuccess",
     component: StripeOnboardSuccess
-  },
-  {
-    path: "/Login",
-    name: "Login",
-    component: Login,
-    meta: {
-      isPublicOnly: true
-    }
   },
   {
     path: "/Support",
