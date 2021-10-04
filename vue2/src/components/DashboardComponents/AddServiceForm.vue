@@ -205,13 +205,7 @@
 						<v-col class="px-0">
 							<!-- ColorPicker are swatches -->
 							<div>
-								<v-color-picker
-									v-model="form.serviceColor"
-									class="colorPicker"
-									hide-inputs
-									hide-mode-switch
-									canvas-height="80"
-								>
+								<v-color-picker v-model="form.serviceColor" class="colorPicker" hide-inputs hide-mode-switch canvas-height="80">
 								</v-color-picker>
 							</div>
 
@@ -227,7 +221,7 @@
 									color="secondary"
 									dense
 									data-test="save-input"
-									:disabled="!descriptionValid || !termsValid || !valid || !serviceNameValid"
+									:disabled="!descriptionValid  || !valid || !serviceNameValid || terms.length === 0"
 									class="btnCTA"
 									@click.prevent="createService"
 								>
@@ -253,18 +247,34 @@
 					<v-tab href="#terms"> Terms </v-tab>
 					<!-- Tab Item -->
 					<v-tab-item value="description" id="description">
+						<!-- description -->
 						<v-card-text>
 							<v-form v-model="descriptionValid" ref="serviceForm">
-								<v-textarea v-model="form.serviceDescription" :rules="descriptionRules"> </v-textarea>
+								<v-textarea
+									v-model="form.serviceDescription"
+									height="9.5vw"
+									class="descriptionTextarea"
+									:rules="descriptionRules"
+								>
+								</v-textarea>
 							</v-form>
 						</v-card-text>
 					</v-tab-item>
+					<!-- terms -->
 					<v-tab-item value="terms" id="terms">
-						<v-card-text>
-							<v-form v-model="termsValid" ref="serviceForm">
-								<v-textarea v-model="form.terms" :rules="descriptionRules"> </v-textarea>
-							</v-form>
-						</v-card-text>
+						<v-list class="termsListBox" v-if="terms.length > 0">
+							<v-list-item v-for="(term, i) in terms" :key="i" no-action class=" termsFont pl-1 elevation-3">
+								{{ i + 1 }}.<span class="termsItem ml-2">{{ term }} </span>
+								<v-spacer> </v-spacer>
+								<v-icon @click="deleteTerm(i)"> fas fa-times </v-icon>
+							</v-list-item>
+						</v-list>
+						<h1 v-else class="termsFontDefault"> You must have at least 1 term for your service.</h1>
+						<v-form v-model="termsValid" ref="serviceForm" @submit.prevent>
+							<v-text-field hide-details label="Add term" class=" termsInput" @keyup.enter="addTerm" filled v-model="term">
+								<v-icon slot="append" @click="addTerm"> fas fa-paper-plane </v-icon>
+							</v-text-field>
+						</v-form>
 					</v-tab-item>
 				</v-tabs>
 				<!-- Dialog Actions -->
@@ -284,6 +294,7 @@
 		name: 'AddServiceForm',
 		props: ['profile', 'serviceNameProp', 'serviceNameValid'],
 		data: () => ({
+			term: '',
 			termsTab: 'terms',
 			termsFormDialog: false,
 			valid: false,
@@ -292,8 +303,9 @@
 			viewingUID: '',
 			closeOnContentClick: false,
 			serviceLoading: false,
+			terms: ['terms one is good.', 'term2 is better', 'term3 is the best one.'],
 			form: {
-				terms: '',
+				terms: [],
 				mandatoryFill: false,
 				serviceName: '',
 				serviceCost: null,
@@ -318,8 +330,16 @@
 			platformRules: [(v) => !!v || '', (v) => (v && v.length <= 20) || ''],
 			softwareRules: [(v) => !!v || '', (v) => (v && v.length <= 20) || ''],
 			descriptionRules: [(v) => !!v || '', (v) => (v && v.length <= 120) || ''],
+			
 		}),
 		methods: {
+			addTerm() {
+				this.terms.unshift(this.term)
+				this.term = ''
+			},
+			deleteTerm(i) {
+				this.terms.splice(i, 1)
+			},
 			createService() {
 				const hoursToMinutes = this.form.serviceHours * 60
 				const minutesLength = hoursToMinutes + this.form.serviceMinutes
@@ -375,11 +395,30 @@
 </script>
 
 <style scoped>
+	.termsFontDefault{
+		min-height:8.333333333333334vw;
+		font: normal normal 1.24vw Poppins;
+		padding:1vw;
+	}
+	.termsItem{
+		max-width: 90%
+	}
+	.termsFont{
+		font:normal normal .9vw Arboria;
+	}
+	.termsListBox {
+		max-height: 8.333333333333334vw;
+		min-height: 8.333333333333334vw;
+		overflow-y: scroll;
+	}
+	.termListItem {
+		background-color: black;
+	}
 	/* color picker controls padding */
 	>>> .v-color-picker__controls {
 		padding: 0;
 		padding-top: 0.5vw;
-		height:38px;
+		height: 38px;
 	}
 	/* colorpicker alpha slider hide */
 	>>> .v-color-picker__alpha:not(.v-input--is-disabled) .v-slider {
@@ -425,7 +464,7 @@
 		align-self: flex-end;
 	}
 	>>> .termsTab .theme--dark.v-tabs-items {
-		height: 9.210526315789474vw;
+		height: 11.210526315789474vw;
 		border-radius: 10px;
 	}
 	>>> .termsTab .v-tab {
@@ -450,6 +489,7 @@
 		min-height: 18.105263157894736vw;
 		background-color: #222222;
 		border-radius: 10px;
+		overflow-y: scroll;
 	}
 	.termsLink {
 		margin-right: 1.4vw;
@@ -563,12 +603,11 @@
 	#cancelBtn {
 		background-color: #717171;
 		color: black;
-		margin-right:0.4166666666666667vw
+		margin-right: 0.4166666666666667vw;
 	}
-	#cancelBtn:hover{
-		color:#fb4b6a;
+	#cancelBtn:hover {
+		color: #fb4b6a;
 	}
-
 
 	.inputText {
 		font: normal normal 0.78125vw Arboria;
@@ -582,8 +621,9 @@
 	>>> .inputText .v-select__selection--comma {
 		margin: 0;
 	}
-	.descriptionText {
+	.descriptionTextarea {
 		font: normal normal 0.78125vw/0.78125vw Poppins;
+		min-height: 100%;
 	}
 
 	>>> .v-input {
