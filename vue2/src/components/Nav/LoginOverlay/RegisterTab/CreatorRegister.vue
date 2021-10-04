@@ -15,7 +15,7 @@
 					<v-icon size="1vw" class="mr-2"> fas fa-chevron-left </v-icon> Back
 				</v-btn>
 
-				<v-btn text class="registerBtn" @click="allowAlphaPartner">
+				<v-btn text class="registerBtn" @click="allowAlphaPartner" :disabled="alphaCode == ''">
 					Next
 					<v-icon size="1vw" class="ml-2"> fas fa-chevron-right </v-icon>
 				</v-btn>
