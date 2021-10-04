@@ -91,6 +91,7 @@ html {
 	}
   .btnCTA.v-btn:hover{
 		color: #fa4b6b;
+    background-color: #f5f5f5  !important;;
   }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
