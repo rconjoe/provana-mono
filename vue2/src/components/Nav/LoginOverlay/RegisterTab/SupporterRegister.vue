@@ -53,12 +53,14 @@
 			<v-btn text class="registerBtn" @click="goBack">
 				<v-icon size="1vw" class="mr-4"> fas fa-chevron-left </v-icon> Back
 			</v-btn>
-			<v-btn text class="registerBtn"> Register</v-btn>
+			<v-btn text class="registerBtn" @click="newSupporter" :disabled="!valid"> Register</v-btn>
 		</div>
 	</v-form>
 </template>
 
 <script>
+	import { functions } from '../../../../plugins/firebase'
+
 	export default {
 		data: () => ({
 			showPassword: false,
@@ -95,7 +97,7 @@
 					password: this.password,
 					username: this.username,
 				})
-				this.$router.push('/login')
+				this.goBack()
 			},
 		},
 	}
