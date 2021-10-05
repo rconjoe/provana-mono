@@ -54,13 +54,33 @@ export default {
 };
 </script>
 <style>
-.errorMessage {
-  position: fixed !important;
-  width: 50vw;
-  left: 25vw;
-  z-index: 5;
-  background-color: black !important;
+/* scroll bar theme */
+:root {
+  color-scheme: dark;
 }
+html {
+  --scrollbarBG: #111;
+  --thumbBG: #90A4AE;
+}
+::-webkit-scrollbar {
+  		width: 0.52vw;
+		padding-left: 1.0417vw;
+}
+body {
+  scrollbar-width: thin;
+  scrollbar-color: #111;
+}
+::-webkit-scrollbar-corner {
+  background: rgba(0,0,0,0);
+}
+::-webkit-scrollbar-track {
+  background: #111111;
+}
+::-webkit-scrollbar-thumb {
+ 		background: #333333;
+		border-radius: 7px;
+}
+
 .v-alert__content {
   text-transform: uppercase;
 }

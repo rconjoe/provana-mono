@@ -176,7 +176,7 @@
 					</v-card>
 				</v-dialog>
 			</v-sheet>
-			<v-btn class="saveBtn float-right mt-2" color="primary" @click="saveAvailability" :loading="potentialLoading">
+			<v-btn class="btnCTA float-right mt-2" color="primary" @click="saveAvailability" :loading="potentialLoading">
 						save availability
 					</v-btn>
 		</v-col>

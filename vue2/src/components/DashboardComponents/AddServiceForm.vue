@@ -526,7 +526,7 @@
 	}
 	.formCard {
 		max-height: 8.5vw;
-		overflow: scroll;
+		overflow-y: scroll;
 	}
 	.serviceColorDiv {
 		margin-left: 0.25vw;
