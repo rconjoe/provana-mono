@@ -192,7 +192,7 @@
 									color="secondary"
 									dense
 									data-test="save-input"
-									:disabled="!descriptionValid || !valid || !serviceNameValid || terms.length === 0"
+									:disabled="!descriptionValid || !valid || !serviceNameValid || form.terms.length === 0"
 									class="btnCTA"
 									@click.prevent="createService"
 								>
@@ -228,8 +228,8 @@
 					</v-tab-item>
 					<!-- terms -->
 					<v-tab-item value="terms" id="terms">
-						<v-list class="termsListBox" v-if="terms.length > 0">
-							<v-list-item v-for="(term, i) in terms" :key="i" no-action class=" termsFont pl-1 elevation-3">
+						<v-list class="termsListBox" v-if="form.terms.length > 0">
+							<v-list-item v-for="(term, i) in form.terms" :key="i" no-action class=" termsFont pl-1 elevation-3">
 								{{ i + 1 }}.<span class="termsItem ml-2">{{ term }} </span>
 								<v-spacer> </v-spacer>
 								<v-icon @click="deleteTerm(i)"> fas fa-times </v-icon>
@@ -258,7 +258,7 @@
 	// serviceName and its validator are passed as props from serviceTabs
 	export default {
 		name: 'AddServiceForm',
-		props: ['profile', 'serviceNameProp', 'serviceNameValid'],
+		props: [ 'serviceNameProp', 'serviceNameValid'],
 		data: () => ({
 			term: '',
 			termsTab: 'terms',
@@ -269,7 +269,6 @@
 			viewingUID: '',
 			closeOnContentClick: false,
 			serviceLoading: false,
-			terms: ['terms one is good.', 'term2 is better', 'term3 is the best one.'],
 			form: {
 				terms: [],
 				mandatoryFill: false,
@@ -299,11 +298,11 @@
 		}),
 		methods: {
 			addTerm() {
-				this.terms.unshift(this.term)
+				this.form.terms.unshift(this.term)
 				this.term = ''
 			},
 			deleteTerm(i) {
-				this.terms.splice(i, 1)
+				this.form.terms.splice(i, 1)
 			},
 			createService() {
 				const hoursToMinutes = this.form.serviceHours * 60
@@ -316,6 +315,7 @@
 				this.form.uid = this.$user.uid
 				this.$emit('create-service', this.form)
 				this.form = {
+					terms:[],
 					serviceName: '',
 					serviceCost: null,
 					serviceDescription: '',
