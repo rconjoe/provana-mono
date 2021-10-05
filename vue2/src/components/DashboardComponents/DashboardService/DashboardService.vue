@@ -40,10 +40,6 @@ export default {
 
   }),
   methods: {
-    updateService() {
-      const serviceUpdate = functions.httpsCallable('writeThis');
-      return serviceUpdate(profile.tagline);
-    },
     setSelectedService(e){
       this.selectedService = e;
     },
