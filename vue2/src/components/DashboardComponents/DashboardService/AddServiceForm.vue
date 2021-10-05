@@ -12,9 +12,7 @@
 							<div class="serviceItemDiv">
 								<v-tooltip right max-width="14vw" color="#333333">
 									<template v-slot:activator="{ on, attrs }">
-										<v-icon size="0.78125vw" color="#333333" class="mr-2" v-on="on" v-bind="attrs"
-											>fas fa-exclamation-circle
-										</v-icon>
+										<v-icon size="0.78125vw" color="#333333" class="mr-2" v-on="on" v-bind="attrs">fas fa-exclamation-circle </v-icon>
 									</template>
 									<span> Price of your service should be rounded to the nearest dollar.</span>
 								</v-tooltip>
@@ -39,15 +37,14 @@
 							<div class="serviceItemDiv">
 								<v-tooltip right max-width="14vw" color="#333333">
 									<template v-slot:activator="{ on, attrs }">
-										<v-icon size="0.78125vw" color="#333333" class="mr-2" v-on="on" v-bind="attrs"
-											>fas fa-exclamation-circle
-										</v-icon>
+										<v-icon size="0.78125vw" color="#333333" class="mr-2" v-on="on" v-bind="attrs">fas fa-exclamation-circle </v-icon>
 									</template>
 									<span>Duration of the event in 15 min increments.</span>
 								</v-tooltip>
 								<span class="label">
 									Length:
 								</span>
+
 								<!-- Hours -->
 								<div class="lengthCol mr-1">
 									<v-select
@@ -61,6 +58,7 @@
 										<small slot="append" class="secondary--text small"> Hrs</small>
 									</v-select>
 								</div>
+
 								<!-- Minutes -->
 								<div class="lengthCol">
 									<v-select
@@ -81,9 +79,7 @@
 							<div class="serviceItemDiv">
 								<v-tooltip right max-width="14vw" color="#333333">
 									<template v-slot:activator="{ on, attrs }">
-										<v-icon size="0.78125vw" color="#333333" class="mr-2" v-on="on" v-bind="attrs"
-											>fas fa-exclamation-circle
-										</v-icon>
+										<v-icon size="0.78125vw" color="#333333" class="mr-2" v-on="on" v-bind="attrs">fas fa-exclamation-circle </v-icon>
 									</template>
 									<span> Number of potential buyers that can join this service.</span>
 								</v-tooltip>
@@ -101,6 +97,7 @@
 									:rules="hoursRules"
 								>
 								</v-text-field>
+
 								<!-- If more than one buyer is it mandatory fill? -->
 								<div class="inline" v-if="form.attendees > 1">
 									<v-tooltip right color="#1e1e1e" max-width="8vw">
@@ -115,13 +112,12 @@
 									</v-tooltip>
 								</div>
 							</div>
+
 							<!-- Software -->
 							<div class="serviceItemDiv">
 								<v-tooltip right max-width="14vw" color="#333333">
 									<template v-slot:activator="{ on, attrs }">
-										<v-icon size="0.78125vw" color="#333333" class="mr-2" v-on="on" v-bind="attrs"
-											>fas fa-exclamation-circle
-										</v-icon>
+										<v-icon size="0.78125vw" color="#333333" class="mr-2" v-on="on" v-bind="attrs">fas fa-exclamation-circle </v-icon>
 									</template>
 									<span> List of required software or games needed to complete the service ie. Discord, Minecraft</span>
 								</v-tooltip>
@@ -141,32 +137,7 @@
 						</v-col>
 
 						<!-- 2/3 Col  -->
-						<!-- Platform -->
 						<v-col class="px-0">
-							<!--
-							<div class="serviceItemDiv">
-								<v-tooltip right max-width="14vw" color="#333333">
-									<template v-slot:activator="{ on, attrs }">
-										<v-icon size="0.78125vw" color="#333333" class="mr-2" v-on="on" v-bind="attrs"
-											>fas fa-exclamation-circle
-										</v-icon>
-									</template>
-									<span> PC, Xbox360, PS4 etc...</span>
-								</v-tooltip>
-								<h3 class="label"> Platform:</h3>
-								<v-text-field
-									data-test="platform-input"
-									class="pt-0 mt-0 inputText"
-									v-model="form.platform"
-									color="#fff"
-									single-line
-									:rules="platformRules"
-									required
-									counter="20"
-								>
-								</v-text-field>
-							</div> -->
-
 							<!-- Tags -->
 							<div class="tagItemDiv">
 								<v-tooltip right max-width="14vw" color="#333333">
@@ -221,7 +192,7 @@
 									color="secondary"
 									dense
 									data-test="save-input"
-									:disabled="!descriptionValid  || !valid || !serviceNameValid || terms.length === 0"
+									:disabled="!descriptionValid || !valid || !serviceNameValid || terms.length === 0"
 									class="btnCTA"
 									@click.prevent="createService"
 								>
@@ -250,12 +221,7 @@
 						<!-- description -->
 						<v-card-text>
 							<v-form v-model="descriptionValid" ref="serviceForm">
-								<v-textarea
-									v-model="form.serviceDescription"
-									height="9.5vw"
-									class="descriptionTextarea"
-									:rules="descriptionRules"
-								>
+								<v-textarea v-model="form.serviceDescription" height="9.5vw" class="descriptionTextarea" :rules="descriptionRules">
 								</v-textarea>
 							</v-form>
 						</v-card-text>
@@ -330,7 +296,6 @@
 			platformRules: [(v) => !!v || '', (v) => (v && v.length <= 20) || ''],
 			softwareRules: [(v) => !!v || '', (v) => (v && v.length <= 20) || ''],
 			descriptionRules: [(v) => !!v || '', (v) => (v && v.length <= 120) || ''],
-			
 		}),
 		methods: {
 			addTerm() {
@@ -395,16 +360,16 @@
 </script>
 
 <style scoped>
-	.termsFontDefault{
-		min-height:8.333333333333334vw;
+	.termsFontDefault {
+		min-height: 8.333333333333334vw;
 		font: normal normal 1.24vw Poppins;
-		padding:1vw;
+		padding: 1vw;
 	}
-	.termsItem{
-		max-width: 90%
+	.termsItem {
+		max-width: 90%;
 	}
-	.termsFont{
-		font:normal normal .9vw Arboria;
+	.termsFont {
+		font: normal normal 0.9vw Arboria;
 	}
 	.termsListBox {
 		max-height: 8.333333333333334vw;

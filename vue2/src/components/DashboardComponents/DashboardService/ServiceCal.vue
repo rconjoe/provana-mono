@@ -186,7 +186,7 @@
 
 <script>
 	import { functions, db } from '@/plugins/firebase'
-	import { formatter } from '../../plugins/sessionFormatter'
+	import { formatter } from '../../../plugins/sessionFormatter'
 	import dayjs from 'dayjs'
 	export default {
 		name: 'ServiceCal',

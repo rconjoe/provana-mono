@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import ServiceCal from '../../components/Calendars/ServiceCal.vue'
+import ServiceCal from './ServiceCal.vue'
 import ServicesTabs from './ServicesTabs'
 
 export default {

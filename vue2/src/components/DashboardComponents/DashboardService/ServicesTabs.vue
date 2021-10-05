@@ -272,8 +272,8 @@
 </template>
 
 <script>
-	import { functions, db } from '../../plugins/firebase'
-	import AddServiceForm from '@/components/DashboardComponents/AddServiceForm.vue'
+	import { functions, db } from '../../../plugins/firebase'
+	import AddServiceForm from './AddServiceForm.vue'
 
 	export default {
 		name:"ServiceTabs",

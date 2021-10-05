@@ -264,9 +264,9 @@
 
 <script>
 	import dayjs from 'dayjs'
-	import { db } from '../../plugins/firebase'
+	import { db } from '../../../plugins/firebase'
 	import { mapState } from 'vuex'
-	import { functions } from '../../plugins/firebase'
+	import { functions } from '../../../plugins/firebase'
 	export default {
 		name:'SessionDetails',
 		data: () => ({
