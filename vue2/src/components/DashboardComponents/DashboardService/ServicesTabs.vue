@@ -55,9 +55,7 @@
 									<div class="serviceItemDiv">
 										<v-tooltip right max-width="14vw" color="#333333">
 											<template v-slot:activator="{ on, attrs }">
-												<v-icon size="0.78125vw" color="#333333" class="mr-2" v-on="on" v-bind="attrs"
-													>fas fa-exclamation-circle
-												</v-icon>
+												<v-icon size="0.78125vw" color="#333333" class="mr-2" v-on="on" v-bind="attrs">fas fa-exclamation-circle </v-icon>
 											</template>
 											<span> Price of your service should be rounded to the nearest dollar.</span>
 										</v-tooltip>
@@ -70,9 +68,7 @@
 									<div class="serviceItemDiv">
 										<v-tooltip right max-width="14vw" color="#333333">
 											<template v-slot:activator="{ on, attrs }">
-												<v-icon size="0.78125vw" color="#333333" class="mr-2" v-on="on" v-bind="attrs"
-													>fas fa-exclamation-circle
-												</v-icon>
+												<v-icon size="0.78125vw" color="#333333" class="mr-2" v-on="on" v-bind="attrs">fas fa-exclamation-circle </v-icon>
 											</template>
 											<span> Duration of the event in minutes.</span>
 										</v-tooltip>
@@ -85,9 +81,7 @@
 									<div class="serviceItemDiv my-4">
 										<v-tooltip right max-width="14vw" color="#333333">
 											<template v-slot:activator="{ on, attrs }">
-												<v-icon size="0.78125vw" color="#333333" class="mr-2" v-on="on" v-bind="attrs"
-													>fas fa-exclamation-circle
-												</v-icon>
+												<v-icon size="0.78125vw" color="#333333" class="mr-2" v-on="on" v-bind="attrs">fas fa-exclamation-circle </v-icon>
 											</template>
 											<span> Number of potential buyers that can join this service.</span>
 										</v-tooltip>
@@ -99,14 +93,7 @@
 										</span>
 										<v-tooltip right content-class="mandatoryTooltip" color="#333333">
 											<template v-slot:activator="{ on, attrs }">
-												<v-icon
-													size=".78125vw"
-													v-bind="attrs"
-													v-on="on"
-													class="ml-2"
-													color="#F4D969"
-													v-if="service.mandatoryFill === true"
-												>
+												<v-icon size=".78125vw" v-bind="attrs" v-on="on" class="ml-2" color="#F4D969" v-if="service.mandatoryFill === true">
 													fas fa-exclamation-triangle
 												</v-icon>
 											</template>
@@ -119,9 +106,7 @@
 									<div class="serviceItemDiv">
 										<v-tooltip right max-width="14vw" color="#333333">
 											<template v-slot:activator="{ on, attrs }">
-												<v-icon size="0.78125vw" color="#333333" class="mr-2" v-on="on" v-bind="attrs"
-													>fas fa-exclamation-circle
-												</v-icon>
+												<v-icon size="0.78125vw" color="#333333" class="mr-2" v-on="on" v-bind="attrs">fas fa-exclamation-circle </v-icon>
 											</template>
 											<span> List of required software or games needed to complete the service ie. Discord, Minecraft</span>
 										</v-tooltip>
@@ -155,7 +140,7 @@
 										</span>
 									</div> -->
 									<!-- Tags -->
-									<div class="tagItemDiv " >
+									<div class="tagItemDiv ">
 										<v-tooltip right max-width="14vw" color="#333333">
 											<template v-slot:activator="{ on, attrs }">
 												<v-icon size="0.78125vw" color="#333333" class="mr-2 tagsIcon" v-on="on" v-bind="attrs"
@@ -171,7 +156,6 @@
 										</div>
 									</div>
 									<!-- Service Terms -->
-
 								</v-col>
 								<v-col class="pl-0">
 									<div class="serviceItemDiv">
@@ -263,7 +247,11 @@
 						<v-card-text> {{ selectedService.serviceDescription }}</v-card-text>
 					</v-tab-item>
 					<v-tab-item value="terms" id="terms">
-						<h1 class="tabItemText"> Terms</h1>
+						<v-list class="termsListBox" v-if="sampleTerms.length > 0">
+							<v-list-item v-for="(term, i) in sampleTerms" :key="i" no-action class=" termsFont pl-1 elevation-3">
+								{{ i + 1 }}.<span class="termsItem ml-2">{{ term }} </span>
+							</v-list-item>
+						</v-list>
 					</v-tab-item>
 				</v-tabs>
 			</v-card>
@@ -276,9 +264,15 @@
 	import AddServiceForm from './AddServiceForm.vue'
 
 	export default {
-		name:"ServiceTabs",
+		name: 'ServiceTabs',
 		components: { AddServiceForm },
 		data: () => ({
+			sampleTerms: [
+				'First Example terms',
+				'Second example term that is much longer than the first like a lot longer, so much longer.',
+				'Do I really need a third?',
+				'Definitely dont need a fourth',
+			],
 			createServiceLoading: false,
 			serviceDialog: false,
 			serviceDialogText: '',
@@ -302,7 +296,8 @@
 			},
 		},
 		mounted() {
-			db.collection('services')
+			db
+				.collection('services')
 				.where('uid', '==', this.$user.uid)
 				.where('active', '==', true)
 				.onSnapshot((snapshot) => {
@@ -321,7 +316,8 @@
 					this.deleteServiceDoc()
 				} else {
 					checkArray.forEach((id) => {
-						db.collection('sessions')
+						db
+							.collection('sessions')
 							.doc(id)
 							.get()
 							.then((doc) => {
@@ -360,15 +356,16 @@
 			async createService(e) {
 				this.createServiceLoading = true
 				const createService = functions.httpsCallable('createService')
-				await createService({...e}).then(() => {
-					this.tab = 'start'
-					this.newServiceName = ''
-					this.selectedService = ''
-					this.createServiceLoading = false
-				})
-				.catch(err => {
-					console.error(err)
-				})
+				await createService({ ...e })
+					.then(() => {
+						this.tab = 'start'
+						this.newServiceName = ''
+						this.selectedService = ''
+						this.createServiceLoading = false
+					})
+					.catch((err) => {
+						console.error(err)
+					})
 			},
 			serviceDeletePrompt(e) {
 				this.serviceDialog = true
@@ -391,18 +388,17 @@
 				this.termsDialog = true
 			},
 		},
-
 	}
 </script>
 
 <style scoped>
-	.tagItemDiv{
-		display:flex;
 
+	.tagItemDiv {
+		display: flex;
 	}
-	.tagsIcon{
+	.tagsIcon {
 		align-self: flex-start;
-		padding-top:.15vw;
+		padding-top: 0.15vw;
 	}
 	a:hover {
 		color: white;
@@ -411,6 +407,7 @@
 		height: 9.210526315789474vw;
 		padding: 1.0526315789473684vw;
 		border-radius: 10px;
+		overflow-y:scroll;
 	}
 	>>> .termsTab .v-tab {
 		color: #fa4b6b;
@@ -519,7 +516,6 @@
 		min-width: 0px !important;
 		border: none !important;
 	}
-
 
 	.tagDetailsDiv {
 		margin-bottom: 0.78125vw;
