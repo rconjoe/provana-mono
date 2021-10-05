@@ -91,7 +91,6 @@ export default {
     DashboardService,
     DashboardPayments,
     DashboardContact,
-    DashboardNavMobile,
     DashboardNavDrawer,
     OnboardOverlay,
     Overlay
