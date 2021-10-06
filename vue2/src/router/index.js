@@ -1,10 +1,8 @@
 import Home from '../views/Home.vue'
 import About from '../views/About.vue'
 import User from '../views/User.vue'
-import Register from "../views/Register.vue"
 import Dashboard from "../views/Dashboard.vue"
 import StripeOnboardSuccess from "../views/StripeOnboardSuccess.vue"
-import Login from "../views/Login.vue"
 import Support from "../views/Support.vue"
 import Contact from '../views/Contact.vue'
 import PaymentSuccess from '../views/PaymentSuccess.vue'
@@ -37,25 +35,9 @@ export const routes = [
       },
     },
   {
-    path:"/Register",
-    name:"Register",
-    component: Register,
-    meta: {
-      isPublicOnly: true
-    }
-  },
-  {
     path: "/onboardSuccess",
     name: "StripeOnboardSuccess",
     component: StripeOnboardSuccess
-  },
-  {
-    path: "/Login",
-    name: "Login",
-    component: Login,
-    meta: {
-      isPublicOnly: true
-    }
   },
   {
     path: "/Support",

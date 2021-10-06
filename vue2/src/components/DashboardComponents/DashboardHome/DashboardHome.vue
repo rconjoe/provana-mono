@@ -73,13 +73,13 @@
 </template>
 
 <script>
-import { functions, db } from '../../plugins/firebase'
+import { functions, db } from '../../../plugins/firebase'
 import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
-import SessionDetails from '@/components/DashboardComponents/SessionDetails.vue'
-import UpcomingSessions from '@/components/DashboardComponents/UpcomingSessions.vue'
+import SessionDetails from './SessionDetails.vue'
+import UpcomingSessions from './UpcomingSessions.vue'
 dayjs.extend(isBetween)
 dayjs.extend(utc)
 dayjs.extend(timezone)

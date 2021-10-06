@@ -13,10 +13,8 @@
 			<v-tab-item>
                 <LoginTab @close-login="closeLogin" />
 			</v-tab-item>
-			<v-tab-item>
-				<v-card flat color="#111111">
-					<Register />
-				</v-card>
+			<v-tab-item >
+					<RegisterTab  @goto-login="gotoLogin"/>
 			</v-tab-item>
 		</v-tabs-items>
 	</div>
@@ -24,16 +22,18 @@
 
 <script>
     import LoginTab from './LoginTab.vue'
-    import Register from '../../../views/Register.vue'
+    import RegisterTab from './RegisterTab/RegisterTab.vue'
 	export default {
-        components:{LoginTab,Register},
+        components:{LoginTab,RegisterTab},
 		data: () => ({
 			tab: 0,
 		}),
 		methods: {
 			closeLogin() {
 				this.$emit('close-login')
-				console.log('closed')
+			},
+			gotoLogin(){
+				this.tab = 0
 			},
 		},
 	}

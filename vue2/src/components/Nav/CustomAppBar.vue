@@ -60,7 +60,7 @@
 			</v-badge>
 			<div class="logBtnDiv">
 				<template v-if="!user">
-					<LoginBtn />
+					<LoginBtn @open-login="toggleLoginOverlay"/>
 				</template>
 				<template v-if="user">
 					<Logout />
@@ -69,8 +69,8 @@
 		</v-app-bar>
 
 		<!-- login Overlay -->
-		<v-overlay :value="loginDialog" opacity=".7">
-			<LoginOverlay  @close-login="closeLoginDialog"/>
+		<v-overlay :value="loginOverlay" opacity=".7">
+			<LoginOverlay  @close-login="toggleLoginOverlay"/>
 		</v-overlay>
 		<!-- DisputDialog -->
 		<DisputeDialog v-if="topDispute" :dispute="topDispute" />
@@ -92,7 +92,7 @@
 			appNavDrawer: false,
 			iconActive: false,
 			disputeDialog: true,
-			loginDialog:true,
+			loginOverlay:false,
 			items: [],
 			links: [
 				{
@@ -139,9 +139,9 @@
 			this.$store.dispatch('notifications/bindNotifs')
 		},
 		methods: {
-			closeLoginDialog(){
-				this.loginDialog = !this.loginDialog
-			}
+			toggleLoginOverlay(){
+				this.loginOverlay = !this.loginOverlay
+			},
 		},
 	}
 </script>
