@@ -48,7 +48,7 @@ export default class TaskDBC {
   public async write(task: string): Promise<void> {
     if (this.id === undefined) throw new Error('set ID to TaskDBC before writing path')
     await db.collection('tasks').doc(this.id!).set({
-      path: task
+      task: task
     })
     .catch(err => {
       throw new Error(err)
@@ -75,6 +75,7 @@ export default class TaskDBC {
     if (this.id === undefined) throw new Error('set ID to TaskDBC before writing path')
     const doc = await db.collection('tasks').doc(this.id).get()
     if (!doc.exists) throw new Error('task not found')
-    return doc.data()!.path
+    return doc.data()!.task
   }
+
 }
