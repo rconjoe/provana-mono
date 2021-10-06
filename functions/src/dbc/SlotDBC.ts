@@ -244,6 +244,26 @@ export default class SlotDBC extends Slot {
       buyerUsername: '',
       paymentIntent: ''
     })
+    .catch(err => {
+      throw console.error(err)
+    })
+  }
+
+  public async bookedFromParent(sessionId: string): Promise<Array<SlotDBC>> {
+    let slots: Array<SlotDBC> = []
+    let q = await db
+      .collection('sessions')
+      .doc(sessionId)
+      .collection('slots')
+      .where('status', '==', 'booked')
+      .withConverter(converter)
+    .get()
+    if (!q.empty) {
+      q.forEach(slot => {
+        slots.push(slot.data())
+      })
+    }
+    return slots
   }
 
 }
