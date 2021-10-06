@@ -1,8 +1,0 @@
-#!/bin/bash
-start(){
-  NODE_ENV=test
-  FIREBASE_AUTH_EMULATOR_HOST=localhost:9099
-  FIRESTORE_EMULATOR_HOST=localhost:8080
-  npm run build && firebase emulators:start --inspect-functions
-}
-start
