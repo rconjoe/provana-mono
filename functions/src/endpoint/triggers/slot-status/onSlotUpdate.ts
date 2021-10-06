@@ -26,7 +26,7 @@ export const onSlotUpdate = functions
       _.parentSession,
       change.after.ref
     )
-    const handler = new SlotStatusHandler(slot)
+    const handler = new SlotStatusHandler(slot, context)
     switch (b) {
       case 'published':
         await handler.published()

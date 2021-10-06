@@ -1,23 +1,26 @@
 import SlotDBC from '../../../dbc/SlotDBC'
 import SessionDBC from '../../../dbc/SessionDBC'
 import ChatRoomDBC from '../../../dbc/ChatRoomDBC'
-// import TimeService from '../../../services/TimeService'
+import CancellationDBC from '../../../dbc/CancellationDBC'
 import TaskService from '../../../services/TaskService'
-// import TaskDBC from '../../../dbc/TaskDBC'
-// import StripePaymentIntentService from '../../../services/stripe/StripePaymentIntentService'
-// import NotificationDBC from '../../../dbc/NotificationDBC';
-
+import TaskDBC from '../../../dbc/TaskDBC'
+import StripePaymentIntentService from '../../../services/stripe/StripePaymentIntentService'
+import NotificationDBC from '../../../dbc/NotificationDBC'
+import {EventContext} from 'firebase-functions/v1'
 
 export default class SlotStatusHandler {
   slot: SlotDBC
+  context: EventContext
 
-  constructor(slot: SlotDBC) {
+  constructor(slot: SlotDBC, context: EventContext) {
     this.slot = slot
+    this.context = context
   }
 
   public async published(): Promise<void> {
     if (this.slot.status === 'holding') {
-      await new TaskService().onCheckout(this.slot.id!)
+      const task = await new TaskService().onCheckout(this.slot.id!)
+      await new TaskDBC(this.slot.id!).write(task)
     }
   }
 
@@ -31,9 +34,26 @@ export default class SlotStatusHandler {
   public async booked(): Promise<void> {
     switch (this.slot.status) {
       case 'active':
-        break
+        await new NotificationDBC(
+          this.slot.buyerUid!,
+          'Starting',
+          'Your session is starting now!',
+        ).send()
       case 'cancelled':
-        break
+        let session = new SessionDBC()
+        await new CancellationDBC(this.slot.toModel()).create(this.slot.buyerUid!)
+        await session.decrement(this.slot.parentSession!)
+        await new ChatRoomDBC().removeFromRoom(this.slot.buyerUid!, this.slot.parentSession!)
+        await new StripePaymentIntentService().cancel(this.slot.paymentIntent!)
+        if (!this.slot.mandatoryFill) {
+          await this.cancelSlotTask(this.slot.id!)
+        }
+        await this.slot.republish()
+        await new NotificationDBC(
+          this.slot.sellerUid!,
+          "Cancellation",
+          "A booking has been cancelled by the buyer. Your schedule has been updated.",
+        ).send()
     }
   }
 
@@ -47,9 +67,14 @@ export default class SlotStatusHandler {
   }
 
   public async cancelled(): Promise<void> {
-    if (this.slot.status === 'published') {
-      return
-    }
+    // this will get called after slot.republish() runs above.
+    // buyerUid, buyerUsername, paymentIntent are cleared,
+    // booked is decremented on parent session, and
+    // the status is updated from 'cancelled' to 'published'
+    // from inside the status watchers.
+    if (this.slot.status === 'published') return
+    // i cant really think of anything else to do here that isn't handled 
+    // in SlotStatusHandler booked to cancelled.
   }
 
   public async disputed(): Promise<void> {
@@ -93,18 +118,13 @@ export default class SlotStatusHandler {
   //}
 
   //private async onCancel(): Promise<void> {
-  //  const a = this.after!
-  //  await new SessionDBC().decrement(a.parentSession!)
-  //  await new ChatRoomDBC().removeFromRoom(a.buyerUid!, a.parentSession!)
-  //  await new StripePaymentIntentService().cancel(a.paymentIntent!)
-  //  a.mandatoryFill ? await new SessionDBC().onSlotCancel(a.parentSession!) : this.cancelSlotTask(a.id!)
-  //  await a.republish()
   //}
 
-  //private async cancelSlotTask(slotId: string): Promise<void> {
-  //  const task = await new TaskDBC(slotId).retrieve()
-  //  await new TaskService().cancel(task)
-  //}
+  private async cancelSlotTask(slotId: string): Promise<void> {
+    const task = await new TaskDBC(slotId).retrieve()
+    await new TaskService().cancel(task)
+    await new TaskDBC().delete(slotId)
+  }
 
   //private async onDispute(): Promise<void> {
   //  console.log('disputed')

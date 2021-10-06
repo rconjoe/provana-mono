@@ -49,7 +49,6 @@ export default class SessionStatusHandler {
           this.session.sellerUid!,
           'Starting',
           'Your session is starting now!',
-          true
         ).send()
       case 'full':
         if (this.session.mandatoryFill === true) {
@@ -57,9 +56,16 @@ export default class SessionStatusHandler {
           const task = await new TaskService().scheduleSessionStart(this.session.id!, secondsUntil)
           await new TaskDBC(this.session.id!).write(task)
         }
-      break
+        await new NotificationDBC(
+          this.session.sellerUid!,
+          'Full',
+          `You've filled up one of your sessions. Nice job!`,
+        ).send()
       case 'cancelled':
-        // ...
+        // we really only care about this if booked > 0. 
+        // it only happens when a *seller* cancels a session.
+        // here we care to do the cancellation of any booked slots
+        // if the seller so decides to proceed cancelling said session
       break
     }
   }
@@ -70,12 +76,22 @@ export default class SessionStatusHandler {
           await new NotificationDBC(
             this.session.sellerUid!,
             'Starting',
-            `You've filled up one of your sessions. Nice job!`,
-            true
+            `Your session is starting!`,
           ).send()
         case 'cancelled': 
-          // decide how much of deletion and notif/mail handling goes here (ideally most/all of it)
-        break
+          // what goes here is handling a seller cancelling a full session. 
+          // mandatoryFill should be checked and handled conditionally.
+          // buyers cancelling is handled on the slot, but here the
+          // slots should be forEach'd with buyer notifications.
+          // this is why cancellation.onCreate would be a bad method for those,
+          // since we'd have to fetch the data there that we already have in this handler.
+        case 'published': 
+          // if the session in question is mandatoryFill, here we should also
+          // be cancelling session start task as well as handling the notification 
+          // flow for when you need to tell everyone that a mandatoryFill session that was
+          // full is now no longer full and someone needs to purchase the open slot
+          // for it to happen. this change is triggerred in SlotStatusHandler.booked case 'cancelled'
+          return
       }
     }
 
@@ -84,6 +100,14 @@ export default class SessionStatusHandler {
       case 'succeeded': 
         // we still need this session to stick around for review purposes
         break
+    }
+  }
+
+  public async cancelled(): Promise<void> {
+    switch (this.session.status) {
+      case 'published':
+        // calls on session republish
+        return
     }
   }
 }
