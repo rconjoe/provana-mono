@@ -5,7 +5,7 @@ import SlotDBC from '../../dbc/SlotDBC'
 export const confirmCheckoutComplete = functions.https.onRequest(async (req, res) => {
   const id = Buffer.from(req.body).toString('ascii')
   const slot = await new SlotDBC().fromId(id)
-  if (slot.status === 'purchased') return
+  if (slot.status === 'booked') return
   if (!slot.paymentIntent) return
   else {
     const status = await new StripePaymentIntentService().status(slot.paymentIntent)
