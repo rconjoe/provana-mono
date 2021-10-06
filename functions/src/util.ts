@@ -29,10 +29,10 @@ export const increment = async (data: {ref: FirebaseFirestore.DocumentReference,
         throw new Error(err)
       })
   }
-export const decrement = async (data: {ref: FirebaseFirestore.DocumentReference, field: string, amount: number})
+export const decrement = async (data: {ref: FirebaseFirestore.DocumentReference, field: string})
   :Promise<FirebaseFirestore.WriteResult> => {
     return await data.ref.update({
-      [data.field]: admin.firestore.FieldValue.increment(-data.amount)
+      [data.field]: admin.firestore.FieldValue.increment(-1)
     })
       .catch(err => {
         throw new Error(err)
