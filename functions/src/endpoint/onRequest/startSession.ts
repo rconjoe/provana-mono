@@ -6,9 +6,10 @@ import StripePaymentIntentService from '../../services/stripe/StripePaymentInten
 export const startSession = functions.https.onRequest(async (req, res) => {
   const id = Buffer.from(req.body).toString('ascii')
   const session = await new SessionDBC().fetch(id)
-  if (session.status !== 'full') {
-    throw new Error(`Slot status wrong: ${session.status}`)
-  }
+  // FIXME: this case probably isnt needed since even non-full, non-mf sessions can go from published to active
+  // if (session.status !== 'full') {
+  //   throw new Error(`Slot status wrong: ${session.status}`)
+  // }
   const slots = await new SlotDBC().fetchByParent(id)
   slots.forEach(async (slot) => {
     if (slot.status! !== 'booked') {
