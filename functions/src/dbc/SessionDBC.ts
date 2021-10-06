@@ -203,16 +203,7 @@ export default class SessionDBC extends Session {
     await decrement({
       ref: db.collection('sessions').doc(id),
       field: 'booked',
-      amount: 1
     })
-  }
-
-  public async onSlotCancel(sessionId: string): Promise<void> {
-    const session = await this.fetch(sessionId)
-    if (session.status !== 'full') return
-    else {
-      await this.update({ status: 'published' })
-    }
   }
 
 }
