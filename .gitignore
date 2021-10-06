@@ -78,3 +78,4 @@ vue2/node_modules
 vue2/dist
 functions/.vimspector.json
 functions/src/endpoint/.vimspector.json
+.DS_Store

@@ -70,13 +70,12 @@
 import { db } from '../plugins/firebase';
 import { mapState } from 'vuex'
 import ChatBox from '@/components/Chat/ChatBox.vue';
-import DashboardHome from '@/components/DashboardComponents/DashboardHome.vue';
+import DashboardHome from '../components/DashboardComponents/DashboardHome/DashboardHome.vue';
 import DashboardAccount from '@/components/DashboardComponents/DashboardAccount/DashboardAccount.vue';
-import DashboardService from '@/components/DashboardComponents/DashboardService.vue';
+import DashboardService from '@/components/DashboardComponents/DashboardService/DashboardService.vue';
 import DashboardPayments from '@/components/DashboardComponents/DashboardPayments.vue';
 import DashboardContact from '@/components/DashboardComponents/DashboardContact.vue';
 import DashboardNavDrawer from '@/components/DashboardComponents/DashboardNavDrawer.vue';
-import DashboardNavMobile from '@/components/DashboardComponents/DashboardNavMobile.vue';
 import OnboardOverlay from '@/components/DashboardComponents/OnboardOverlay.vue';
 import Review from '../components/Review.vue'
 import Overlay from '@/components/ReusableComponents/Overlay.vue';
@@ -92,7 +91,6 @@ export default {
     DashboardService,
     DashboardPayments,
     DashboardContact,
-    DashboardNavMobile,
     DashboardNavDrawer,
     OnboardOverlay,
     Overlay

@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import ServiceCal from '../../components/Calendars/ServiceCal.vue'
+import ServiceCal from './ServiceCal.vue'
 import ServicesTabs from './ServicesTabs'
 
 export default {
@@ -40,10 +40,6 @@ export default {
 
   }),
   methods: {
-    updateService() {
-      const serviceUpdate = functions.httpsCallable('writeThis');
-      return serviceUpdate(profile.tagline);
-    },
     setSelectedService(e){
       this.selectedService = e;
     },
