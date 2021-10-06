@@ -107,8 +107,8 @@ export default class TaskService {
    * @async
    * @param {string} path
    */
-  public async cancel(path: string) {
-    await this.client!.deleteTask({name: path})
+  public async cancel(name: string) {
+    await this.client!.deleteTask({name: name})
       .catch(err => {
         throw new Error(err)
       })
@@ -135,7 +135,7 @@ export default class TaskService {
         seconds = 300 + Date.now() / 1000
         break
       case 'slot-start':
-        url = 'https://google.com'
+        url = 'https://us-central1-db-abstract.cloudfunctions.net/startSlot'
         seconds = secondsUntil!
         break
       case 'session-start':
