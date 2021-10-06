@@ -14,7 +14,7 @@ export default class NotificationDBC {
   uid: string
   category: string
   content: string
-  unread: boolean
+  unread: boolean | undefined
   time?: number | undefined
 
   
@@ -32,12 +32,10 @@ export default class NotificationDBC {
     uid: string,
     category: string,
     content: string,
-    unread: boolean,
   ) {
     this.uid = uid
     this.category = category
     this.content = content
-    this.unread = unread
     this.time = new TimeService().generate()
   }
 
@@ -49,6 +47,7 @@ export default class NotificationDBC {
    * @returns {Promise<void>}
    */
   async send(): Promise<void> {
+    this.unread = true
     await db.collection('notifications')
       .doc(this.uid)
       .collection('notif')
