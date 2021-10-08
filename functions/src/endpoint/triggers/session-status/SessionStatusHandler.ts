@@ -114,12 +114,28 @@ export default class SessionStatusHandler {
             `Your session is starting!`,
           ).send()
         case 'cancelled': 
-          // what goes here is handling a seller cancelling a full session. 
-          // mandatoryFill should be checked and handled conditionally.
-          // buyers cancelling is handled on the slot, but here the
-          // slots should be forEach'd with buyer notifications.
-          // this is why cancellation.onCreate would be a bad method for those,
-          // since we'd have to fetch the data there that we already have in this handler.
+          const slots = await new SlotDBC().fetchByParent(this.session.id!)
+          slots.forEach(async (slot) => {
+            await new CancellationDBC(slot.toModel()).create(slot.sellerUid!)
+            await new NotificationDBC(
+              slot.buyerUid!,
+              'Cancellation',
+              'One of your bookings was cancelled by the seller. See your dashboard for details.'
+            ).send()
+            await new StripePaymentIntentService().cancel(slot.paymentIntent!)
+            const task = await new TaskDBC(slot.id!).retrieve()
+            await new TaskService().cancel(task)
+            await new TaskDBC().delete(slot.id!)
+            await slot.ref!.delete()
+            .catch(err => {
+              console.error(err)
+            })
+          })
+          await new ChatRoomDBC().delete(this.session.id!)
+          await this.session.ref!.delete()
+            .catch(err => {
+              console.error(err)
+            })
         case 'published': 
           // if the session in question is mandatoryFill, here we should also
           // be cancelling session start task as well as handling the notification 
