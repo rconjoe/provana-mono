@@ -67,14 +67,7 @@ export default class SlotStatusHandler {
   }
 
   public async cancelled(): Promise<void> {
-    // this will get called after slot.republish() runs above.
-    // buyerUid, buyerUsername, paymentIntent are cleared,
-    // booked is decremented on parent session, and
-    // the status is updated from 'cancelled' to 'published'
-    // from inside the status watchers.
-    if (this.slot.status === 'published') return
-    // i cant really think of anything else to do here that isn't handled 
-    // in SlotStatusHandler booked to cancelled.
+    return
   }
 
   public async disputed(): Promise<void> {
