@@ -249,6 +249,13 @@ export default class SlotDBC extends Slot {
     })
   }
 
+  public async delete(): Promise<void> {
+    await this.ref!.delete()
+    .catch(err => {
+      console.error(err)
+    })
+  }
+
   public async bookedFromParent(sessionId: string): Promise<Array<SlotDBC>> {
     let slots: Array<SlotDBC> = []
     let q = await db
