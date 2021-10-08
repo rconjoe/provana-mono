@@ -121,6 +121,10 @@ export default class SupporterDBC extends Supporter {
       const docRef = db.collection('supporters').doc(this.uid!)
       this.ref = docRef
 
+      await db.collection('notifications').doc(this.uid)
+      .set({ uid: this.uid })
+      .catch(err => console.error(err))
+
       return await this.ref.withConverter(converter).set(this)
       .catch((err) => {
         throw new Error(err)

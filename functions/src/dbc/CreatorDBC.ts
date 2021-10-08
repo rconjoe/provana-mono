@@ -183,6 +183,9 @@ export default class CreatorDBC extends Creator {
       this.ref = docRef
 
       await new InvitationDBC().associate(this.toModel())
+      await db.collection('notifications').doc(this.uid)
+      .set({ uid: this.uid })
+      .catch(err => console.error(err))
 
       return await this.ref.withConverter(converter).set(this)
       .catch((err) => {
