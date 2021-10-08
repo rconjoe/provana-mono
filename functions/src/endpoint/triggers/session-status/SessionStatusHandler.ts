@@ -6,6 +6,7 @@ import TaskService from '../../../services/TaskService'
 import TimeService from '../../../services/TimeService'
 import NotificationDBC from '../../../dbc/NotificationDBC'
 import StripePaymentIntentService from '../../../services/stripe/StripePaymentIntentService'
+import CancellationDBC from '../../../dbc/CancellationDBC'
 
 export default class SessionStatusHandler {
   session: SessionDBC 
@@ -71,10 +72,10 @@ export default class SessionStatusHandler {
         ).send()
         break
       case 'cancelled':
-        await new ChatRoomDBC().delete(this.session.id!)
         const slots = await new SlotDBC().fetchByParent(this.session.id!)
         slots.forEach(async (slot) => {
           if (slot.status! === 'booked') {
+            await new CancellationDBC(slot.toModel()).create(slot.sellerUid!)
             await new NotificationDBC(
               slot.buyerUid!,
               'Cancellation',
@@ -90,6 +91,7 @@ export default class SessionStatusHandler {
               console.error(err)
             })
         })
+        await new ChatRoomDBC().delete(this.session.id!)
         await this.session.ref!.delete()
           .catch(err => {
             console.error(err)
