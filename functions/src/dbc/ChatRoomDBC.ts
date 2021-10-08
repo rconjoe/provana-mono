@@ -100,4 +100,13 @@ export default class ChatRoomDBC extends ChatRoom {
       value: uid
     })
   }
+
+  public async delete(id: string): Promise<void> {
+    await db.collection('chats')
+      .doc(id)
+      .delete()
+    .catch(err => {
+      console.error(err)
+    })
+  }
 }
