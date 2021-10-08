@@ -34,11 +34,17 @@ export default class SlotStatusHandler {
   public async booked(): Promise<void> {
     switch (this.slot.status) {
       case 'active':
+        if (this.slot.mandatoryFill === false) {
+          const seconds = 300 + this.slot.start!
+          const task = await new TaskService().scheduleCapture(this.slot.id!, seconds)
+          await new TaskDBC(this.slot.id!).write(task)
+        }
         await new NotificationDBC(
           this.slot.buyerUid!,
           'Starting',
           'Your session is starting now!',
         ).send()
+        break
       case 'cancelled':
         let session = new SessionDBC()
         await new CancellationDBC(this.slot.toModel()).create(this.slot.buyerUid!)
