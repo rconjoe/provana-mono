@@ -5,6 +5,7 @@ import TaskDBC from '../../../dbc/TaskDBC'
 import TaskService from '../../../services/TaskService'
 import TimeService from '../../../services/TimeService'
 import NotificationDBC from '../../../dbc/NotificationDBC'
+import StripePaymentIntentService from '../../../services/stripe/StripePaymentIntentService'
 
 export default class SessionStatusHandler {
   session: SessionDBC 
@@ -44,12 +45,19 @@ export default class SessionStatusHandler {
 
   public async published(): Promise<void> {
     switch (this.session.status) {
+      case 'published': 
+        if (this.session.booked === this.session.slots) {
+          await this.session.update({ status: 'full' })
+          break
+        }
+        else break
       case 'active':
         await new NotificationDBC(
           this.session.sellerUid!,
           'Starting',
           'Your session is starting now!',
         ).send()
+        break
       case 'full':
         if (this.session.mandatoryFill === true) {
           const secondsUntil = new TimeService().generate()
@@ -61,17 +69,42 @@ export default class SessionStatusHandler {
           'Full',
           `You've filled up one of your sessions. Nice job!`,
         ).send()
+        break
       case 'cancelled':
-        // we really only care about this if booked > 0. 
-        // it only happens when a *seller* cancels a session.
-        // here we care to do the cancellation of any booked slots
-        // if the seller so decides to proceed cancelling said session
-      break
+        await new ChatRoomDBC().delete(this.session.id!)
+        const slots = await new SlotDBC().fetchByParent(this.session.id!)
+        slots.forEach(async (slot) => {
+          if (slot.status! === 'booked') {
+            await new NotificationDBC(
+              slot.buyerUid!,
+              'Cancellation',
+              'One of your bookings was cancelled by the seller. See your dashboard for details.'
+            ).send()
+            await new StripePaymentIntentService().cancel(slot.paymentIntent!)
+            const task = await new TaskDBC(slot.id!).retrieve()
+            await new TaskService().cancel(task)
+            await new TaskDBC().delete(slot.id!)
+          }
+          await slot.ref!.delete()
+            .catch(err => {
+              console.error(err)
+            })
+        })
+        await this.session.ref!.delete()
+          .catch(err => {
+            console.error(err)
+          })
+        break
+      }
     }
-  }
 
     public async full(): Promise<void> {
       switch (this.session.status) {
+        case 'full': 
+          if (this.session.booked! < this.session.slots!) {
+            await this.session.update({ status: 'published' })
+            break
+          }
         case 'active':
           await new NotificationDBC(
             this.session.sellerUid!,

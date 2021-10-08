@@ -29,21 +29,9 @@ export const onSessionUpdate = functions
         await handler.potential()
         break
       case 'published':
-        if ((_.status !== 'full') && (_.slots === _.booked)) {
-          return await session.update({ status: 'full' })
-        }
         await handler.published()
         break
       case 'full':
-        /** 
-         * this block is probably redundant/unecessary since 
-         * there should be no situation in which before AND after status
-         * is full when booked is decremented below slots.
-         *
-         */
-        if ((_.status === 'full') && (_.booked < _.slots)) {
-          return await session.update({ status: 'published' })
-        }
         await handler.full()
         break
       case 'active':
