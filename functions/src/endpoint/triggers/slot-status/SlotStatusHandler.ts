@@ -28,6 +28,8 @@ export default class SlotStatusHandler {
     if (this.slot.status === 'booked') {
       await new SessionDBC().increment(this.slot.parentSession!)
       await new ChatRoomDBC().addToRoom(this.slot.buyerUid!, this.slot.parentSession!)
+      const task = await new TaskService().scheduleSlotStart(this.slot.id!, this.slot.start!)
+      await new TaskDBC(this.slot.id!).write(task)
     }
   }
 
@@ -35,7 +37,7 @@ export default class SlotStatusHandler {
     switch (this.slot.status) {
       case 'active':
         if (this.slot.mandatoryFill === false) {
-          const seconds = 300 + this.slot.start!
+          const seconds = 10800 + this.slot.start!
           const task = await new TaskService().scheduleCapture(this.slot.id!, seconds)
           await new TaskDBC(this.slot.id!).write(task)
         }
