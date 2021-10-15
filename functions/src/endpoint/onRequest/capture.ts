@@ -12,6 +12,7 @@ export const capture = functions.https.onRequest(async (req, res) => {
   if (intent.status !== 'requires_capture') {
     throw new Error(`Intent error: status ${intent.status}`)
   }
+  // wonky?
   const captured = await new StripePaymentIntentService().capture(intent.id)
   if (captured.status !== 'succeeded') {
     throw new Error(`Payment failed! ${captured.id} status ${captured.status}`)
