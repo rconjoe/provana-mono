@@ -24,6 +24,7 @@ export default class Creator {
   twitch: string | undefined
   youtube: string | undefined
   facebook: string | undefined
+  discord: string | undefined
   online: boolean | undefined
 
   
@@ -74,6 +75,7 @@ export default class Creator {
     twitch?: string,
     youtube?: string,
     facebook?: string,
+    discord?: string,
     online?: boolean
     ) {
       this.uid = uid,
@@ -92,6 +94,7 @@ export default class Creator {
       this.twitch = twitch,
       this.youtube = youtube,
       this.facebook = facebook,
+      this.discord = discord,
       this.online = online
     }
 
@@ -106,11 +109,12 @@ export default class Creator {
    * @param {string} username
    * @returns an updated instance of the Creator object that was created
    */
-  public setRegisterData(email: string, password: string, code: string, username: string): Creator {
+  public setRegisterData(email: string, password: string, code: string, username: string, discord: string): Creator {
     this.email = email,
     this.temp = password,
     this.code = code
-    this.username = username
+    this.username = username,
+    this.discord = discord
     return this
   }
 }
