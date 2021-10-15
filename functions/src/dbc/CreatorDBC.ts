@@ -27,6 +27,7 @@ const converter = {
       twitch: creator.twitch ? creator.twitch : "",
       youtube: creator.youtube ? creator.youtube : "",
       facebook: creator.facebook ? creator.facebook : "",
+      discord: creator.discord ? creator.discord : "",
       online: creator.online ? creator.online : false
     }
   },
@@ -49,6 +50,7 @@ const converter = {
       data.twitch,
       data.youtube,
       data.facebook,
+      data.discord,
       data.online,
       snapshot.ref
     )
@@ -112,10 +114,11 @@ export default class CreatorDBC extends Creator {
     twitch?: string | undefined,
     youtube?: string | undefined,
     facebook?: string | undefined,
+    discord?: string | undefined,
     online?: boolean | undefined,
     ref?: FirebaseFirestore.DocumentReference | undefined,
   ) {
-    super(uid, customer, account, onboarded, partner, email, temp, code, username, timezone, avatar, banner, twitter, twitch, youtube, facebook, online)
+    super(uid, customer, account, onboarded, partner, email, temp, code, username, timezone, avatar, banner, twitter, twitch, youtube, facebook, discord, online)
     this.ref = ref
   }
 
@@ -143,6 +146,7 @@ export default class CreatorDBC extends Creator {
       this.twitch,
       this.youtube,
       this.facebook,
+      this.discord,
       this.online
     )
   }
