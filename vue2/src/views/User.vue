@@ -59,7 +59,7 @@
 			reviews:[],
 			loading: false,
 			postData: '',
-			profile: {},
+			profile: '',
 			userPostArray: [],
 			serviceArray: null,
 			sessions: null,
@@ -75,6 +75,7 @@
 		async mounted() {
 			// set profile
 			this.profile = this.$store.state.auth.currentUser
+			
 
 			// fetch services
 			db.collection('services')
