@@ -16,9 +16,46 @@
 			<v-col class="scheduleCol">
 				<!-- Calendar header -->
 				<CalHeader @prev="prev" @next="next" />
+				
+				<div class="sessionDayDiv" v-for="(day,i) in days" :key="i" >
+					<SessionDay :date="day" :service="service" @show-slots="showEvent"/>
+				</div>
+				<v-menu
+						v-model="sessionToolTip"
+						:close-on-content-click="false"
+						offset-x
+						elevation="0"
+					>
+						<v-card class="toolTip pa-2" min-width="350px" max-width="450px" elvation="0">
+							<v-window v-model="toolTipWindow">
+								<!-- Window 0
+								Booking view -->
+								<v-window-item>
+									<BookSessionWindow
+										:serviceName="selectedEvent.name"
+										:slots="slots"
+										:startTime="formatTime(selectedEvent.start)"
+										:startDate="formatDate(selectedEvent.start)"
+										:mandatory="service.mandatoryFill"
+										@prebook-slot="prebookSlot"
+									/>
+								</v-window-item>
 
+								<!-- window 1 Confirm Checkout -->
+								<v-window-item>
+									<CheckoutSessionWindow
+										:serviceName="selectedEvent.name"
+										:startTime="formatTime(selectedEvent.start)"
+										:startDate="formatDate(selectedEvent.start)"
+										@checkout="checkout"
+										@back="back"
+									/>
+								</v-window-item>
+							</v-window>
+						</v-card>
+					</v-menu>
 				<!-- actual Calendar -->
-				<v-sheet v-if="sessions" height="400" color="transparent" class="calendarContainer">
+				<!-- <v-sheet v-if="sessions" height="400" color="transparent" class="calendarContainer">
 					<v-calendar
 						ref="calendar"
 						v-model="focus"
@@ -37,7 +74,7 @@
 						</template>
 					</v-calendar>
 
-					<!-- tooltip window -->
+					tooltip window
 					<v-menu
 						v-model="sessionToolTip"
 						:close-on-content-click="false"
@@ -47,8 +84,8 @@
 					>
 						<v-card class="toolTip pa-2" min-width="350px" max-width="450px" elvation="0">
 							<v-window v-model="toolTipWindow">
-								<!-- Window 0 -->
-								<!-- Booking view -->
+								Window 0
+								Booking view
 								<v-window-item>
 									<BookSessionWindow
 										:serviceName="selectedEvent.name"
@@ -60,7 +97,7 @@
 									/>
 								</v-window-item>
 
-								<!-- window 1 Confirm Checkout-->
+								window 1 Confirm Checkout
 								<v-window-item>
 									<CheckoutSessionWindow
 										:serviceName="selectedEvent.name"
@@ -73,7 +110,7 @@
 							</v-window>
 						</v-card>
 					</v-menu>
-				</v-sheet>
+				</v-sheet> -->
 
 				<p v-if="!sessions"> There are no openings for this service check back tomorrow.</p>
 			</v-col>
@@ -90,6 +127,7 @@
 	import BookSessionWindow from '../UserServiceSelected/BookSessionWindow.vue'
 	import CheckoutSessionWindow from '../UserServiceSelected/CheckoutSessionWindow.vue'
 	import CalHeader from '../UserServiceSelected/CalHeader.vue'
+	import SessionDay from './SessionDay.vue'
 	var stripe = Stripe(
 		'pk_test_51HJUgfGoIl5NLNcQKTXPu3CKuckXq6vbUXxASrRZvrXgwtODSI9wFNWdZoo37LY3YXrrfMx2N7Nas1MWbWn7ddu100RWAa63mC'
 	)
@@ -100,15 +138,16 @@
 			CheckoutSessionWindow,
 			LoadingOverlay,
 			ServiceDetails,
+			SessionDay,
 		},
 		data: () => ({
+			days:[],
 			selectedSlot: '',
 			focus: '',
 			sessions: [],
 			mySessions: [],
 			slots: [],
 			selectedEvent: '',
-			selectedElement: null,
 			sessionToolTip: false,
 			checkoutLoading: false,
 			toolTipWindow: 0,
@@ -128,7 +167,17 @@
 				})
 			this.$watch('selectedEvent', () => {
 				this.bindSlots()
+				console.log('working')
 			})
+
+			this.days = [
+				dayjs(),
+				dayjs().add(1, 'day'),
+				dayjs().add(2, 'day'),
+				dayjs().add(3, 'day'),
+				dayjs().add(4, 'day'),
+				dayjs().add(5, 'day')
+			]
 		},
 		methods: {
 			back() {
@@ -146,16 +195,11 @@
 			showServices() {
 				this.$emit('show-services')
 			},
-			showEvent({ nativeEvent, event }) {
+			showEvent( event) {
 				const open = () => {
 					this.selectedEvent = event
-					this.selectedElement = nativeEvent.target
-					requestAnimationFrame(() =>
-						requestAnimationFrame(() => {
 							this.sessionToolTip = true
 							this.toolTipWindow = 0
-						})
-					)
 				}
 				if (this.sessionToolTip) {
 					this.sessionToolTip = false
@@ -164,7 +208,7 @@
 				} else {
 					open()
 				}
-				nativeEvent.stopPropagation()
+				
 			},
 			prev() {
 				this.$refs.calendar.prev()
@@ -238,6 +282,11 @@
 </script>
 
 <style scoped>
+	.sessionDayDiv{
+		display: inline-flex;
+		flex-direction: column;
+		width:100px;
+	}
 	.serviceSelectedRow {
 		max-height: 420px;
 		overflow: hidden;
