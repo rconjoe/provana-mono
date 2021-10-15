@@ -3,7 +3,7 @@
  * Invintation Class
  * @class Invitation
  * @typedef {Invitation}
- * @module Invintation
+ * @module Invitation
  * @category src
  * @subcategory models
  */
