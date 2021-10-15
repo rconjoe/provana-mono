@@ -52,3 +52,9 @@ export const auth = firebase.auth()
 export const functions = firebase.functions()
 export const db = firebase.firestore()
 export const storage = firebase.storage()
+if (process.env.NODE_ENV !== "production") {
+    auth.useEmulator('http://localhost:9099')
+    functions.useEmulator('localhost', 5001)
+    db.useEmulator('localhost', 8080)
+    storage.useEmulator('localhost', 9199)
+}
