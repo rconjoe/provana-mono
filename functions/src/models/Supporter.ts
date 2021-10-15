@@ -14,6 +14,7 @@ export default class Supporter {
   customer: string | undefined
   email: string | undefined
   temp: string | undefined
+  discord: string | undefined
   username: string | undefined
   timezone: string | undefined
   avatar: string | undefined
@@ -40,6 +41,7 @@ export default class Supporter {
     customer?: string,
     email?: string,
     temp?: string,
+    discord?: string,
     username?: string,
     timezone?: string,
     avatar?: string,
@@ -50,6 +52,7 @@ export default class Supporter {
       this.customer = customer
       this.email = email,
       this.temp = temp,
+      this.discord = discord,
       this.username = username,
       this.timezone = timezone,
       this.avatar = avatar,
@@ -67,11 +70,12 @@ export default class Supporter {
    * @param {string} username
    * @returns {Supporter}
    */
-  public setRegisterData(email: string, password: string, username: string): Supporter {
+  public setRegisterData(email: string, password: string, username: string, discord: string): Supporter {
     this.uid = "",
     this.customer = "",
     this.email = email,
     this.temp = password,
+    this.discord = discord,
     this.username = username,
     this.timezone = "",
     this.avatar = "",

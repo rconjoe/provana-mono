@@ -273,4 +273,19 @@ export default class SlotDBC extends Slot {
     return slots
   }
 
+  public async activeFromUid(uid: string): Promise<Array<Slot>> {
+    let slots: Array<Slot> = []
+    let q = await db.collectionGroup('slots')
+      .where('buyerUid', '==', uid)
+      .where('status', '==', 'active')
+      .withConverter(converter)
+      .get()
+    if (q.size > 0) {
+      q.forEach(slot => {
+        slots.push(slot.data().toModel())
+      })
+    }
+    return slots
+  }
+
 }

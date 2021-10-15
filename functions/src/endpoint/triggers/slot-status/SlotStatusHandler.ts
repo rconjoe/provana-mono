@@ -28,17 +28,25 @@ export default class SlotStatusHandler {
     if (this.slot.status === 'booked') {
       await new SessionDBC().increment(this.slot.parentSession!)
       await new ChatRoomDBC().addToRoom(this.slot.buyerUid!, this.slot.parentSession!)
+      const task = await new TaskService().scheduleSlotStart(this.slot.id!, this.slot.start!)
+      await new TaskDBC(this.slot.id!).write(task)
     }
   }
 
   public async booked(): Promise<void> {
     switch (this.slot.status) {
       case 'active':
+        if (this.slot.mandatoryFill === false) {
+          const seconds = 10800 + this.slot.start!
+          const task = await new TaskService().scheduleCapture(this.slot.id!, seconds)
+          await new TaskDBC(this.slot.id!).write(task)
+        }
         await new NotificationDBC(
           this.slot.buyerUid!,
           'Starting',
           'Your session is starting now!',
         ).send()
+        break
       case 'cancelled':
         let session = new SessionDBC()
         await new CancellationDBC(this.slot.toModel()).create(this.slot.buyerUid!)
@@ -58,12 +66,13 @@ export default class SlotStatusHandler {
   }
 
   public async active(): Promise<void> {
-    switch (this.slot.status) {
-      case 'succeeded':
-        break
-      case 'disputed':
-        break
+    if (this.slot.status === 'disputed') {
+      const _task = new TaskService()
+      const capture = await new TaskDBC(this.slot.id).retrieve()
+      await _task.cancel(capture)
+      await _task.scheduleRelease(this.slot.id!, 21600 + this.slot.end!)
     }
+    return
   }
 
   public async cancelled(): Promise<void> {
@@ -79,47 +88,10 @@ export default class SlotStatusHandler {
     }
   }
 
-  //private async onPurchase(): Promise<void> {
-  //  const a = this.after!
-  //  await new SessionDBC().increment(a.parentSession!)
-  //  await new ChatRoomDBC().addToRoom(a.buyerUid!, a.parentSession!)
-  //  a.mandatoryFill ? await this.checkFill() : await this.scheduleSlotStart()
-    
-  //  await new NotificationDBC(a.sellerUid!,"Session Purchased!","A user has purchased a session with you, please check your dashboard",true).send()
-  //}
-
-  //private async checkFill(): Promise<void> {
-  //  const id = this.after!.parentSession!
-  //  const session = await new SessionDBC().fetch(id)
-  //  if (session.booked === session.slots) {
-  //    await session.update({ status: 'full' })
-  //  }
-  //}
-
-  //private async scheduleSlotStart(): Promise<void> {
-  //  const a = this.after!
-  //  const secondsUntil = a.start! - new TimeService().generate()
-  //  const task = await new TaskService().scheduleSlotStart(a.id!, secondsUntil)
-  //  await new TaskDBC(a.id!).write(task)
-  //}
-
-  //private async onActive(): Promise<void> {
-  //  const a = this.after!
-  //  const secondsUntil = 10800 + a.end!
-  //  const task = await new TaskService().scheduleCapture(a.id!, secondsUntil)
-  //  await new TaskDBC(a.id!).write(task)
-  //}
-
-  //private async onCancel(): Promise<void> {
-  //}
-
   private async cancelSlotTask(slotId: string): Promise<void> {
     const task = await new TaskDBC(slotId).retrieve()
     await new TaskService().cancel(task)
     await new TaskDBC().delete(slotId)
   }
 
-  //private async onDispute(): Promise<void> {
-  //  console.log('disputed')
-  //}
 }

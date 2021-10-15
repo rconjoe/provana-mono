@@ -46,11 +46,11 @@ export default class TaskService {
    * @public
    * @async
    * @param {string} slotId
-   * @param {number} secondsUntil
+   * @param {number} fireTime
    * @returns {Promise<string>}
    */
-  public async scheduleSlotStart(slotId: string, secondsUntil: number): Promise<string> {
-    return await this.schedule(this.buildRequest('slot-start', slotId, secondsUntil))
+  public async scheduleSlotStart(slotId: string, fireTime: number): Promise<string> {
+    return await this.schedule(this.buildRequest('slot-start', slotId, fireTime))
   }
 
   
@@ -60,11 +60,11 @@ export default class TaskService {
    * @public
    * @async
    * @param {string} sessionId
-   * @param {number} secondsUntil
+   * @param {number} fireTime
    * @returns {Promise<string>}
    */
-  public async scheduleSessionStart(sessionId: string, secondsUntil: number): Promise<string> {
-    return await this.schedule(this.buildRequest('session-start', sessionId, secondsUntil))
+  public async scheduleSessionStart(sessionId: string, fireTime: number): Promise<string> {
+    return await this.schedule(this.buildRequest('session-start', sessionId, fireTime))
   }
 
   
@@ -74,11 +74,15 @@ export default class TaskService {
    * @public
    * @async
    * @param {string} slotId
-   * @param {number} secondsUntil
+   * @param {number} fireTime
    * @returns {Promise<string>}
    */
-  public async scheduleCapture(slotId: string, secondsUntil: number): Promise<string> {
-    return await this.schedule(this.buildRequest('capture', slotId, secondsUntil))
+  public async scheduleCapture(slotId: string, fireTime: number): Promise<string> {
+    return await this.schedule(this.buildRequest('capture', slotId, fireTime))
+  }
+
+  public async scheduleRelease(slotId: string, fireTime: number): Promise<string> {
+    return await this.schedule(this.buildRequest('release', slotId, fireTime))
   }
 
   
@@ -121,10 +125,10 @@ export default class TaskService {
    * @private
    * @param {string} type
    * @param {string} payload
-   * @param {?number} [secondsUntil]
+   * @param {?number} [fireTime]
    * @returns {protos.google.cloud.tasks.v2beta3.ICreateTaskRequest}
    */
-  private buildRequest(type: string, payload: string, secondsUntil?: number)
+  private buildRequest(type: string, payload: string, fireTime?: number)
   : protos.google.cloud.tasks.v2beta3.ICreateTaskRequest {
     let url: string
     let seconds: number
@@ -132,19 +136,27 @@ export default class TaskService {
     switch (type) {
       case 'no-abandoned-checkouts':
         url = 'https://us-central1-db-abstract.cloudfunctions.net/confirmCheckoutComplete'
+        // 5 minutes after checkout 
         seconds = 300 + Date.now() / 1000
         break
       case 'slot-start':
         url = 'https://us-central1-db-abstract.cloudfunctions.net/startSlot'
-        seconds = secondsUntil!
+        // @ slot start time
+        seconds = fireTime!
         break
       case 'session-start':
         url = 'https://google.com'
-        seconds = secondsUntil!
+        // @ session start time
+        seconds = fireTime!
         break
       case 'capture':
         url = 'https://google.com'
-        seconds = secondsUntil!
+        // 6 hours after session start time
+        seconds = fireTime!
+      case 'release':
+        url = 'https://google.com'
+        // 6 hours after slot start time, replaces capture task
+        seconds = fireTime!
       default:
         url = 'crazy.net'
         seconds = 10

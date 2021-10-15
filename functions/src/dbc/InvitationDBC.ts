@@ -243,4 +243,12 @@ export default class InvitationDBC extends Invitation {
     if (invitation.empty === true) throw new Error('Invitation not found')
     return invitation.docs[0].data()!
   }
+
+  public async fetchUid(): Promise<string> {
+    if (!this.id || this.id === undefined) throw new Error('Discord User ID required!')
+    const doc = await db.collection('invitations').doc(this.id!).get()
+    if (!doc.exists) throw new Error('Invitation not found.')
+    if (doc.data()!.uid === "") throw new Error('Invitation code has no associated UID.')
+    return doc.data()!.uid
+  }
 }

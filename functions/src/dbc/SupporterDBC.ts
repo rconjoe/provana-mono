@@ -13,6 +13,7 @@ const converter = {
       customer: supporter.customer ? supporter.customer : "",
       email: supporter.email ? supporter.email : "",
       username: supporter.username ? supporter.username : "",
+      discord: supporter.discord ? supporter.discord : "",
       timezone: supporter.timezone ? supporter.timezone : "",
       avatar: supporter.avatar ? supporter.avatar : "",
       banner: supporter.banner ? supporter.banner : "",
@@ -26,6 +27,7 @@ const converter = {
       data.customer,
       data.email,
       data.temp,
+      data.discord,
       data.username,
       data.timezone,
       data.avatar,
@@ -72,6 +74,7 @@ export default class SupporterDBC extends Supporter {
     customer?: string | undefined,
     email?: string | undefined,
     temp?: string | undefined,
+    discord?: string | undefined,
     username?: string | undefined,
     timezone?: string | undefined,
     avatar?: string | undefined,
@@ -79,7 +82,7 @@ export default class SupporterDBC extends Supporter {
     online?: boolean | undefined,
     ref?: FirebaseFirestore.DocumentReference | undefined,
   ) {
-    super(uid, customer, email, temp, username, timezone, avatar, banner, online)
+    super(uid, customer, email, temp, discord, username, timezone, avatar, banner, online)
     this.ref = ref
   }
 
@@ -95,6 +98,7 @@ export default class SupporterDBC extends Supporter {
       this.customer,
       this.email,
       this.temp,
+      this.discord,
       this.username,
       this.timezone,
       this.avatar,
@@ -118,8 +122,13 @@ export default class SupporterDBC extends Supporter {
       this.customer = supporter.customer
       this.email = supporter.email
       this.username = supporter.username
+      this.discord = supporter.discord
       const docRef = db.collection('supporters').doc(this.uid!)
       this.ref = docRef
+
+      await db.collection('notifications').doc(this.uid)
+      .set({ uid: this.uid })
+      .catch(err => console.error(err))
 
       return await this.ref.withConverter(converter).set(this)
       .catch((err) => {
@@ -133,5 +142,21 @@ export default class SupporterDBC extends Supporter {
       .withConverter(converter)
       .get()
     return doc.data()!
+  }
+
+  public async fetchByDiscord(discordId: string): Promise<SupporterDBC> {
+    const q = await db.collection('supporters')
+      .where('discord', '==', discordId)
+      .withConverter(converter)
+      .get()
+    if (q.empty) throw new Error('Supporter not found!')
+    return q.docs[0].data()
+  }
+
+  public async updateDiscord(discordId: string): Promise<Supporter> {
+    if (!this.ref || this.ref === undefined) throw new Error('Missing ref to update supporter DBC')
+    await this.ref.update({ discord: discordId })
+      .catch(err => console.error(err))
+    return this.toModel()
   }
 }
