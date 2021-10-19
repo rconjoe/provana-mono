@@ -171,10 +171,6 @@ export default {
     })
   },
   mounted() {
-    db.collection(this.$store.state.auth.claims.type).doc(this.$user.uid)
-    .onSnapshot((profile) => {
-      this.profile = profile.data()
-    })
 
     db.collection('reviews')
 				.where('sellerUid', '==', this.$user.uid)
