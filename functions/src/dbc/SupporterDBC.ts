@@ -1,6 +1,6 @@
 import { db } from '../config'
 import Supporter from '../models/Supporter'
-
+import DiscordLinkDBC from './DiscordLinkDBC'
 /**
  * Converter for either mapping data to a Firestore document snapshot or from Firestore to SupporterDBC object
  * 
@@ -144,19 +144,30 @@ export default class SupporterDBC extends Supporter {
     return doc.data()!
   }
 
+  public async discordLinkExists(code: string): Promise<boolean> {
+    const q = await db.collection('supporters')
+      .where('discord', '==', code)
+      .withConverter(converter)
+      .get()
+    return q.empty
+  }
+
   public async fetchByDiscord(discordId: string): Promise<SupporterDBC> {
     const q = await db.collection('supporters')
       .where('discord', '==', discordId)
       .withConverter(converter)
       .get()
-    if (q.empty) throw new Error('Supporter not found!')
-    return q.docs[0].data()
+    return q.docs[0].data()!
   }
 
-  public async updateDiscord(discordId: string): Promise<Supporter> {
-    if (!this.ref || this.ref === undefined) throw new Error('Missing ref to update supporter DBC')
-    await this.ref.update({ discord: discordId })
-      .catch(err => console.error(err))
-    return this.toModel()
+  public async updateDiscord(code: string, discordId: string): Promise<Supporter> {
+    const q = await db.collection('supporters')
+      .where('discord', '==', code)
+      .withConverter(converter)
+      .get()
+    if (q.empty) throw new Error('No supporter was found with this Discord link code.')
+    await q.docs[0].ref.update({ discord: discordId })
+    await new DiscordLinkDBC(q.docs[0].data().uid, 'supporters').write(discordId)
+    return q.docs[0].data().toModel()
   }
 }
