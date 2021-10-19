@@ -1,6 +1,7 @@
 import { db } from '../config'
 import Creator from '../models/Creator'
 import InvitationDBC from '../dbc/InvitationDBC'
+import DiscordLinkDBC from '../dbc/DiscordLinkDBC'
 
 
 /**
@@ -186,10 +187,11 @@ export default class CreatorDBC extends Creator {
       const docRef = db.collection('creators').doc(this.uid!)
       this.ref = docRef
 
-      await new InvitationDBC().associate(this.toModel())
+      this.discord = await new InvitationDBC().associate(this.toModel())
+      await new DiscordLinkDBC(creator.uid, 'creators').write(this.discord)
       await db.collection('notifications').doc(this.uid)
-      .set({ uid: this.uid })
-      .catch(err => console.error(err))
+        .set({ uid: this.uid })
+        .catch(err => console.error(err))
 
       return await this.ref.withConverter(converter).set(this)
       .catch((err) => {
