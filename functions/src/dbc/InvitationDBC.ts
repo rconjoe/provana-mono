@@ -219,14 +219,15 @@ export default class InvitationDBC extends Invitation {
    * @param {Creator} creator
    * @returns {Promise<FirebaseFirestore.WriteResult>}
    */
-  public async associate(creator: Creator): Promise<FirebaseFirestore.WriteResult> {
+  public async associate(creator: Creator): Promise<string> {
     if (!creator.uid || !creator.code) throw new Error('Code and UID needed to associate Invitation with user.')
     const q = await db.collection('invitations').where('code', '==', creator.code).get()
     if (q.empty) throw new Error('Invitation not found in Firestore.')
-    return await q.docs[0].ref.update({
+    await q.docs[0].ref.update({
       uid: creator.uid,
       valid: false
     })
+    return q.docs[0].id
   }
 
   
