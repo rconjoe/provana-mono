@@ -5,9 +5,6 @@ import StripeCustomerService from '../../services/stripe/StripeCustomerService'
 import SupporterDBC from '../../dbc/SupporterDBC'
 import DiscordLink from '../../models/DiscordLink'
 
-/**
- * @see https://getleaf.app/JosephCarlton/stepbystepa-01xddhel
- */
 export const registerSupporter = functions.https.onCall(async (data, context) => {
   if (data === null || data === undefined) throw new Error('Null payload!')
  
