@@ -1,10 +1,8 @@
 export default class DiscordLink {
-  code: string | undefined
   uid: string | undefined
   type: string | undefined
   
-  constructor(code?: string, uid?: string, type?: string) {
-    this.code = code
+  constructor(uid?: string, type?: string) {
     this.uid = uid
     this.type = type
   }
