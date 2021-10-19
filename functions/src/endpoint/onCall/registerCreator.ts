@@ -4,13 +4,11 @@ import AuthUserService from '../../services/auth/AuthUserService'
 import StripeCustomerService from '../../services/stripe/StripeCustomerService'
 import StripeAccountService from '../../services/stripe/StripeAccountService'
 import CreatorDBC from '../../dbc/CreatorDBC'
-import DiscordLink from '../../models/DiscordLink'
 
 export const registerCreator = functions.https.onCall(async (data, context) => {
   if (data === null || data === undefined) throw new Error('Null payload!')
 
-  const discord = new DiscordLink().generate()
-  const creator = new Creator().setRegisterData(data.email, data.password, data.code, data.username, discord)
+  const creator = new Creator().setRegisterData(data.email, data.password, data.code, data.username)
   await new AuthUserService().registerCreator(creator)
 
   await new StripeCustomerService().newCreator(creator)
