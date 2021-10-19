@@ -109,12 +109,11 @@ export default class Creator {
    * @param {string} username
    * @returns an updated instance of the Creator object that was created
    */
-  public setRegisterData(email: string, password: string, code: string, username: string, discord: string): Creator {
+  public setRegisterData(email: string, password: string, code: string, username: string): Creator {
     this.email = email,
     this.temp = password,
     this.code = code
-    this.username = username,
-    this.discord = discord
+    this.username = username
     return this
   }
 }
