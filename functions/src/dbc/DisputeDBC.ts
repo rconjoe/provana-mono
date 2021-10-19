@@ -6,6 +6,7 @@ import { db } from '../config'
 //     return {
 //       slot: dispute.slot ? dispute.slot : '',
 //       buyer: dispute.buyer ? dispute.buyer : '',
+//       comments: dispute.comments ? dispute.buyer : '',
 //       details: dispute.details ? dispute.details : '',
 //       status: dispute.status ? dispute.status : '',
 //       staffId: dispute.staffId ? dispute.staffId : '',
@@ -17,10 +18,11 @@ import { db } from '../config'
 //     return new DisputeDBC(
 //       data.slot,
 //       data.buyer,
+//       data.comments,
 //       data.details,
 //       data.status,
 //       data.staffId,
-//       data.notes
+//       data.notes,
 //       snapshot.ref
 //     )
 //   }
