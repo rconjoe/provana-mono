@@ -65,8 +65,8 @@
 
 		<AlphaPartnerAlert />
 
-		<v-overlay :value="loginOverlay" opacity=".7">
-			<LoginOverlay @close-login="toggleLoginOverlay" />
+		<v-overlay :value="showLogin" opacity=".7">
+			<LoginOverlay @close-login="toggleLoginOverlay" :tab="loginTab" />
 		</v-overlay>
 		<!-- DisputDialog -->
 		<DisputeDialog v-if="topDispute" :dispute="topDispute" />
@@ -130,6 +130,8 @@
 				notifications: (state) => state.notifications.notifications,
 				user: (state) => state.auth.currentUser,
 				loading: (state) => state.loading.show,
+				showLogin: (state) => state.auth.showLogin,
+				loginTab: (state) => state.auth.loginTab
 			}),
 		},
 		mounted() {
@@ -137,7 +139,10 @@
 		},
 		methods: {
 			toggleLoginOverlay() {
-				this.loginOverlay = !this.loginOverlay
+				this.$store.dispatch('auth/setLoginOverlay',
+					{showLogin: !this.showLogin,
+					loginTab:'register'}
+				) 
 			},
 		},
 	}
