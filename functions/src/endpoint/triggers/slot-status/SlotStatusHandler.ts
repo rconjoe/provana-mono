@@ -6,6 +6,7 @@ import TaskService from '../../../services/TaskService'
 import TaskDBC from '../../../dbc/TaskDBC'
 import StripePaymentIntentService from '../../../services/stripe/StripePaymentIntentService'
 import NotificationDBC from '../../../dbc/NotificationDBC'
+import DisputeDBC from '../../../dbc/DisputeDBC'
 import {EventContext} from 'firebase-functions/v1'
 
 export default class SlotStatusHandler {
@@ -81,9 +82,17 @@ export default class SlotStatusHandler {
 
   public async disputed(): Promise<void> {
     switch (this.slot.status) {
-      case 'resolved_pos':
+      case 'resolved-seller':
+        await new DisputeDBC(this.slot.id).update({ status: 'resolved-seller' })
+        await new NotificationDBC(
+          this.slot.buyerUid!,
+          'dispute-resolved',
+          `Your claim on "${this.slot.name}" has been resolved, and you will not be charged.`
+        ).send()
         break
-      case 'resolved_neg':
+      case 'resolved-staff+':
+        break
+      case 'resolved-staff-':
         break
     }
   }
