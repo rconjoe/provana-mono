@@ -47,8 +47,12 @@ export default class DiscordLinkDBC extends DiscordLink {
     .catch(err => console.error(err))
   }
 
-  // public async findUid(): Promise<string> {
-     
-  // }
+  public async getUid(discordId: string): Promise<string> {
+    let uid = await db.collection('discord')
+      .doc(discordId)
+      .get()
+    if (!uid.exists) return 'NOTFOUND'
+    else return uid.data()!.uid
+  }
 
 }
