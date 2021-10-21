@@ -288,4 +288,25 @@ export default class SlotDBC extends Slot {
     return slots
   }
 
+  public async disputedOfSeller(uid: string): Promise<Array<Slot>> {
+    let slots: Array<Slot> = []
+    let q = await db.collectionGroup('slots')
+      .where('sellerUid', '==', uid)
+      .where('status', '==', 'disputed')
+      .withConverter(converter)
+      .get()
+    if (q.size > 0) {
+      q.forEach(slot => {
+        slots.push(slot.data().toModel())
+      })
+    }
+    return slots
+  }
+
+  public async resolve(by: string): Promise<void> {
+    if (this.id === "" || this.id === undefined) throw new Error('Pass slot ID in constructor to run resolve(by)')
+    let slot = await this.fromId(this.id!)
+    await slot.update({ status: 'resolved-seller' })
+  }
+
 }
