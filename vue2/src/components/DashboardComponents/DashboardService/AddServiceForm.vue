@@ -219,9 +219,9 @@
 					<!-- Tab Item -->
 					<v-tab-item value="description" id="description">
 						<!-- description -->
-						<v-card-text>
+						<v-card-text class="pt-0">
 							<v-form v-model="descriptionValid" ref="serviceForm">
-								<v-textarea v-model="form.serviceDescription" height="9.5vw" class="descriptionTextarea" :rules="descriptionRules">
+								<v-textarea v-model="form.serviceDescription" height="9.5vw" class="descriptionTextarea pt-0" :rules="descriptionRules">
 								</v-textarea>
 							</v-form>
 						</v-card-text>

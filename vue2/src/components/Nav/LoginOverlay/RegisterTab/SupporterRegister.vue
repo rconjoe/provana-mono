@@ -7,7 +7,6 @@
 			label="Username"
 			:rules="usernameRules"
 			:success="!!username"
-			error-count="4"
 			v-model="username"
 		></v-text-field>
 		<!-- Password -->
@@ -31,8 +30,7 @@
 			:type="showPassword ? 'text' : 'password'"
 			:append-icon="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
 			@click:append="showPassword = !showPassword"
-			error-count="4"
-			:rules="[(v) => v === password || 'Passwords must match.']"
+			:rules="matchPassword !== password ? ['Passwords must match.'] : []"
 			:success="!!matchPassword"
 			label="Confirm password"
 		></v-text-field>
@@ -42,7 +40,6 @@
 			color="white"
 			class="usernameInput"
 			autocomplete="email"
-			error-count="4"
 			v-model="email"
 			:rules="emailRules"
 			:success="!!email"
@@ -97,6 +94,12 @@
 					password: this.password,
 					username: this.username,
 				})
+				
+				this.$store.dispatch('auth/setLoginOverlay', {loginTab:'login'})
+				this.email = ''
+				this.username = ''
+				this.password = ''
+				this.matchPassword = ''
 				this.goBack()
 			},
 		},

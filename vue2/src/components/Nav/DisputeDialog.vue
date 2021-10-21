@@ -9,31 +9,22 @@
 				<v-card-title class="text-h5 text-bold text-center font-weight-bold dark">
 					
 					<div class="mt-3 text-left" >
-					 Session: <span class="grey--text text--darken-3"> {{dispute.content.session}} </span>
-					</div>
-					<div class="text-left">
-					is being dispute by: <span class="grey--text text--darken-3" >{{dispute.content.buyerUid}} </span>
+					 Session: <span class="grey--text text--darken-3"> {{dispute.content}} </span>
 					</div>
 				</v-card-title>
 				<v-card-text class="text-center">
 					<h3 class="dateTime font-weight-medium white--text ">
-						If you agree the money will be refunded to the buyer.
-					</h3>
-					<h3 class="dateTime font-weight-bold grey--text darken-3 mt-2">
-						if you reject this dispute Provana.GG staff will determine the result.
+						you have an ongoing dispute see discord for details. If you do not respond via discord the money associated with this session will be refunded to the buyer automatically.
 					</h3>
 				</v-card-text>
 				<v-card-actions>
-					<v-btn color="#717171" class="btnCTA" @click="disputeDialog = false">
-						REJECT
-					</v-btn>
 					<v-spacer></v-spacer>
 					<v-btn
 						color="primary"
 						class="btnCTA"
 						@click="disputeDialog = false"
 					>
-						AGREE
+						I understand
 					</v-btn>
 				</v-card-actions>
 			</v-card>

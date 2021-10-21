@@ -14,46 +14,38 @@
 
 			<!-- Col 3/3 Calendar -->
 			<v-col class="scheduleCol">
-				<!-- Calendar header -->
-				<CalHeader @prev="prev" @next="next" />
-				
-				<div class="sessionDayDiv" v-for="(day,i) in days" :key="i" >
-					<SessionDay :date="day" :service="service" @show-slots="showEvent"/>
+				<div class="sessionDayDiv" v-for="(day, i) in days" :key="i">
+					<SessionDay :date="day" :service="service" @show-slots="showEvent" />
 				</div>
-				<v-menu
-						v-model="sessionToolTip"
-						:close-on-content-click="false"
-						offset-x
-						elevation="0"
-					>
-						<v-card class="toolTip pa-2" min-width="350px" max-width="450px" elvation="0">
-							<v-window v-model="toolTipWindow">
-								<!-- Window 0
+				<v-menu v-model="sessionToolTip" :close-on-content-click="false" offset-x elevation="0">
+					<v-card class="toolTip pa-2" min-width="350px" max-width="450px" elvation="0">
+						<v-window v-model="toolTipWindow">
+							<!-- Window 0
 								Booking view -->
-								<v-window-item>
-									<BookSessionWindow
-										:serviceName="selectedEvent.name"
-										:slots="slots"
-										:startTime="formatTime(selectedEvent.start)"
-										:startDate="formatDate(selectedEvent.start)"
-										:mandatory="service.mandatoryFill"
-										@prebook-slot="prebookSlot"
-									/>
-								</v-window-item>
+							<v-window-item>
+								<BookSessionWindow
+									:serviceName="selectedEvent.name"
+									:slots="slots"
+									:startTime="formatTime(selectedEvent.start)"
+									:startDate="formatDate(selectedEvent.start)"
+									:mandatory="service.mandatoryFill"
+									@prebook-slot="prebookSlot"
+								/>
+							</v-window-item>
 
-								<!-- window 1 Confirm Checkout -->
-								<v-window-item>
-									<CheckoutSessionWindow
-										:serviceName="selectedEvent.name"
-										:startTime="formatTime(selectedEvent.start)"
-										:startDate="formatDate(selectedEvent.start)"
-										@checkout="checkout"
-										@back="back"
-									/>
-								</v-window-item>
-							</v-window>
-						</v-card>
-					</v-menu>
+							<!-- window 1 Confirm Checkout -->
+							<v-window-item>
+								<CheckoutSessionWindow
+									:serviceName="selectedEvent.name"
+									:startTime="formatTime(selectedEvent.start)"
+									:startDate="formatDate(selectedEvent.start)"
+									@checkout="checkout"
+									@back="back"
+								/>
+							</v-window-item>
+						</v-window>
+					</v-card>
+				</v-menu>
 				<!-- actual Calendar -->
 				<!-- <v-sheet v-if="sessions" height="400" color="transparent" class="calendarContainer">
 					<v-calendar
@@ -141,7 +133,7 @@
 			SessionDay,
 		},
 		data: () => ({
-			days:[],
+			days: [],
 			selectedSlot: '',
 			focus: '',
 			sessions: [],
@@ -154,7 +146,8 @@
 		}),
 		props: ['service', 'profile'],
 		mounted() {
-			db.collection('sessions')
+			db
+				.collection('sessions')
 				.where('serviceDocId', '==', this.service.id)
 				.where('status', '==', 'published')
 				.onSnapshot((querySnapshot) => {
@@ -176,7 +169,7 @@
 				dayjs().add(2, 'day'),
 				dayjs().add(3, 'day'),
 				dayjs().add(4, 'day'),
-				dayjs().add(5, 'day')
+				dayjs().add(5, 'day'),
 			]
 		},
 		methods: {
@@ -195,11 +188,11 @@
 			showServices() {
 				this.$emit('show-services')
 			},
-			showEvent( event) {
+			showEvent(event) {
 				const open = () => {
 					this.selectedEvent = event
-							this.sessionToolTip = true
-							this.toolTipWindow = 0
+					this.sessionToolTip = true
+					this.toolTipWindow = 0
 				}
 				if (this.sessionToolTip) {
 					this.sessionToolTip = false
@@ -208,7 +201,6 @@
 				} else {
 					open()
 				}
-				
 			},
 			prev() {
 				this.$refs.calendar.prev()
@@ -282,10 +274,10 @@
 </script>
 
 <style scoped>
-	.sessionDayDiv{
+	.sessionDayDiv {
 		display: inline-flex;
 		flex-direction: column;
-		width:100px;
+		width: 100px;
 	}
 	.serviceSelectedRow {
 		max-height: 420px;

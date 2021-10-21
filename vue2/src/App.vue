@@ -87,6 +87,9 @@ body {
 #error {
   background: #1e1e1eee !important;
   opacity: 1;
+  z-index:8;
+  position:fixed !important;
+  width: 99%;
 }
 #error .v-icon {
   color: #fa4b6b;

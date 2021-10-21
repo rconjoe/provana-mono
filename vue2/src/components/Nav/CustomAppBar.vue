@@ -2,22 +2,17 @@
 	<!-- Wrapper div. -->
 	<div>
 		<!-- Notifications drawer -->
-		<v-navigation-drawer
-			class="navDrawer"
-			right
-			fixed
-			v-model="iconActive"
-			color="#1e1e1e"
-			
-		>
+		<v-navigation-drawer class="navDrawer" right fixed v-model="iconActive" color="#1e1e1e">
 			<v-list>
 				<v-list-item v-for="(item, index) in notifications" :key="index">
-					<v-card class="notificationCard mb-1" color="#333333" width="300px" @click="item.read = true,  item.unread == false" >
+					<v-card class="notificationCard mb-1" color="#333333" width="300px" @click=";(item.read = true), item.unread == false">
 						<v-card-text class="py-1 d-flex align-center">
 							<v-avatar v-if="!item.read" color="primary" size="10px" class="mr-2"></v-avatar>
 							<v-avatar v-else color="#1e1e1e" size="10px" class="mr-2"></v-avatar>
 							<div class="d-flex flex-column notificationContentDiv">
-								<h3><u>{{ item.category }}</u></h3>
+								<h3
+									><u>{{ item.category }}</u></h3
+								>
 								<h4>{{ item.content }}</h4>
 								<h4 style="font-size: 12px">{{ item.time }}</h4>
 							</div>
@@ -60,7 +55,7 @@
 			</v-badge>
 			<div class="logBtnDiv">
 				<template v-if="!user">
-					<LoginBtn @open-login="toggleLoginOverlay"/>
+					<LoginBtn @open-login="toggleLoginOverlay" />
 				</template>
 				<template v-if="user">
 					<Logout />
@@ -68,9 +63,10 @@
 			</div>
 		</v-app-bar>
 
-		<!-- login Overlay -->
-		<v-overlay :value="loginOverlay" opacity=".7">
-			<LoginOverlay  @close-login="toggleLoginOverlay"/>
+		<AlphaPartnerAlert />
+
+		<v-overlay :value="showLogin" opacity=".7">
+			<LoginOverlay @close-login="toggleLoginOverlay" :tab="loginTab" />
 		</v-overlay>
 		<!-- DisputDialog -->
 		<DisputeDialog v-if="topDispute" :dispute="topDispute" />
@@ -84,15 +80,16 @@
 	import Logout from '@/components/Nav/Logout.vue'
 	import DisputeDialog from '@/components/Nav/DisputeDialog.vue'
 	import LoginOverlay from '../Nav/LoginOverlay/LoginOverlay.vue'
+	import AlphaPartnerAlert from './AlphaPartnerAlert.vue'
 	import { mapState } from 'vuex'
 	export default {
 		name: 'CustomAppBar',
-		components: { LoginBtn, Logout, DisputeDialog,Overlay, Login,LoginOverlay },
+		components: { LoginBtn, Logout, DisputeDialog, Overlay, Login, LoginOverlay, AlphaPartnerAlert },
 		data: () => ({
 			appNavDrawer: false,
 			iconActive: false,
 			disputeDialog: true,
-			loginOverlay:false,
+			loginOverlay: false,
 			items: [],
 			links: [
 				{
@@ -126,30 +123,40 @@
 				}
 			},
 			topDispute() {
-				return ''
-				// this.$store.state.notifications.disputes[0]
+				if(this.$store.state.notifications.disputes.length){
+					return this.$store.state.notifications.disputes[0]
+				}
+				else{
+					return ''
+				}
 			},
 			...mapState({
 				notifications: (state) => state.notifications.notifications,
 				user: (state) => state.auth.currentUser,
 				loading: (state) => state.loading.show,
+				showLogin: (state) => state.auth.showLogin,
+				loginTab: (state) => state.auth.loginTab
 			}),
 		},
 		mounted() {
 			this.$store.dispatch('notifications/bindNotifs')
+			console.log(this.$store.state.notifications.disputes.length)
 		},
 		methods: {
-			toggleLoginOverlay(){
-				this.loginOverlay = !this.loginOverlay
+			toggleLoginOverlay() {
+				this.$store.dispatch('auth/setLoginOverlay',
+					{showLogin: !this.showLogin,
+					loginTab:'register'}
+				) 
 			},
 		},
 	}
 </script>
 
 <style scoped>
-	.loginCard{
-		margin-left:auto;
-		margin-right:auto;
+	.loginCard {
+		margin-left: auto;
+		margin-right: auto;
 	}
 	.notificationContentDiv {
 		max-width: 100%;
@@ -168,6 +175,7 @@
 	}
 	.appBar {
 		background-image: url('../../assets/_HeaderHexagons1.png');
+		margin-bottom:1vw;
 	}
 	.activeDrawer {
 		background-color: #d91b5c;
