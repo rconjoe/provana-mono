@@ -36,6 +36,7 @@ export default class NotificationDBC {
     this.uid = uid
     this.category = category
     this.content = content
+    this.unread = true
     this.time = new TimeService().generate()
   }
 
