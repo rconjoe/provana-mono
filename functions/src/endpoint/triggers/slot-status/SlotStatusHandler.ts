@@ -90,9 +90,13 @@ export default class SlotStatusHandler {
           `Your claim on "${this.slot.name}" has been resolved, and you will not be charged.`
         ).send()
         break
-      case 'resolved-staff+':
+      case 'resolved-refunded':
         break
-      case 'resolved-staff-':
+      case 'resolved-captured':
+        const _task = new TaskService()
+        const capture = await new TaskDBC(this.slot.id).retrieve()
+        await _task.cancel(capture)
+        await new StripePaymentIntentService().capture(this.slot.paymentIntent!)
         break
     }
   }
