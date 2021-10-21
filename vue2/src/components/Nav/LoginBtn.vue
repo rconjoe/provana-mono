@@ -2,7 +2,7 @@
 <div>
     <a @click="openLogin" > Login</a>
     <span class="slash mx-2"> / </span>
-    <a @click="openLogin" > Register</a>
+    <a @click="openRegister" > Register</a>
 </div>
 
 </template>
@@ -12,7 +12,10 @@ export default {
     name: "LoginBtn",
     methods:{
         openLogin(){
-            this.$emit('open-login')
+            this.$store.dispatch('auth/setLoginOverlay',{showLogin: true, loginTab:'login'})
+        },
+        openRegister(){
+            this.$store.dispatch('auth/setLoginOverlay',{showLogin: true, loginTab:'register'})
         }
     }
 }
