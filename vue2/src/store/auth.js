@@ -13,7 +13,10 @@ export const auth = {
     currentUser: null,
     error: null,
     claims: null,
-    tz: null
+    tz: null,
+    redirectUrl: null,
+    showLogin: false,
+    loginTab:'register'
   }),
 
   mutations: {
@@ -28,6 +31,11 @@ export const auth = {
     },
     SET_TIMEZONE(state, data) {
       state.tz = data;
+    },
+    SET_LOGIN(state, data) {
+      state.redirectUrl = data.redirect
+      state.showLogin = data.showLogin
+      state.loginTab = data.loginTab
     }
   },
   actions: {
@@ -59,6 +67,9 @@ export const auth = {
           commit('SET_TIMEZONE', tz)
         }
       }
+    },
+    async setLoginOverlay({ commit }, data) {
+      commit('SET_LOGIN', data)
     }
   }
 }

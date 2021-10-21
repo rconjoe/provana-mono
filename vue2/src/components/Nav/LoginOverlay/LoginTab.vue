@@ -1,5 +1,5 @@
 <template>
-	<v-card flat color="#111111">
+	<v-card flat color="#111111" class="loginCard">
 		<v-card-text>
 			<p class="loginText"> Login to purchase, track sessions, and make edits to your storefront and services.</p>
 			<v-form>
@@ -15,12 +15,7 @@
 				</v-text-field>
 			</v-form>
 			<div class="d-flex justify-space-between">
-                <v-checkbox
-          v-model='setCookie'
-          label='Remember me'
-          class='stepCloser'
-          color='red'>
-        </v-checkbox>
+				<v-spacer> </v-spacer>
 				<v-btn text class="loginBtn" @click="signIn"> Login</v-btn>
 			</div>
 		</v-card-text>
@@ -29,16 +24,24 @@
 
 <script>
 import { auth, LOCAL_PERSISTENCE, NO_PERSISTENCE } from '../../../plugins/firebase';
+import gsap from 'gsap'
+
 	export default {
 		data: () => ({
 			password: '',
 			email: '',
 			showPassword: false,
-			setCookie: false,
+			setCookie: true,
 		}),
 		methods: {
+			shake(){
+				let tl = gsap.timeline();
+				tl.to('.loginCard',{duration:.1, x:20,})
+				.to('.loginCard',{duration:.1, x:-20})
+				.to('.loginCard',{duration:.1, x:0})
+			},
             closeLogin(){
-                this.$emit('close-login')
+                this.$store.dispatch('auth/setLoginOverlay',{showLogin:false})
             },
 			async signIn() {
 				this.$store.commit('loading/SET_LOADING', true)
@@ -50,7 +53,8 @@ import { auth, LOCAL_PERSISTENCE, NO_PERSISTENCE } from '../../../plugins/fireba
                             this.closeLogin()
                         })
 						.catch((err) => {
-							console.log(err)
+							this.shake()
+							this.$store.dispatch('error/setError',{show:true,color:'warning',message: err, icon:'fas fa-exclamation'})
 							this.$store.commit('loading/SET_LOADING', false)
 						})
 				} else {

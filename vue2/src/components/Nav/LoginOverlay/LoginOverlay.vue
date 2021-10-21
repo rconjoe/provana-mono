@@ -2,18 +2,18 @@
 	<div class="loginWrap">
 		<v-img src="../../../assets/ProvanaEyes_Footer.png" max-width="266" class="loginEyes" />
 		<v-tabs v-model="tab" hide-slider class="mt-10 mx-10" active-class="activeTab">
-			<v-tab class="loginTab">
+			<v-tab class="loginTab" href="#login">
 				Login
 			</v-tab>
-			<v-tab class="registerTab">Register</v-tab>
+			<v-tab class="registerTab" href="#register">Register</v-tab>
 			<v-spacer> </v-spacer>
 			<v-tab class="closeTab" @click="closeLogin"> x</v-tab>
 		</v-tabs>
 		<v-tabs-items v-model="tab">
-			<v-tab-item>
+			<v-tab-item value="login">
                 <LoginTab @close-login="closeLogin" />
 			</v-tab-item>
-			<v-tab-item >
+			<v-tab-item value="register">
 					<RegisterTab  @goto-login="gotoLogin"/>
 			</v-tab-item>
 		</v-tabs-items>
@@ -25,12 +25,13 @@
     import RegisterTab from './RegisterTab/RegisterTab.vue'
 	export default {
         components:{LoginTab,RegisterTab},
+		props:['tab'],
 		data: () => ({
-			tab: 0,
+			
 		}),
 		methods: {
 			closeLogin() {
-				this.$emit('close-login')
+				this.$store.dispatch('auth/setLoginOverlay',{showLogin:false})
 			},
 			gotoLogin(){
 				this.tab = 0

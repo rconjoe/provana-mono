@@ -29,9 +29,9 @@
 					:rules="usernameRules"
 					:success="!!username"
 					v-model="username"
-          label="Username"
+					label="Username"
 				></v-text-field>
-        <!-- Password -->
+				<!-- Password -->
 				<v-text-field
 					color="white"
 					v-model="password"
@@ -41,9 +41,9 @@
 					:rules="passwordRules"
 					:success="!!password"
 					class="usernameInput"
-          label="Password"
+					label="Password"
 				></v-text-field>
-        <!-- Confirm password -->
+				<!-- Confirm password -->
 				<v-text-field
 					color="white"
 					v-model="matchPassword"
@@ -53,11 +53,11 @@
 					:rules="[(v) => v === password || 'Passwords must match.']"
 					:success="!!matchPassword"
 					class="usernameInput"
-          label="Confirm password"
+					label="Confirm password"
 				></v-text-field>
-        <!-- E-mail -->
+				<!-- E-mail -->
 				<v-text-field
-          label="E-mail"
+					label="E-mail"
 					color="white"
 					class="usernameInput"
 					autocomplete="email"
@@ -65,15 +65,15 @@
 					:rules="emailRules"
 					:success="!!email"
 				></v-text-field>
-			<div class="d-flex justify-space-between mt-8">
-				<v-btn text class="registerBtn" @click="goBack(0)">
-					<v-icon size="1vw" class="mr-2"> fas fa-chevron-left </v-icon> Back
-				</v-btn>
+				<div class="d-flex justify-space-between mt-8">
+					<v-btn text class="registerBtn" @click="goBack(0)">
+						<v-icon size="1vw" class="mr-2"> fas fa-chevron-left </v-icon> Back
+					</v-btn>
 
-				<v-btn text class="registerBtn" @click="newCreator">
-				Register
-				</v-btn>
-			</div>
+					<v-btn text class="registerBtn" @click="newCreator">
+						Register
+					</v-btn>
+				</div>
 			</v-form>
 		</v-window-item>
 	</v-window>
@@ -125,10 +125,11 @@
 					this.$router.push('/login')
 					this.$store.commit('loading/SET_LOADING', false)
 				})
+				this.$store.dispatch('auth/setLoginOverlay', { loginTab: 'login' })
 			},
-      gotoLoginTab(){
-        this.$emit('goto-login')
-      },
+			gotoLoginTab() {
+				this.$emit('goto-login')
+			},
 			async allowAlphaPartner() {
 				this.$store.commit('loading/SET_LOADING', true)
 				const validateInvitation = functions.httpsCallable('validateInvitation')
@@ -144,11 +145,12 @@
 					} else if (resp.data === true) {
 						return (this.window = 1)
 					} else {
-						return this.$store.state.error.commit('error/SET_ERROR', { 
-              show: true,
+						return this.$store.state.error.commit('error/SET_ERROR', {
+							show: true,
 							message: 'Invalid registration code.',
 							color: 'primary',
-							icon: 'fas fa-exclamation', })
+							icon: 'fas fa-exclamation',
+						})
 					}
 				})
 				this.$store.commit('loading/SET_LOADING', false)
@@ -164,7 +166,7 @@
 	}
 	.usernameInput {
 		padding-top: 1%;
-    margin-bottom:1vw;
+		margin-bottom: 1vw;
 	}
 	.nextBtn {
 		align-self: flex-end;
