@@ -123,8 +123,12 @@
 				}
 			},
 			topDispute() {
-				return ''
-				// this.$store.state.notifications.disputes[0]
+				if(this.$store.state.notifications.disputes.length){
+					return this.$store.state.notifications.disputes[0]
+				}
+				else{
+					return ''
+				}
 			},
 			...mapState({
 				notifications: (state) => state.notifications.notifications,
@@ -136,6 +140,7 @@
 		},
 		mounted() {
 			this.$store.dispatch('notifications/bindNotifs')
+			console.log(this.$store.state.notifications.disputes.length)
 		},
 		methods: {
 			toggleLoginOverlay() {
@@ -170,6 +175,7 @@
 	}
 	.appBar {
 		background-image: url('../../assets/_HeaderHexagons1.png');
+		margin-bottom:1vw;
 	}
 	.activeDrawer {
 		background-color: #d91b5c;
