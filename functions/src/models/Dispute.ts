@@ -14,6 +14,7 @@ export default class Dispute {
   status: string | undefined
   staffId: string | undefined
   notes: Array<string> | undefined
+  generated: number | undefined
 
   /** Creates an instance of Dispute.
    *
@@ -33,7 +34,8 @@ export default class Dispute {
   details?: string | undefined,
   status?: string | undefined,
   staffId?: string | undefined,
-  notes?: Array<string> | undefined
+  notes?: Array<string> | undefined,
+  generated?: number | undefined
   ) {
     this.slot = slot
     this.buyer = buyer
@@ -41,6 +43,7 @@ export default class Dispute {
     this.details = details
     this.status = status
     this.staffId = staffId
-    this.notes = notes
+    this.notes = notes,
+    this.generated = generated
   }
 }
