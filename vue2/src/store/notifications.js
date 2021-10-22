@@ -9,7 +9,8 @@ export const notifications = {
 
   state: () => ({
     notifications: [],
-      online: false,
+    disputes:[],
+    online: false,
   }),
 
   mutations: {
