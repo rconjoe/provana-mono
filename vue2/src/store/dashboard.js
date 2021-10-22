@@ -29,8 +29,8 @@ export const dashboard = {
       async getPurchased({ commit }) {
         commit('SET_PURCHASED', [])
         const purchasedArr = []
-        const fun = functions.httpsCallable('callableGetPurchasedSessions')
-        const purchased = await fun({ uid: store.state.auth.currentUser.uid })
+        const fun = functions.httpsCallable('fetchPurchasedSlots')
+        const purchased = await fun({ buyerUid: store.state.auth.currentUser.uid })
         if (!purchased.data) {
           return
         }
@@ -46,8 +46,8 @@ export const dashboard = {
       async getSold({ commit }) {
         commit('SET_SOLD', [])
         const soldArr = []
-        const fun = functions.httpsCallable('callableGetSoldSessions')
-        const sold = await fun({ uid: store.state.auth.currentUser.uid })
+        const fun = functions.httpsCallable('fetchSoldSessions')
+        const sold = await fun({ sellerUid: store.state.auth.currentUser.uid })
         if (!sold.data) {
           return
         }
