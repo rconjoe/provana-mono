@@ -42,9 +42,9 @@ service cloud.firestore {
       allow update: if request.auth.uid == resource.data.sellerUid
     }
 
-    match /supporter/{docId} {
+    match /supporters/{docId} {
       // currently there is no reason for a Creator to be able to see a supporters profile information from the frontend sdk
-      allow read: if false;
+      allow read;
       allow update: if request.auth.uid == resource.data.uid
     }
   }
