@@ -33,7 +33,7 @@ service cloud.firestore {
     match /services/{docId} {
       allow read;
       // only allow creators to update their own services
-      allow update: if request.auth.uid == resource.data.uid
+      allow create: if request.auth.uid == resource.data.uid
     }
 
     match /sessions/{docId=**} {
