@@ -1,3 +1,4 @@
+import devtools from '@vue/devtools'
 import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from "vue-router"
@@ -7,6 +8,9 @@ import { store } from './store/index'
 import { auth } from './plugins/firebase'
 import { db } from './plugins/firebase'
 
+if (process.env.NODE_ENV === 'development') {
+  devtools.connect()
+}
 // turn off development mode warning
 Vue.config.productionTip = false
 
