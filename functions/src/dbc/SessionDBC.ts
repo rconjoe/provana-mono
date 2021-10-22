@@ -97,7 +97,22 @@ export default class SessionDBC extends Session {
     this.ref = ref
   }
 
-  
+  public toModel(): Session {
+    return new Session(
+      this.sellerUid,
+      this.slots,
+      this.booked,
+      this.serviceDocId,
+      this.mandatoryFill,
+      this.name,
+      this.color,
+      this.serviceColor,
+      this.start,
+      this.end,
+      this.id,
+      this.status
+    )
+  } 
   /**
    * Setter method to set the sellerUid property
    *
@@ -204,6 +219,22 @@ export default class SessionDBC extends Session {
       ref: db.collection('sessions').doc(id),
       field: 'booked',
     })
+  }
+
+  public async fetchBooked(sellerUid: string): Promise<Array<Session>> {
+    let sessions: Array<Session> = []
+    const qsessions = await db
+      .collection('sessions')
+      .where('sellerUid', '==', sellerUid)
+      .where('booked', '>', 0)
+      .withConverter(converter)
+      .get()
+    if (!qsessions.empty) {
+      qsessions.forEach(session => {
+        sessions.push(session.data()!.toModel())
+      })
+    }
+    return sessions
   }
 
 }
