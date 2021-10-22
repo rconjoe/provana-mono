@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "NODE_ENV=test && vue-cli-service serve --port=8081",
+    "winServe": "set NODE_ENV=test && vue-cli-service serve --port=8081",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",

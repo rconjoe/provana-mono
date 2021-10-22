@@ -43,7 +43,7 @@
 	import { db, storage } from '../../../plugins/firebase'
 
 	export default {
-        props:['avatar','banner'],
+        props:['avatar','banner','avatarUrl','bannerUrl'],
         data:() => ({
             avatarEdit: false,
 			bannerEdit: false,

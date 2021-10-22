@@ -1,34 +1,51 @@
+rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if request.time < timestamp.date(2021, 9, 8);
+    match /chats/{docId} {
+      allow read: if request.auth.uid in get(/databases/{database}/documents/chats/{docId}).users
+      allow update: if request.auth.uid in get(/database/{database}/documents/chats/{docId}.users)
     }
 
-    match /invitations/{invitationId} {
+    match /creators/{creatorUid} {
+      // so people can see user info on the storefront
       allow read;
-      allow write;
+      allow update: if request.auth.uid == resource.data.uid
     }
 
-    match /supporters/{supporterId} {
-      allow read;
-      allow create;
-      allow update: if request.auth.uid == resource.id;
+    match /invitations/{docId} {
+      // dont allow any user to read or write to this collection
+      allow read: if false
+      allow write: if false
     }
 
-    match /creators/{creatorId} {
-      allow read;
-      allow create;
-      allow update: if request.auth.uid == resource.id;
+    match /notifications/{docId} {
+      // dont allow any user to read or write to this collection as only the api needs access
+      allow read: if request.auth.uid == resource.data.uid
+      allow write: if false
     }
 
-    match /sessions/{sessionId} {
+    match /reviews/{docId} {
       allow read;
-      allow create: if request.auth != null && exists(/databases/$(database)/documents/creators/$(request.auth.uid))
-      allow update: if request.auth.uid == resource.data.sellerUid;
+      // if a supporter has been in a slot they can then write a review for that seller / service
+      allow write: if request.resource.data.slot.sellerUid == resource.data.sellerUid
+    }
 
-      match /slots/{slotId} {
-        allow read, write: if request.auth.uid == resource.data.sellerUid;
-      }
+    match /services/{docId} {
+      allow read;
+      // only allow creators to update their own services
+      allow create: if request.auth.uid == resource.data.uid
+    }
+
+    match /sessions/{docId=**} {
+      allow read;
+      // only a creator can update their own session docs
+      allow update: if request.auth.uid == resource.data.sellerUid
+    }
+
+    match /supporter/{docId} {
+      // currently there is no reason for a Creator to be able to see a supporters profile information from the frontend sdk
+      allow read: if false;
+      allow update: if request.auth.uid == resource.data.uid
     }
   }
 }

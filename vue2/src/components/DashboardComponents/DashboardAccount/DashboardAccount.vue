@@ -24,7 +24,7 @@
 				</v-col>
 				<v-col class="avatarCol">
 					<!-- Avatar/ banner uploads -->
-					<AccountUploads :avatar="profile.avatar" :banner="profile.banner" />
+					<AccountUploads :avatar="this.$store.state.auth.currentUser.avatar" :banner="this.$store.state.auth.currentUser.banner"  :avatarUrl="this.$store.state.auth.currentUser.avatar" :bannerUrl="this.$store.state.auth.currentUser.banner" />
 				</v-col>
 			</v-row>
 		</v-col>
