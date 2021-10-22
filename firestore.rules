@@ -1,4 +1,4 @@
-rules_version = '1.1';
+rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /chats/{docId} {
@@ -18,19 +18,19 @@ service cloud.firestore {
       allow write: if false
     }
 
-    match /notifications/(docId) {
+    match /notifications/{docId} {
       // dont allow any user to read or write to this collection as only the api needs access
       allow read: if false
       allow write: if false
     }
 
-    match /reviews/(docId) {
+    match /reviews/{docId} {
       allow read;
       // if a supporter has been in a slot they can then write a review for that seller / service
       allow write: if request.resource.data.slot.sellerUid == resource.data.sellerUid
     }
 
-    match /services/(docId) {
+    match /services/{docId} {
       allow read;
       // only allow creators to update their own services
       allow update: if request.auth.uid == resource.data.uid
