@@ -51,6 +51,7 @@ import gsap from 'gsap'
 						.signInWithEmailAndPassword(this.email, this.password)
 						.then((resp) => {
                             this.closeLogin()
+						this.$router.push('/dashboard')	
                         })
 						.catch((err) => {
 							this.shake()
