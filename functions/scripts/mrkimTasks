@@ -1,0 +1,6 @@
+#!/bin/bash
+cd c:/Users/kimputer/provana-util/cloud-tasks-emulator && go run ./ -host localhost -port 8001 \
+  -queue projects/db-abstract/locations/us-central1/queues/no-abandoned-checkouts \
+  -queue projects/db-abstract/locations/us-central1/queues/slot-start \
+  -queue projects/db-abstract/locations/us-central1/queues/session-start \
+  -queue projects/db-abstract/locations/us-central1/queues/capture
