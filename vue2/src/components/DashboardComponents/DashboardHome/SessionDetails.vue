@@ -33,9 +33,9 @@
 					<div>
 						<h3 class="label">Participants:</h3>
 						<h2 class="dateTime" style="color:#F4D969">
-							{{ this.selectedEvent.bookedSlots }}/{{ this.selectedEvent.session.slots }}
+							{{ this.selectedEvent.buyers.length}}/{{ this.selectedEvent.session.slots }}
 						</h2>
-						<v-tooltip right content-class="mandatoryTooltip">
+						<v-tooltip right content-class="mandatoryTooltip">	
 							<template v-slot:activator="{ on, attrs }">
 								<v-icon
 									size="1vw"
@@ -212,16 +212,8 @@
 					<h3 class="dateTime font-weight-bold grey--text darken-3 mt-2">
 						if you did this by mistake, <span class="link" @click="closeDisputeDialog"> Go back. </span>
 					</h3>
-					<h3 class="reasonText text-left mt-3 mb-1">Reason:</h3>
-					<v-select
-						:items="complaintList"
-						single-line
-						background-color="#111111"
-						color="primary"
-						class="ml-2"
-						v-model="disputeComplaint"
-					>
-					</v-select>
+					<h3 class="reasonText text-left mt-3 mb-1 text-center">OR</h3>
+					<h3 class="dateTime font-weight-medium "> If you wish to continue you will be redirect to discord to file your dispute.</h3>
 				</v-card-text>
 
 				<v-card-actions>
@@ -233,18 +225,17 @@
 						color="primary"
 						class="btnCTA"
 						:loading="deleteLoading"
-						:disabled="disputeComplaint == ''"
-						@click="disputeSession"
+						href="https://discord.gg/zJh4RaHk" 
+						target="_blank"
 					>
 						dispute session
 					</v-btn>
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
-
+		
 		<!-- Session Terms / Session Description Dialog   -->
-		<v-dialog width="32.63157894736842vw" v-model="sessionDialog">
-			<!-- Card Wrapper -->
+		 <v-dialog width="32.63157894736842vw" v-model="sessionDialog">
 			<v-card class="sessionDialogCard">
 				<h3 class="sessionTitle">{{ selectedEvent.session.name }}</h3>
 				<v-tabs v-model="tabs" vertical hide-slider>
@@ -255,10 +246,16 @@
 					</v-tab-item>
 					<v-tab-item value="terms" id="terms">
 						<h1 class="tabItemText"> Terms</h1>
+						<v-list class="termsListBox" >
+							<v-list-item v-for="(term, i) in sampleTerms" :key="i" no-action class=" termsFont pl-1 elevation-3">
+								{{ i + 1 }}.<span class="termsItem ml-2">{{ term }} </span>
+								<v-spacer> </v-spacer>
+							</v-list-item>
+						</v-list>
 					</v-tab-item>
 				</v-tabs>
 			</v-card>
-		</v-dialog>
+		</v-dialog> 
 	</div>
 </template>
 
@@ -270,6 +267,12 @@
 	export default {
 		name:'SessionDetails',
 		data: () => ({
+			sampleTerms: [
+				'First Example terms',
+				'Second example term that is much longer than the first like a lot longer, so much longer.',
+				'Do I really need a third?',
+				'Definitely dont need a fourth',
+			],
 			x: 0,
 			y: 0,
 			disputeLoading: false,
@@ -287,12 +290,7 @@
 			sessionDialog: false,
 			tabs: 'terms',
 			selectedElement: null,
-			complaintList: [
-				'I have something better to do.',
-				"I won't make it in time",
-				'I booked this by accident',
-				'I just want my money back',
-			],
+			
 		}),
 		computed: {
 			...mapState({
@@ -327,49 +325,7 @@
 				// could be fixed with snapshot bind, but that requires 2 queries for each (service.ts)
 				window.location.reload()
 			},
-			async disputeSession() {
-				this.disputeLoading = true
-				const filedAt = dayjs(Date.now()).unix()
-				const session = this.selectedEvent.session.id
-				const status = 'filed'
-				const sellerUid = this.selectedEvent.session.sellerUid
-				const filedBy = this.$user.uid
-				const complaint = this.disputeComplaint
-				const group = 'none'
-				const fileComplaint = functions.httpsCallable('callableFileDispute')
-
-				if (this.selectedEvent.session.slots > 1) {
-					const group = this.selectedEvent.session.id
-					const q = await db.collection('sessions')
-						.doc(group)
-						.collection('slots')
-						.where('buyerUid', '==', this.$user.uid)
-						.get()
-					const slot = q.docs[0].id
-					await fileComplaint({
-						filedBy: filedBy,
-						filedAt: filedAt,
-						session: slot,
-						status: status,
-						sellerUid: sellerUid,
-						complaint: complaint,
-						group: group
-					})
-				} else {
-					await fileComplaint({
-						filedBy: filedBy,
-						filedAt: filedAt,
-						session: session,
-						status: status,
-						sellerUid: sellerUid,
-						complaint: complaint,
-						group: group
-					})
-				}
-				this.disputeLoading = false
-				this.disputeDialog = false
-				this.disputeComplaint = ''
-			},
+			
 			closeDeleteDialog() {
 				this.deleteString = ''
 				this.deleteReason = ''
@@ -475,6 +431,7 @@
 		height: 9.210526315789474vw;
 		padding: 1.0526315789473684vw;
 		border-radius: 10px;
+		overflow-y:scroll;
 	}
 	.tabItemText {
 		font: normal 600 0.9473684210526315vw Arboria;

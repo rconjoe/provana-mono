@@ -63,7 +63,6 @@
 	import { mapState } from 'vuex'
 	export default {
 		name:'UpcomingSessions',
-		props: ['sessions'],
 		data: () => ({
 			tab: 'sold',
 		}),
