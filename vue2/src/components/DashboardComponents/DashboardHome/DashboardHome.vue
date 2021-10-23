@@ -35,7 +35,7 @@
     <v-col class="postContainer d-flex flex-column justify-start">
       <!-- OLD POSTS COMPONENT -->
       <div class="bioBox d-flex flex-column justify start">
-        <SessionDetails :selectedEvent="this.selectedEvent" />
+        <SessionDetails />
       </div>
         <!-- <v-card class="postCard" flat color="transparent">
           <v-card-text class="postTitle mx-auto "> Let your customers know what's up! </v-card-text>
@@ -105,26 +105,8 @@ export default {
   }),
 
   methods: {
-    selectSession(e){
-      this.selectedEvent = e
-    },
     setToday() {
       this.focus = '';
-    },
-    async uploadPost() {
-      this.postLoading = true;
-      const setPost = functions.httpsCallable('saveNewSellerPost');
-      await setPost({ uid: this.$user.uid, post: this.post }).then((resp) => {
-        console.log(resp.data);
-        this.postLoading = false;
-        this.post = '';
-      });
-    },
-    prev() {
-      this.$refs.calendar.prev();
-    },
-    next() {
-      this.$refs.calendar.next();
     },
     showEvent({ nativeEvent, event }) {
       const open = () => {
