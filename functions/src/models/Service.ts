@@ -13,6 +13,7 @@ export default class Service {
   id: string | undefined
   serviceName: string | undefined
   serviceDescription: string | undefined
+  terms: Array<string> | undefined
   serviceCost: number | undefined
   serviceLength: number | undefined
   tags: Array<string> | undefined
@@ -49,6 +50,7 @@ export default class Service {
     id?: string,
     serviceName?: string,
     serviceDescription?: string,
+    terms?: Array<string>,
     serviceCost?: number,
     serviceLength?: number,
     tags?: Array<string>,
@@ -64,6 +66,7 @@ export default class Service {
     this.id = id,
     this.serviceName = serviceName,
     this.serviceDescription = serviceDescription,
+    this.terms = terms,
     this.serviceCost = serviceCost,
     this.serviceLength = serviceLength,
     this.tags = tags,
