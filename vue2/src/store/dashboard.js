@@ -36,7 +36,22 @@ export const dashboard = {
         }
         else {
           purchased.data.forEach(async (data) => {
-            const session = formatter(data)
+            const session = {
+              name: data.name,
+              color: data.color,
+              serviceColor: data.serviceColor,
+              start: formatter(data.start),
+              end: formatter(data.end),
+              status: data.status,
+              participants: data.participants,
+              buyerUid: data.buyerUid,
+              slot: data.slot,
+              slots: data.slots,
+              parentSession: data.parentSession,
+              sellerUid: data.sellerUid,
+              serviceDocId: data.serviceDocId,
+              id: data.id,
+            }
             purchasedArr.push(session)
           })
           commit('SET_PURCHASED', purchasedArr)
@@ -53,7 +68,22 @@ export const dashboard = {
         }
         else {
           sold.data.forEach((data) => {
-            const session = formatter(data)
+            const session = {
+              name: data.name,
+              color: data.color,
+              serviceColor: data.serviceColor,
+              start: formatter(data.start),
+              end: formatter(data.end),
+              status: data.status,
+              participants: data.participants,
+              buyerUid: data.buyerUid,
+              slot: data.slot,
+              slots: data.slots,
+              parentSession: data.parentSession,
+              sellerUid: data.sellerUid,
+              serviceDocId: data.serviceDocId,
+              id: data.id,
+            }
             soldArr.push(session)
           })
           commit('SET_SOLD', soldArr)
