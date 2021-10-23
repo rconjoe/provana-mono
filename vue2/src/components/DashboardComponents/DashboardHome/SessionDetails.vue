@@ -294,7 +294,7 @@
 		}),
 		computed: {
 			...mapState({
-				selectedEvent: (state) => state.dashboard.home.selected,
+				selectedEvent: (state) => state.dashboard.selected,
 				claims: (state) => state.auth.claims,
 			}),
 		},
@@ -302,20 +302,16 @@
 			async deleteBooked() {
 				this.deleteLoading = true
 				if (this.selectedEvent.seller.uid === this.$user.uid) {
-					const cancel = functions.httpsCallable('callableSellerCancelBooked')
+					const cancel = functions.httpsCallable('cancelSession')
 					await cancel({
-						session: this.selectedEvent.session.id,
-						uid: this.$user.uid,
-						slots: this.selectedEvent.session.slots,
+						id: this.selectedEvent.session.id,
 					}).catch((err) => {
 						console.error(err)
 					})
 				} else {
-					const cancel = functions.httpsCallable('callableBuyerCancelBooked')
+					const cancel = functions.httpsCallable('cancelSlot')
 					await cancel({
-						session: this.selectedEvent.session.id,
-						uid: this.$user.uid,
-						slots: this.selectedEvent.session.slots,
+						id: this.selectedEvent.bookedSlots.id,
 					}).catch((err) => {
 						console.error(err)
 					})

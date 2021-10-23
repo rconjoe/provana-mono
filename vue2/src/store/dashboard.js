@@ -35,14 +35,14 @@ export const dashboard = {
         state.selected.buyers.push(data)
       },
       SET_SELECTED_BOOKEDSLOTS(state, data) {
-        state.selected.bookedSlots.push(data)
+        state.selected.bookedSlots = data
       },
       RESET_SELECTED(state) {
         state.selected = {
           session: {},
           seller: {},
           buyers: [],
-          bookedSlots: []
+          bookedSlots: {}
         }
       }
     },
@@ -114,6 +114,7 @@ export const dashboard = {
       },
       async selectSession({ commit }, slot) {
         commit('RESET_SELECTED')
+        commit('SET_SELECTED_BOOKEDSLOTS', slot)
         const parentRef = db
           .collection('sessions')
           .doc(slot.parentSession)
@@ -125,7 +126,6 @@ export const dashboard = {
         const fetchUser = functions.httpsCallable('fetchUser')
         qslots.forEach(async slot => {
           if (slot.data().status === 'booked') {
-            commit('SET_SELECTED_BOOKEDSLOTS', slot.data())
             let buyer = await fetchUser({uid: slot.data().buyerUid})
             commit('SET_SELECTED_BUYERS', buyer.data)
           }
