@@ -354,4 +354,20 @@ export default class SlotDBC extends Slot {
     return slots
   }
 
+  public async fetchSold(sellerUid: string): Promise<Array<Slot>> {
+    let slots: Array<Slot> = []
+    const qslot = await db
+      .collectionGroup('slots')
+      .where('sellerUid', '==', sellerUid)
+      .where('status', '==', 'booked')
+      .withConverter(converter)
+      .get()
+    if (!qslot.empty) {
+      qslot.forEach(slot => {
+        slots.push(slot.data().toModel())
+      })
+    }
+    return slots
+  }
+
 }

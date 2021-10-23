@@ -9,8 +9,13 @@ export const dashboard = {
       home: {
         purchased: [],
         sold: [],
-        selected: {},
-      }
+      },
+      selected: {
+        session: {},
+        seller: {},
+        buyers: [],
+        bookedSlots: []
+      },
     }),
 
     mutations: {
@@ -20,8 +25,25 @@ export const dashboard = {
       SET_SOLD(state, data) {
         state.home.sold = data
       },
-      SET_SELECTED(state, data) {
-        state.home.selected = data
+      SET_SELECTED_SESSION(state, data) {
+        state.selected.session = data
+      },
+      SET_SELECTED_SELLER(state, data) {
+        state.selected.seller = data
+      },
+      SET_SELECTED_BUYERS(state, data) {
+        state.selected.buyers.push(data)
+      },
+      SET_SELECTED_BOOKEDSLOTS(state, data) {
+        state.selected.bookedSlots.push(data)
+      },
+      RESET_SELECTED(state) {
+        state.selected = {
+          session: {},
+          seller: {},
+          buyers: [],
+          bookedSlots: []
+        }
       }
     },
 
@@ -36,7 +58,7 @@ export const dashboard = {
         }
         else {
           purchased.data.forEach(async (data) => {
-            const session = {
+            const slot = {
               name: data.name,
               color: data.color,
               serviceColor: data.serviceColor,
@@ -52,7 +74,7 @@ export const dashboard = {
               serviceDocId: data.serviceDocId,
               id: data.id,
             }
-            purchasedArr.push(session)
+            purchasedArr.push(slot)
           })
           commit('SET_PURCHASED', purchasedArr)
           return
@@ -61,14 +83,14 @@ export const dashboard = {
       async getSold({ commit }) {
         commit('SET_SOLD', [])
         const soldArr = []
-        const fetchSoldSessions = functions.httpsCallable('fetchSoldSessions')
-        const sold = await fetchSoldSessions({ sellerUid: store.state.auth.currentUser.uid })
+        const fetchSoldSlots = functions.httpsCallable('fetchSoldSlots')
+        const sold = await fetchSoldSlots({ sellerUid: store.state.auth.currentUser.uid })
         if (!sold.data) {
           return
         }
         else {
           sold.data.forEach((data) => {
-            const session = {
+            const slot = {
               name: data.name,
               color: data.color,
               serviceColor: data.serviceColor,
@@ -84,37 +106,35 @@ export const dashboard = {
               serviceDocId: data.serviceDocId,
               id: data.id,
             }
-            soldArr.push(session)
+            soldArr.push(slot)
           })
           commit('SET_SOLD', soldArr)
           return
         }
       },
-      async selectSession({ commit }, session) {
-        const qslots = await db
+      async selectSession({ commit }, slot) {
+        commit('RESET_SELECTED')
+        const parentRef = db
           .collection('sessions')
-          .doc(session.id)
+          .doc(slot.parentSession)
+        const parent = await parentRef.get()
+        commit('SET_SELECTED_SESSION', parent.data())
+        const qslots = await parentRef
           .collection('slots')
           .get()
         const fetchUser = functions.httpsCallable('fetchUser')
-        let buyers = []
         qslots.forEach(async slot => {
           if (slot.data().status === 'booked') {
+            commit('SET_SELECTED_BOOKEDSLOTS', slot.data())
             let buyer = await fetchUser({uid: slot.data().buyerUid})
-            buyers.push(buyer.data)
+            commit('SET_SELECTED_BUYERS', buyer.data)
           }
         })
-        console.log(buyers)
         const seller = await db
           .collection('creators')
-          .doc(session.sellerUid)
+          .doc(parent.data().sellerUid)
           .get()
-        commit('SET_SELECTED', {
-          session: session,
-          seller: seller.data(),
-          buyers: buyers,
-          bookedSlots: session
-        })
+        commit('SET_SELECTED_SELLER', seller.data())
         return
       },
     },
