@@ -59,20 +59,20 @@ export const dashboard = {
         else {
           purchased.data.forEach(async (data) => {
             const slot = {
+              id: data.id,
               name: data.name,
-              color: data.color,
-              serviceColor: data.serviceColor,
-              start: formatter(data.start),
-              end: formatter(data.end),
-              status: data.status,
-              participants: data.participants,
-              buyerUid: data.buyerUid,
               slot: data.slot,
               slots: data.slots,
-              parentSession: data.parentSession,
+              mandatoryFill: data.mandatoryFill,
+              start: formatter(data.start),
+              end: formatter(data.end),
               sellerUid: data.sellerUid,
               serviceDocId: data.serviceDocId,
-              id: data.id,
+              buyerUid: data.buyerUid,
+              buyerUsername: data.buyerUsername,
+              paymentIntent: data.paymentIntent,
+              status: data.status,
+              parentSession: data.parentSession
             }
             purchasedArr.push(slot)
           })
@@ -91,20 +91,20 @@ export const dashboard = {
         else {
           sold.data.forEach((data) => {
             const slot = {
+              id: data.id,
               name: data.name,
-              color: data.color,
-              serviceColor: data.serviceColor,
-              start: formatter(data.start),
-              end: formatter(data.end),
-              status: data.status,
-              participants: data.participants,
-              buyerUid: data.buyerUid,
               slot: data.slot,
               slots: data.slots,
-              parentSession: data.parentSession,
+              mandatoryFill: data.mandatoryFill,
+              start: formatter(data.start),
+              end: formatter(data.end),
               sellerUid: data.sellerUid,
               serviceDocId: data.serviceDocId,
-              id: data.id,
+              buyerUid: data.buyerUid,
+              buyerUsername: data.buyerUsername,
+              paymentIntent: data.paymentIntent,
+              status: data.status,
+              parentSession: data.parentSession
             }
             soldArr.push(slot)
           })
