@@ -21,10 +21,11 @@ service cloud.firestore {
     match /notifications/{docId} {
       // dont allow any user to read or write to this collection as only the api needs access
       allow read: if request.auth.uid
-      allow write: if false
+      allow update: if false
 
       match /notif/{docId} {
-        allow read: if request.auth.uid == resource.data.uid
+        allow read: if request.auth.uid == resource.data.uid;
+        allow update: if request.auth.uid == resource.data.uid;
       }
     }
 
