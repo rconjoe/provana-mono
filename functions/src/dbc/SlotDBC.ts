@@ -339,4 +339,19 @@ export default class SlotDBC extends Slot {
     return disputed
   }
 
+  public async fetchPurchased(buyerUid: string): Promise<Array<Slot>> {
+    let slots: Array<Slot> = []
+    const qslot = await db
+      .collectionGroup('slots')
+      .where('buyerUid', '==', buyerUid)
+      .withConverter(converter)
+      .get()
+    if (!qslot.empty) {
+      qslot.forEach(slot => {
+        slots.push(slot.data().toModel())
+      })
+    }
+    return slots
+  }
+
 }

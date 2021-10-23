@@ -205,9 +205,10 @@ export default class InvitationDBC extends Invitation {
    * @async
    * @returns {Promise<boolean>}
    */
-  public async validate(): Promise<boolean> {
-    const doc = await this.getFromCode()
-    return doc.valid!
+  public async validate(): Promise<boolean|'NOTFOUND'> {
+    let doc = await this.getFromCode()
+    if (doc === 'NOTFOUND') return doc
+    else return (doc.valid!)
   }
 
   
@@ -238,10 +239,10 @@ export default class InvitationDBC extends Invitation {
    * @async
    * @returns {Promise<InvitationDBC>}
    */
-  private async getFromCode(): Promise<InvitationDBC> {
+  private async getFromCode(): Promise<InvitationDBC|'NOTFOUND'> {
     if (this.code === "" || this.code === undefined) throw new Error('Invitation code is required.')
     const invitation =  await db.collection('invitations').where('code', '==', this.code).withConverter(converter).get()
-    if (invitation.empty === true) throw new Error('Invitation not found')
+    if (invitation.empty) return 'NOTFOUND'
     return invitation.docs[0].data()!
   }
 

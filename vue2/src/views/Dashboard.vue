@@ -158,8 +158,10 @@ export default {
   }),
   computed:{
     notOnboarded() {
-      if( this.$store.state.auth.claims.type === 'creators' && this.profile.onboarded === false) {
-        return true
+      if( this.claims.type === 'creators') {
+        if (this.profile.onboarded === false) {
+          return true
+        }
       }
       else{
         return false
