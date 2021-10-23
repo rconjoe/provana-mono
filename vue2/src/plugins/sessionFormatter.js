@@ -5,32 +5,17 @@ import { store } from '../store/index'
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-export const formatter = (data) => {
+export const formatter = (unix) => {
   const tz = store.state.auth.tz
+  console.log(tz)
   // unix to dayjs
-  const _start = dayjs.unix(data.start).format()
-  const _end = dayjs.unix(data.end).format()
+  const djs = dayjs.unix(unix).format()
+  console.log(djs)
   // localize
-  const localStart = dayjs(_start).tz(tz)
-  const localEnd = dayjs(_end).tz(tz)
+  const local = dayjs(djs).tz(tz)
+  console.log(local)
   // format for v-cal
-  const formattedStart = dayjs(localStart).format('YYYY-MM-DD HH:mm')
-  const formattedEnd = dayjs(localEnd).format('YYYY-MM-DD HH:mm')
-  const session = {
-    name: data.name,
-    color: data.color,
-    serviceColor: data.serviceColor,
-    start: formattedStart,
-    end: formattedEnd,
-    status: data.status,
-    participants: data.participants,
-    buyerUid: data.buyerUid,
-    slot: data.slot,
-    slots: data.slots,
-    parentSession: data.parentSession,
-    sellerUid: data.sellerUid,
-    serviceDocId: data.serviceDocId,
-    id: data.id,
-  }
-  return session
+  const formatted = dayjs(local).format('YYYY-MM-DD HH:mm')
+  console.log(formatted)
+  return formatted
 }
