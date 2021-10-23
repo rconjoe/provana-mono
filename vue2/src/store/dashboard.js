@@ -29,8 +29,8 @@ export const dashboard = {
       async getPurchased({ commit }) {
         commit('SET_PURCHASED', [])
         const purchasedArr = []
-        const fun = functions.httpsCallable('fetchPurchasedSlots')
-        const purchased = await fun({ buyerUid: store.state.auth.currentUser.uid })
+        const fetchPurchasedSlots = functions.httpsCallable('fetchPurchasedSlots')
+        const purchased = await fetchPurchasedSlots({ buyerUid: store.state.auth.currentUser.uid })
         if (!purchased.data) {
           return
         }
@@ -46,8 +46,8 @@ export const dashboard = {
       async getSold({ commit }) {
         commit('SET_SOLD', [])
         const soldArr = []
-        const fun = functions.httpsCallable('fetchSoldSessions')
-        const sold = await fun({ sellerUid: store.state.auth.currentUser.uid })
+        const fetchSoldSessions = functions.httpsCallable('fetchSoldSessions')
+        const sold = await fetchSoldSessions({ sellerUid: store.state.auth.currentUser.uid })
         if (!sold.data) {
           return
         }
@@ -61,23 +61,29 @@ export const dashboard = {
         }
       },
       async selectSession({ commit }, session) {
+        const qslots = await db
+          .collection('sessions')
+          .doc(session.id)
+          .collection('slots')
+          .get()
+        const fetchUser = functions.httpsCallable('fetchUser')
         let buyers = []
-        if (session.slots > 1) {
-          session.participants.forEach(async (participant) => {
-            const buyer = await db.collection('users').doc(participant).get()
-            buyers.push(buyer.data())
-          })
-        }
-        else {
-          const buyer = await db.collection('users').doc(session.buyerUid).get()
-          buyers.push(buyer.data())
-        }
-        const seller = await db.collection('sellers').doc(session.sellerUid).get()
+        qslots.forEach(async slot => {
+          if (slot.data().status === 'booked') {
+            let buyer = await fetchUser({uid: slot.data().buyerUid})
+            buyers.push(buyer.data)
+          }
+        })
+        console.log(buyers)
+        const seller = await db
+          .collection('creators')
+          .doc(session.sellerUid)
+          .get()
         commit('SET_SELECTED', {
           session: session,
           seller: seller.data(),
           buyers: buyers,
-          bookedSlots: buyers.length
+          bookedSlots: session
         })
         return
       },
