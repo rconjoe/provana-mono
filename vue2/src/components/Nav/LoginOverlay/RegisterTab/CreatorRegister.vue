@@ -134,7 +134,6 @@
 				this.$store.commit('loading/SET_LOADING', true)
 				const validateInvitation = functions.httpsCallable('validateInvitation')
 				await validateInvitation({ code: this.alphaCode }).then((resp) => {
-					console.log(resp.data)
 					if (resp.data === false) {
 						return this.$store.state.error.commit('error/SET_ERROR', {
 							show: true,
@@ -144,13 +143,13 @@
 						})
 					} else if (resp.data === true) {
 						return (this.window = 1)
-					} else {
-						return this.$store.state.error.commit('error/SET_ERROR', {
-							show: true,
-							message: 'Invalid registration code.',
-							color: 'primary',
-							icon: 'fas fa-exclamation',
-						})
+					} else if (resp.data === 'NOTFOUND') {
+						return this.setError(
+							true,
+							'Invalid registration code.',
+							'primary',
+							'fas fa-exclamation',
+			      )
 					}
 				})
 				this.$store.commit('loading/SET_LOADING', false)
