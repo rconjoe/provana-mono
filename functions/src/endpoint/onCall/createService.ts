@@ -7,6 +7,7 @@ export const createService = functions.https.onCall(async (data, context) => {
       "",
       data.serviceName,
       data.serviceDescription,
+      data.terms,
       data.serviceCost, 
       data.serviceLength, 
       data.tags, 
