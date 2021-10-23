@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "NODE_ENV=test && vue-cli-service serve --port=8081",
     "winServe": "set NODE_ENV=test && vue-cli-service serve --port=8081",
+    "dev": "./node_modules/.bin/vue-devtools",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
