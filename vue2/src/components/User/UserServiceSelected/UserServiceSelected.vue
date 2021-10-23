@@ -154,7 +154,22 @@
 					this.sessions = []
 					querySnapshot.forEach((doc) => {
 						const data = doc.data()
-						const session = formatter(data)
+            const session = {
+              name: data.name,
+              color: data.color,
+              serviceColor: data.serviceColor,
+              start: formatter(data.start),
+              end: formatter(data.end),
+              status: data.status,
+              participants: data.participants,
+              buyerUid: data.buyerUid,
+              slot: data.slot,
+              slots: data.slots,
+              parentSession: data.parentSession,
+              sellerUid: data.sellerUid,
+              serviceDocId: data.serviceDocId,
+              id: data.id,
+            }
 						this.sessions.push(session)
 					})
 				})
@@ -225,7 +240,22 @@
 				slots.get().then((querySnapshot) => {
 					querySnapshot.forEach((doc) => {
 						const data = doc.data()
-						const slot = formatter(data)
+            const session = {
+              name: data.name,
+              color: data.color,
+              serviceColor: data.serviceColor,
+              start: formatter(data.start),
+              end: formatter(data.end),
+              status: data.status,
+              participants: data.participants,
+              buyerUid: data.buyerUid,
+              slot: data.slot,
+              slots: data.slots,
+              parentSession: data.parentSession,
+              sellerUid: data.sellerUid,
+              serviceDocId: data.serviceDocId,
+              id: data.id,
+            }
 						this.slots.push(slot)
 					})
 				})
