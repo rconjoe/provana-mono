@@ -49,9 +49,7 @@ export const notifications = {
           if (notif.category === 'dispute' && notif.unread === true) {
             commit('SET_DISPUTE', notif)
           }
-          else {
             commit('SET_NOTIF', notif);
-          }
         })
       })
     }
