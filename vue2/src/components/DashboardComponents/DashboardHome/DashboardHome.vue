@@ -35,7 +35,7 @@
     <v-col class="postContainer d-flex flex-column justify-start">
       <!-- OLD POSTS COMPONENT -->
       <div class="bioBox d-flex flex-column justify start">
-        <SessionDetails />
+        <SessionDetails v-if="selectedEvent" />
       </div>
         <!-- <v-card class="postCard" flat color="transparent">
           <v-card-text class="postTitle mx-auto "> Let your customers know what's up! </v-card-text>

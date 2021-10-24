@@ -168,8 +168,6 @@
 					To confirm you want to delete this session please type the name of the session exactly into the form to enable
 					the delete button.
 					<v-text-field single-line filled v-model="deleteString"></v-text-field>
-					<h3 class="reasonText">Reason:(optional)</h3>
-					<v-textarea filled single-line v-model="deleteReason"> </v-textarea>
 					<h3>This action is irrevesible!</h3>
 				</v-card-text>
 
@@ -305,7 +303,10 @@
 					const cancel = functions.httpsCallable('cancelSession')
 					await cancel({
 						id: this.selectedEvent.session.id,
-					}).catch((err) => {
+					}).then((res) => {
+						this.$store.commit('RESET_SELECTED')
+						})
+						.catch((err) => {
 						console.error(err)
 					})
 				} else {
