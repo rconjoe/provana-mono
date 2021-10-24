@@ -165,27 +165,22 @@ export default class ReviewDBC extends Review {
      * @returns {Promise<number>}
      */
     public async getReviewScore(): Promise<number> {
-
-        if(this === null || this.sellerUid === undefined) throw new Error('Missing Seller Uid');
-
-        const reviewArray: FirebaseFirestore.DocumentData[] = [];
-        const collectionRef = db.collection('reviews').where('sellerUid','==',this.sellerUid).orderBy("date","desc");
-
-        const returnedFirebaseData = await collectionRef.get();
+      if(this === null || this.sellerUid === undefined) throw new Error('Missing Seller Uid');
+      const reviewArray: FirebaseFirestore.DocumentData[] = [];
+      const collectionRef = db.collection('reviews').where('sellerUid','==',this.sellerUid).orderBy("date","desc");
+      const returnedFirebaseData = await collectionRef.get();
+      let averageRating = 0;
+      if (!returnedFirebaseData.empty) {
         let summedRating = 0;
-        let averageRating = 0;
-
         returnedFirebaseData.forEach((doc) => {
             reviewArray.push(doc.data());
         })
-
         reviewArray.forEach((doc) => {
             summedRating += doc.rating;
         })
-
         averageRating = summedRating / reviewArray.length;
-
-        return averageRating;
+      }
+      return averageRating;
     }
 
 }
