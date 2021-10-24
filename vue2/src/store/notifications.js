@@ -46,7 +46,7 @@ export const notifications = {
             unread: data.unread,
             id: doc.id
           }
-          if (notif.category === 'dispute') {
+          if (notif.category === 'dispute' && notif.unread === true) {
             commit('SET_DISPUTE', notif)
           }
           else {
