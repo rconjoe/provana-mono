@@ -12,7 +12,7 @@ const converter = {
     return {
       id: service.id ? service.id : "",
       serviceName: service.serviceName ? service.serviceName : "",
-      serviceDescrption: service.serviceDescription ? service.serviceDescription : "",
+      serviceDescription: service.serviceDescription ? service.serviceDescription : "",
       terms: service.terms ? service.terms : [],
       serviceCost: service.serviceCost ? service.serviceCost : 0,
       serviceLength: service.serviceLength ? service.serviceLength : 0,
