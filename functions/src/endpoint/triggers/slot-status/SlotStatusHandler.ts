@@ -29,19 +29,25 @@ export default class SlotStatusHandler {
     if (this.slot.status === 'booked') {
       await new SessionDBC().increment(this.slot.parentSession!)
       await new ChatRoomDBC().addToRoom(this.slot.buyerUid!, this.slot.parentSession!)
-      const task = await new TaskService().scheduleSlotStart(this.slot.id!, this.slot.start!)
-      await new TaskDBC(this.slot.id!).write(task)
+      if (this.slot.mandatoryFill === false) {
+        const task = await new TaskService().scheduleSlotStart(this.slot.id!, this.slot.start!)
+        await new TaskDBC(this.slot.id!).write(task)
+      }
+      // else {
+      //   await new NotificationDBC(
+      //     this.slot.buyerUid!,
+      //     category: 'This session wont happen until its full etc etc even though you bought it',
+      //     content: '',
+      //   )
+      // }
     }
   }
 
   public async booked(): Promise<void> {
     switch (this.slot.status) {
       case 'active':
-        if (this.slot.mandatoryFill === false) {
-          const seconds = 10800 + this.slot.start!
-          const task = await new TaskService().scheduleCapture(this.slot.id!, seconds)
-          await new TaskDBC(this.slot.id!).write(task)
-        }
+        const task = await new TaskService().scheduleCapture(this.slot.id!, this.slot.start!)
+        await new TaskDBC(this.slot.id!).write(task)
         await new NotificationDBC(
           this.slot.buyerUid!,
           'Starting',
@@ -54,7 +60,7 @@ export default class SlotStatusHandler {
         await session.decrement(this.slot.parentSession!)
         await new ChatRoomDBC().removeFromRoom(this.slot.buyerUid!, this.slot.parentSession!)
         await new StripePaymentIntentService().cancel(this.slot.paymentIntent!)
-        if (!this.slot.mandatoryFill) {
+        if (this.slot.mandatoryFill === false) {
           await this.cancelSlotTask(this.slot.id!)
         }
         await this.slot.republish()
@@ -68,10 +74,10 @@ export default class SlotStatusHandler {
 
   public async active(): Promise<void> {
     if (this.slot.status === 'disputed') {
-      const _task = new TaskService()
       const capture = await new TaskDBC(this.slot.id).retrieve()
-      await _task.cancel(capture)
-      await _task.scheduleRelease(this.slot.id!, 21600 + this.slot.end!)
+      await new TaskService().cancel(capture)
+      const release = await new TaskService().scheduleRelease(this.slot.id!, this.slot.start!)
+      await new TaskDBC(this.slot.id).write(release)
     }
     return
   }
@@ -91,11 +97,15 @@ export default class SlotStatusHandler {
         ).send()
         break
       case 'resolved-refunded':
+        await new NotificationDBC(
+          this.slot.buyerUid!,
+          'dispute-resolved',
+          `Your claim on "${this.slot.name}" has been resolved, and you will not be charged.`
+        ).send()
         break
       case 'resolved-captured':
-        const _task = new TaskService()
-        const capture = await new TaskDBC(this.slot.id).retrieve()
-        await _task.cancel(capture)
+        const release = await new TaskDBC(this.slot.id).retrieve()
+        await new TaskService().cancel(release)
         await new StripePaymentIntentService().capture(this.slot.paymentIntent!)
         break
     }

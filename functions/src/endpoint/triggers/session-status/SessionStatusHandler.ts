@@ -61,8 +61,7 @@ export default class SessionStatusHandler {
         break
       case 'full':
         if (this.session.mandatoryFill === true) {
-          const secondsUntil = new TimeService().generate()
-          const task = await new TaskService().scheduleSessionStart(this.session.id!, secondsUntil)
+          const task = await new TaskService().scheduleSessionStart(this.session.id!, this.session.start!)
           await new TaskDBC(this.session.id!).write(task)
         }
         await new NotificationDBC(
@@ -82,8 +81,8 @@ export default class SessionStatusHandler {
               'One of your bookings was cancelled by the seller. See your dashboard for details.'
             ).send()
             await new StripePaymentIntentService().cancel(slot.paymentIntent!)
-            const task = await new TaskDBC(slot.id!).retrieve()
-            await new TaskService().cancel(task)
+            const start= await new TaskDBC(slot.id!).retrieve()
+            await new TaskService().cancel(start)
             await new TaskDBC().delete(slot.id!)
           }
           await slot.ref!.delete()
@@ -114,6 +113,11 @@ export default class SessionStatusHandler {
             `Your session is starting!`,
           ).send()
         case 'cancelled': 
+          if (this.session.mandatoryFill! === true) {
+            const start = await new TaskDBC(this.session.id!).retrieve()
+            await new TaskService().cancel(start)
+            await new TaskDBC().delete(this.session.id!)
+          }
           const slots = await new SlotDBC().fetchByParent(this.session.id!)
           slots.forEach(async (slot) => {
             await new CancellationDBC(slot.toModel()).create(slot.sellerUid!)
@@ -123,9 +127,10 @@ export default class SessionStatusHandler {
               'One of your bookings was cancelled by the seller. See your dashboard for details.'
             ).send()
             await new StripePaymentIntentService().cancel(slot.paymentIntent!)
-            const task = await new TaskDBC(slot.id!).retrieve()
-            await new TaskService().cancel(task)
-            await new TaskDBC().delete(slot.id!)
+            if (this.session.mandatoryFill === false) {
+              const start = await new TaskDBC(slot.id!).retrieve()
+              await new TaskDBC().delete(start)
+            }
             await slot.ref!.delete()
             .catch(err => {
               console.error(err)
@@ -137,11 +142,11 @@ export default class SessionStatusHandler {
               console.error(err)
             })
         case 'published': 
-          // if the session in question is mandatoryFill, here we should also
-          // be cancelling session start task as well as handling the notification 
-          // flow for when you need to tell everyone that a mandatoryFill session that was
-          // full is now no longer full and someone needs to purchase the open slot
-          // for it to happen. this change is triggerred in SlotStatusHandler.booked case 'cancelled'
+          if (this.session.mandatoryFill! === true) {
+            const start = await new TaskDBC(this.session.id!).retrieve()
+            await new TaskService().cancel(start)
+            await new TaskDBC().delete(this.session.id!)
+          }
           return
       }
     }
