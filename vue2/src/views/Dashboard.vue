@@ -122,11 +122,11 @@ export default {
         text: 'Account',
         value: 1,
       },
-      {
-        icon: 'fas fa-bell',
-        text: 'Contact',
-        value: 4,
-      },
+      /* { */
+      /*   icon: 'fas fa-bell', */
+      /*   text: 'Contact', */
+      /*   value: 4, */
+      /* }, */
     ],
     creators: [
       {
