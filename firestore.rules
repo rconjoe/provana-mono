@@ -25,7 +25,7 @@ service cloud.firestore {
 
       match /notif/{docId} {
         allow read;
-        allow update: if request.auth.uid == resource.data.uid;
+        allow update;
       }
     }
 
