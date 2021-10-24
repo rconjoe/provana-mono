@@ -8,12 +8,11 @@
     "source": "functions"
   },
   "hosting": {
-    "site": "db-abstract",
-    "public": "frontend/dist",
+    "public": "vue2/lib",
     "ignore": [
       "firebase.json",
-      "../.*",
-      "**/node_modules**"
+      "**/.*",
+      "**/node_modules/**"
     ],
     "rewrites": [
       {
