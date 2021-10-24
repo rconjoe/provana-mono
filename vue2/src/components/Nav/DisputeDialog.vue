@@ -22,7 +22,7 @@
 					<v-btn
 						color="primary"
 						class="btnCTA"
-						@click="disputeDialog = false"
+						@click="readDispute"
 					>
 						I understand
 					</v-btn>
@@ -32,12 +32,25 @@
 </template>
 
 <script>
+import { db } from '../../plugins/firebase'
 export default {
 	name:'DisputeDialog',
-    props:['dispute'],
-    data: () => ({
-        disputeDialog:true,
-    }),
+  props:['dispute'],
+  data: () => ({
+    disputeDialog:true,
+  }),
+
+  methods: {
+    async readDispute() {
+      await db
+        .collection('notifications')
+        .doc(this.$user.uid)
+        .collection('notif')
+        .doc(this.dispute.id)
+        .update({ unread: false })
+		this.disputeDialog = false
+    }
+  },
 
 }
 </script>

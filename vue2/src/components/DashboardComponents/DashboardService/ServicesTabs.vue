@@ -333,9 +333,9 @@
 				}
 			},
 			async deleteServiceDoc() {
-				const deleteServiceDoc = functions.httpsCallable('callableDeleteServiceDoc')
+				const deleteServiceDoc = functions.httpsCallable('deleteService')
 				this.deleteLoading = true
-				await deleteServiceDoc({ serviceId: this.selectedService.id }).then(() => {
+				await deleteServiceDoc({ id: this.selectedService.id}).then(() => {
 					this.serviceDialog = false
 					this.deleteLoading = false
 					this.passService(null)

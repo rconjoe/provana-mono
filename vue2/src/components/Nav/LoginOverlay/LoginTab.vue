@@ -50,8 +50,9 @@ import gsap from 'gsap'
 					await auth
 						.signInWithEmailAndPassword(this.email, this.password)
 						.then((resp) => {
+							this.$store.dispatch('error/setError',{show:false,color:'green',message: 'Success', icon:'fas fa-check'})
                             this.closeLogin()
-						this.$router.push('/dashboard')	
+							this.$router.push('/dashboard')	
                         })
 						.catch((err) => {
 							this.shake()

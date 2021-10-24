@@ -4,7 +4,7 @@
       <v-row>
         <v-col class="headerCol pb-0">
           <h2 class="servicesTitle"> Set your schedule</h2>
-          <h1 class="dashHeader"> SERVICES </h1>
+          <h1 class="dashHeader"> Services </h1>
         </v-col>
         <v-col class="pb-0">
       
@@ -56,12 +56,12 @@ export default {
 .dashHeader {
   transform: rotate(-90deg);
   position: absolute;
-  letter-spacing: -0.2604166666666667vw;
   font: normal normal bold 5.208vw Poppins;
   color: #1e1e1e;
   left: -3.6vw;
   top: 5vw;
 }
+
 .calSheet{
   padding-left: 4vw;
 }

@@ -52,7 +52,10 @@
 
 		methods: {
 			makeAnAccount() {
-				window.location = '/register'
+				this.$store.dispatch('auth/setLoginOverlay',
+					{showLogin: !this.showLogin,
+					loginTab:'register'}
+				) 
 			},
 		}
 	}

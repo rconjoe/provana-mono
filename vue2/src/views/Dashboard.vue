@@ -3,7 +3,7 @@
     <v-row class="pa-0  dashRow">
       <!-- Dashboard nav drawer must sit outside of the column -->
       <!-- Creator and supporter links are set by checking claim then displaying a limited or full list of links -->
-      <div v-if="!$vuetify.breakpoint.mobile" cols="1" class="pa-0 navDrawerCol">
+      <div cols="1" class="pa-0 navDrawerCol">
         <DashboardNavDrawer
           style="height:100%  "
           :links="(claims.type === 'creators') ? creators : supporters"
@@ -114,7 +114,7 @@ export default {
     supporters: [
       {
         icon: 'fas fa-home',
-        text: 'Dasard',
+        text: 'Dashboard',
         value: 0,
       },
       {
@@ -144,16 +144,16 @@ export default {
         text: 'Services',
         value: 2,
       },
-      {
-        icon: 'fas fa-credit-card',
-        text: 'Payment',
-        value: 3,
-      },
-      {
-        icon: 'fas fa-bell',
-        text: 'Contact',
-        value: 4,
-      },
+      // {
+      //   icon: 'fas fa-credit-card',
+      //   text: 'Payment',
+      //   value: 3,
+      // },
+      // {
+      //   icon: 'fas fa-bell',
+      //   text: 'Contact',
+      //   value: 4,
+      // },
     ],
   }),
   computed:{
@@ -215,7 +215,8 @@ export default {
   background-image: url('../assets/_DashboardBG1.png');
   background-size: contain;
   min-height: 50.78125vw;
-  min-width: 1920;
+  min-width: 100vw;
+  padding-left:3vw;
 }
 .dashWindow{
   background-color: transparent;

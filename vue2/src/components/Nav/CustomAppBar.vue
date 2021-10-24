@@ -123,7 +123,7 @@
 				}
 			},
 			topDispute() {
-				if(this.$store.state.notifications.disputes.length == 0 ){
+				if(this.$store.state.notifications.disputes.length !== 0 ){
 					return this.$store.state.notifications.disputes[0]
 				}
 				else{
