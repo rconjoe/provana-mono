@@ -18,11 +18,12 @@
 						<span v-if="alphaHover" class="alphaPartner"> Alpha Partner</span>
 					</v-fade-transition>
 				</div>
-				<span class="userTitle"> {{ profile.tagline }} </span>
+				<br/>
+				<h1 class="userTitle"> {{ profile.tagline }} </h1>
 
 				<!-- review row -->
 				<a @click="showReview = true"> <span class="ratingLink"> Reviews </span> </a>
-				<span class="rating"> 4.9</span>
+				<span class="rating">{{reviewScore}}</span>
 				<v-icon size="1vw" class="star"> fas fa-star </v-icon>
 
 				<v-expand-transition>
@@ -61,17 +62,24 @@
 			alphaHover: false,
 			showReview: false,
 			reviews: [],
+			reviewScore:3
 		}),
 		mounted() {
 			this.getRecentReviews()
+			this.getReviewScore()
 		},
 		methods: {
 			async getRecentReviews() {
-				console.log('started')
 				const getReviews = functions.httpsCallable('getRecentReviews')
 				const response = await getReviews({ sellerUid: this.$user.uid })
 				this.reviews.push(...response.data)
 			},
+			async getReviewScore() {
+				const getScore = functions.httpsCallable('getReviewScore')
+				const response = await getScore({ sellerUid: this.$user.uid })
+				this.reviewScore = response.data
+				console.log(response.data)
+			}
 		},
 	}
 </script>
@@ -101,14 +109,13 @@
 	}
 
 	.userText {
-		font: normal 750 3.6458vw Poppins;
+		font: normal 750 3.6458vw/4vw Poppins;
 	}
 	.userTitle {
 		color: #b5b0b0;
-		font: normal 600 1.3021vw Arboria;
+		font: normal 500 1.0416666666666667vw Arboria;
 		padding-right: 0.521vw;
-		padding-bottom: 0.84vw;
-		display: inline-block;
+		padding-bottom: 0.4vw;
 	}
 	.userCol {
 		padding-left: 1.0417vw;

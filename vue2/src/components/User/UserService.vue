@@ -112,5 +112,6 @@ export default {
   font: normal 600 1.5625vw Poppins;
   letter-spacing: -0.078125vw;
   margin-left:1.0416666666666667vw;
+  width:16.791666666666668vw;
 }
 </style>

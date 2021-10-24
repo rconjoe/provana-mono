@@ -14,10 +14,11 @@
 
 			<!-- Col 3/3 Calendar -->
 			<v-col class="scheduleCol">
+				<h1 class="header"> Pick the right spot</h1>
 				<div class="sessionDayDiv" v-for="(day, i) in days" :key="i">
 					<SessionDay :date="day" :service="service" @show-slots="showEvent" />
 				</div>
-				<v-menu v-model="sessionToolTip" :close-on-content-click="false" offset-x elevation="0">
+				<v-menu v-model="sessionToolTip" :close-on-content-click="false" :position-x="x" :position-y="y" offset-x elevation="0">
 					<v-card class="toolTip pa-2" min-width="350px" max-width="450px" elvation="0">
 						<v-window v-model="toolTipWindow">
 							<!-- Window 0
@@ -133,6 +134,8 @@
 			SessionDay,
 		},
 		data: () => ({
+			x:0,
+			y:0,
 			days: [],
 			selectedSlot: '',
 			focus: '',
@@ -154,22 +157,22 @@
 					this.sessions = []
 					querySnapshot.forEach((doc) => {
 						const data = doc.data()
-            const session = {
-              name: data.name,
-              color: data.color,
-              serviceColor: data.serviceColor,
-              start: formatter(data.start),
-              end: formatter(data.end),
-              status: data.status,
-              participants: data.participants,
-              buyerUid: data.buyerUid,
-              slot: data.slot,
-              slots: data.slots,
-              parentSession: data.parentSession,
-              sellerUid: data.sellerUid,
-              serviceDocId: data.serviceDocId,
-              id: data.id,
-            }
+						const session = {
+							name: data.name,
+							color: data.color,
+							serviceColor: data.serviceColor,
+							start: formatter(data.start),
+							end: formatter(data.end),
+							status: data.status,
+							participants: data.participants,
+							buyerUid: data.buyerUid,
+							slot: data.slot,
+							slots: data.slots,
+							parentSession: data.parentSession,
+							sellerUid: data.sellerUid,
+							serviceDocId: data.serviceDocId,
+							id: data.id,
+						}
 						this.sessions.push(session)
 					})
 				})
@@ -203,11 +206,13 @@
 			showServices() {
 				this.$emit('show-services')
 			},
-			showEvent(event) {
+			showEvent(e, session) {
 				const open = () => {
-					this.selectedEvent = event
+					this.selectedEvent = session
 					this.sessionToolTip = true
 					this.toolTipWindow = 0
+					this.x = e.clientX,
+					this.y = e.clientY
 				}
 				if (this.sessionToolTip) {
 					this.sessionToolTip = false
@@ -240,22 +245,22 @@
 				slots.get().then((querySnapshot) => {
 					querySnapshot.forEach((doc) => {
 						const data = doc.data()
-            const session = {
-              name: data.name,
-              color: data.color,
-              serviceColor: data.serviceColor,
-              start: formatter(data.start),
-              end: formatter(data.end),
-              status: data.status,
-              participants: data.participants,
-              buyerUid: data.buyerUid,
-              slot: data.slot,
-              slots: data.slots,
-              parentSession: data.parentSession,
-              sellerUid: data.sellerUid,
-              serviceDocId: data.serviceDocId,
-              id: data.id,
-            }
+						const slot = {
+							name: data.name,
+							color: data.color,
+							serviceColor: data.serviceColor,
+							start: formatter(data.start),
+							end: formatter(data.end),
+							status: data.status,
+							participants: data.participants,
+							buyerUid: data.buyerUid,
+							slot: data.slot,
+							slots: data.slots,
+							parentSession: data.parentSession,
+							sellerUid: data.sellerUid,
+							serviceDocId: data.serviceDocId,
+							id: data.id,
+						}
 						this.slots.push(slot)
 					})
 				})
@@ -304,6 +309,10 @@
 </script>
 
 <style scoped>
+	.header {
+		font: normal 600 1.5625vw Poppins;
+		letter-spacing: -0.078125vw;
+	}
 	.sessionDayDiv {
 		display: inline-flex;
 		flex-direction: column;
