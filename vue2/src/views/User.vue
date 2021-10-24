@@ -81,7 +81,7 @@
 
 			// fetch services
 			db.collection('services')
-				.where('uid', '==', this.$user.uid)
+				.where('uid', '==', this.profile.uid)
 				.onSnapshot((snap) => {
 					snap.forEach((doc) => this.services.push(doc.data()))
 				})
