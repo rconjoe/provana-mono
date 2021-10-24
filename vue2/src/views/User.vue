@@ -43,9 +43,10 @@
 	import UserHeader from '@/components/User/UserHeader/UserHeader.vue'
 	import UserService from '@/components/User/UserService.vue'
 	import UserServiceSelected from '@/components/User/UserServiceSelected/UserServiceSelected.vue'
-	import { db, storage } from '../plugins/firebase'
+	import { db, storage, functions } from '../plugins/firebase'
 	export default {
 		name: 'User',
+    props: ['username'],
 		components: {
 			UserHeader,
 			UserService,
@@ -74,7 +75,8 @@
 		},
 		async mounted() {
 			// set profile
-			this.profile = this.$store.state.auth.currentUser
+      let _profile = await this.fetchProfile(this.username)
+			this.profile = _profile.data
 			
 
 			// fetch services
@@ -86,6 +88,10 @@
 		},
 
 		methods: {
+    async fetchProfile(username) {
+      const _fetchProfile = functions.httpsCallable('fetchProfile')
+      return await _fetchProfile({username: username})
+    },
 			
 			showServices() {
 				this.servicesVisible = true
