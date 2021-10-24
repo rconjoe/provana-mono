@@ -1,4 +1,4 @@
-import { db } from '../config'
+import { db } from '../admin'
 import Service from '../models/Service'
 
 

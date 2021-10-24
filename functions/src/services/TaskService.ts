@@ -1,5 +1,5 @@
 import { CloudTasksClient } from '@google-cloud/tasks'
-import { taskcfg } from '../config'
+import { taskcfg } from '../config/config'
 import * as protos from '@google-cloud/tasks/build/protos/protos'
 
 

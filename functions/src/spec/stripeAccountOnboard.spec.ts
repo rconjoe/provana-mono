@@ -1,5 +1,6 @@
 import { testEnv } from './env.spec'
-import { db, auth, stripe } from '../config'
+import { db, auth } from '../admin'
+import { stripe } from '../config/config'
 
 describe('Generates an account link for a non-onboarded creator account', () => {
   let api: any

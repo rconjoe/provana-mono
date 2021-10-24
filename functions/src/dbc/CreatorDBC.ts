@@ -1,4 +1,4 @@
-import { db } from '../config'
+import { db } from '../admin'
 import Creator from '../models/Creator'
 import InvitationDBC from '../dbc/InvitationDBC'
 import DiscordLinkDBC from '../dbc/DiscordLinkDBC'

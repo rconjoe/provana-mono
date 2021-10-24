@@ -1,5 +1,5 @@
 import DiscordLink from '../models/DiscordLink'
-import { db } from '../config'
+import { db } from '../admin'
 
 // const converter = {
 //   toFirestore(link: DiscordLinkDBC): FirebaseFirestore.DocumentData {

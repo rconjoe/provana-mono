@@ -1,5 +1,5 @@
 import ChatRoom from '../models/ChatRoom'
-import { db } from '../config'
+import { db } from '../admin'
 import { addToArray, removeFromArray } from '../util'
 
 // const converter: FirebaseFirestore.FirestoreDataConverter<ChatRoomDBC> = {

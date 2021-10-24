@@ -1,4 +1,4 @@
-import { db } from "../config";
+import { db } from '../admin'
 import Review from "../models/Review";
 
 /**

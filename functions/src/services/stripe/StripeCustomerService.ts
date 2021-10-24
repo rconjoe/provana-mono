@@ -1,6 +1,6 @@
 import Creator from '../../models/Creator'
 import Supporter from '../../models/Supporter'
-import { stripe } from '../../config'
+import { stripe } from '../../config/config'
 
 
 /**

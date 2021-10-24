@@ -1,5 +1,5 @@
 import Service from '../../models/Service'
-import { stripe } from '../../config'
+import { stripe } from '../../config/config'
 import Stripe from 'stripe'
 
 

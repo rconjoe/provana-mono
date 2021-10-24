@@ -1,5 +1,5 @@
 import Session from '../models/Session'
-import { db } from '../config'
+import { db } from '../admin'
 import { increment, decrement } from '../util'
 
 

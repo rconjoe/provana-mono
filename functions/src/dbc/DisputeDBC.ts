@@ -1,5 +1,5 @@
 import Dispute from '../models/Dispute'
-import { db } from '../config'
+import { db } from '../admin'
 import * as dayjs from 'dayjs'
 
 const converter = {

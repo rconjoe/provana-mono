@@ -1,5 +1,5 @@
 import Stripe from 'stripe'
-import { stripe } from '../../config'
+import { stripe } from '../../config/config'
 
 
 /**

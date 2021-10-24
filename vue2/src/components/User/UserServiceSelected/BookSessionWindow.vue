@@ -20,7 +20,7 @@
 		<v-list dense color="transparent">
 			<!-- loop through slots creating list item for each -->
 			<v-list-item v-for="(slot, i) in slots" :key="i" class="slotListItem" :disabled="slot.status === 'booked'">
-				<h3 class="slotItemTime"> Slot {{ slot.slot }} of {{ slots.slots }}</h3>
+				<h3 class="slotItemTime"> Slot {{ slot.slot }} of {{ slot.slots }}</h3>
 				<v-spacer> </v-spacer>
 				<v-btn
 					color="primary"

@@ -1,5 +1,5 @@
 import { testEnv } from './env.spec'
-import { db } from '../config'
+import { db } from '../admin'
 import nock = require('nock')
 import * as dayjs from 'dayjs'
 

@@ -1,6 +1,6 @@
 import Supporter from '../../models/Supporter'
 import Creator from '../../models/Creator'
-import { auth } from '../../config'
+import { auth } from '../../admin'
 import { UserRecord } from 'firebase-functions/lib/providers/auth'
 
 

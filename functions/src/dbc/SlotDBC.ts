@@ -1,5 +1,5 @@
 import Slot from '../models/Slot'
-import { db } from '../config'
+import { db } from '../admin'
 
 
 /**

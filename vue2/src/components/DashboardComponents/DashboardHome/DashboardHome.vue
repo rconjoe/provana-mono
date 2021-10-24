@@ -9,12 +9,14 @@
 					<p class="userTitle mb-2" :class="$vuetify.breakpoint.mobile ? 'text-center' : 'text-left '">
 						{{ profile.username }}
 					</p>
-					<span class="storefrontLink  secondary--text pr-5" :class="$vuetify.breakpoint.mobile ? 'text-center' : 'text-left'">
-						<router-link :to="{ name: 'User', params: { username: profile.username } }"> View Storefront</router-link>
-					</span>
-					<span class="feedbackLink secondary--text " :class="$vuetify.breakpoint.mobile ? 'text-center' : 'text-left'">
-						Change Availability
-					</span>
+          <div v-if="type === 'creators'">
+            <span class="storefrontLink  secondary--text pr-5" :class="$vuetify.breakpoint.mobile ? 'text-center' : 'text-left'">
+              <router-link :to="{ name: 'User', params: { username: profile.username } }"> View Storefront</router-link>
+            </span>
+            <span class="feedbackLink secondary--text " :class="$vuetify.breakpoint.mobile ? 'text-center' : 'text-left'">
+              Change Availability
+            </span>
+            </div>
 				</v-col>
 			</v-row>
 
@@ -100,6 +102,7 @@
 		}),
 		computed: mapState({
 			selectedEvent: (state) => state.dashboard.selected.session,
+      type: (state) => state.auth.claims.type
 		}),
 	}
 </script>

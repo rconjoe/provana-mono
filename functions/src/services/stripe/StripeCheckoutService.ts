@@ -1,5 +1,5 @@
 import Stripe from 'stripe'
-import { stripe } from '../../config'
+import { stripe, stripeRedirectUrl } from '../../config/config'
 
 
 /**
@@ -44,8 +44,8 @@ export default class StripeCheckoutService {
     sessionId: string
   }): Promise<Stripe.Checkout.Session> {
     return await stripe.checkout.sessions.create({
-      success_url: "http://localhost:8080/paymentSuccess?session_id={CHECKOUT_SESSION_ID}",
-      cancel_url: "http://localhost:8080/cancelTransaction",
+      success_url: `${stripeRedirectUrl}/paymentSuccess?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${stripeRedirectUrl}/cancelTransaction`,
       mode: "payment",
       payment_method_types: ['card'],
       line_items: [

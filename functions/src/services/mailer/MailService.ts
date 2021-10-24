@@ -1,5 +1,4 @@
-import { sg } from '../../config'
-
+import { sg } from '../../config/config'
 
 /**
  * Export for the MailService class

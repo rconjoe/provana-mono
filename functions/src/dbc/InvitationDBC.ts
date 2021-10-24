@@ -1,4 +1,4 @@
-import { db } from '../config'
+import { db } from '../admin'
 import Invitation from '../models/Invitation'
 import Creator from '../models/Creator'
 import TimeService from '../services/TimeService'

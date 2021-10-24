@@ -1,5 +1,5 @@
 import { testEnv } from './env.spec'
-import { db } from '../config'
+import { db } from '../admin'
 
 describe('Tests createService endpoint', () => {
   let api: any

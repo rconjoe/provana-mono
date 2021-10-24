@@ -1,5 +1,6 @@
 import { testEnv } from './env.spec'
-import { db, auth, stripe } from '../config'
+import { db, auth } from '../admin'
+import { stripe } from '../config/config'
 
 jest.setTimeout(3 * 60 * 1000)
 describe('Tests registerCreator', () => {

@@ -1,4 +1,4 @@
-import { db } from '../config'
+import { db } from '../admin'
 import AuthUserService from '../services/auth/AuthUserService'
 
 export default class UserFinder {

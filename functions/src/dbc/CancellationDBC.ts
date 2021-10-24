@@ -1,4 +1,4 @@
-import { db } from '../config'
+import { db } from '../admin'
 import Slot from '../models/Slot'
 import TimeService from '../services/TimeService'
 

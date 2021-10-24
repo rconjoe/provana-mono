@@ -1,5 +1,5 @@
 import { testEnv } from './env.spec'
-import { db } from '../config'
+import { db } from '../admin'
 import * as dayjs from 'dayjs'
 jest.setTimeout(3 * 60 * 1000)
 

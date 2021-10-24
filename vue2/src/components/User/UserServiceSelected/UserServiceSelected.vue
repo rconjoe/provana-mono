@@ -148,7 +148,11 @@
 			toolTipWindow: 0,
 		}),
 		props: ['service', 'profile'],
-		mounted() {
+		async mounted() {
+      const fetchPurchased = functions.httpsCallable('fetchPurchasedSlots')
+      const purchasedSlots  = await fetchPurchased({buyerUid: this.$user.uid})
+      this.mySessions = purchasedSlots.data
+
 			db
 				.collection('sessions')
 				.where('serviceDocId', '==', this.service.id)
@@ -157,28 +161,25 @@
 					this.sessions = []
 					querySnapshot.forEach((doc) => {
 						const data = doc.data()
-						const session = {
-							name: data.name,
-							color: data.color,
-							serviceColor: data.serviceColor,
-							start: formatter(data.start),
-							end: formatter(data.end),
-							status: data.status,
-							participants: data.participants,
-							buyerUid: data.buyerUid,
-							slot: data.slot,
-							slots: data.slots,
-							parentSession: data.parentSession,
-							sellerUid: data.sellerUid,
-							serviceDocId: data.serviceDocId,
-							id: data.id,
-						}
+            const session = {
+              id: data.id,
+              name: data.name,
+              slots: data.slots,
+              booked: data.booked,
+              mandatoryFill: data.mandatoryFill,
+              color: data.color,
+              serviceColor: data.serviceColor,
+              start: formatter(data.start),
+              end: formatter(data.end),
+              sellerUid: data.sellerUid,
+              serviceDocId: data.serviceDocId,
+              status: data.status,
+            }
 						this.sessions.push(session)
 					})
 				})
 			this.$watch('selectedEvent', () => {
 				this.bindSlots()
-				console.log('working')
 			})
 
 			this.days = [
@@ -245,27 +246,26 @@
 				slots.get().then((querySnapshot) => {
 					querySnapshot.forEach((doc) => {
 						const data = doc.data()
-						const slot = {
-							name: data.name,
-							color: data.color,
-							serviceColor: data.serviceColor,
-							start: formatter(data.start),
-							end: formatter(data.end),
-							status: data.status,
-							participants: data.participants,
-							buyerUid: data.buyerUid,
-							slot: data.slot,
-							slots: data.slots,
-							parentSession: data.parentSession,
-							sellerUid: data.sellerUid,
-							serviceDocId: data.serviceDocId,
-							id: data.id,
-						}
+            const slot = {
+              id: data.id,
+              name: data.name,
+              slot: data.slot,
+              slots: data.slots,
+              mandatoryFill: data.mandatoryFill,
+              start: formatter(data.start),
+              end: formatter(data.end),
+              sellerUid: data.sellerUid,
+              serviceDocId: data.serviceDocId,
+              buyerUid: data.buyerUid,
+              buyerUsername: data.buyerUsername,
+              paymentIntent: data.paymentIntent,
+              status: data.status,
+              parentSession: data.parentSession
+            }
 						this.slots.push(slot)
 					})
 				})
 			},
-			// TODO: [PRV-222] fix this
 			prebookCheck() {
 				const startOverlap = this.mySessions.some((session) => {
 					return dayjs(this.selectedEvent.start).isBetween(session.start, session.end, null, '[]')
@@ -278,7 +278,7 @@
 				} else if (startOverlap === true || endOverlap == true)
 					this.$store.commit('error/SET_ERROR', {
 						show: true,
-						message: 'You already have a session booked during this time slot. Can you be in two places at once? @_@',
+						message: 'You already have a session booked during this time slot.',
 						color: 'red',
 						icon: 'fas fa-exclamation-circle',
 					})

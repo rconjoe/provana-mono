@@ -1,5 +1,5 @@
 import Creator from '../../models/Creator'
-import { stripe } from '../../config'
+import { stripe, stripeRedirectUrl } from '../../config/config'
 import Stripe from 'stripe'
 
 
@@ -55,8 +55,8 @@ export default class StripeAccountService {
   public async generateAccountLink(accountId: string): Promise<Stripe.Response<Stripe.AccountLink>> {
     return await stripe.accountLinks.create({
       account: accountId,
-      refresh_url: 'http://localhost:8080/onboardRetry',
-      return_url: 'http://localhost:8080/onboardSuccess',
+      refresh_url: `${stripeRedirectUrl}/onboardRetry`,
+      return_url: `${stripeRedirectUrl}/onboardSuccess`,
       type: 'account_onboarding'
     })
   }

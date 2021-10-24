@@ -1,5 +1,5 @@
 import { testEnv } from './env.spec'
-import { db } from '../config'
+import { db } from '../admin'
 
 describe('example test block', () => {
   // This is a stupid hack to get typescript to accept our index.ts to use its functions in the test
