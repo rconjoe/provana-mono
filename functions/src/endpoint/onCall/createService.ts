@@ -11,7 +11,7 @@ export const createService = functions.https.onCall(async (data, context) => {
       data.serviceCost, 
       data.serviceLength, 
       data.tags, 
-      data.serviceColor, 
+      data.color, 
       data.software, 
       data.attendees, 
       data.mandatoryFill,
