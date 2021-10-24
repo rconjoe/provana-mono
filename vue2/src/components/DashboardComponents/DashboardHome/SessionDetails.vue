@@ -304,7 +304,7 @@
 					await cancel({
 						id: this.selectedEvent.session.id,
 					}).then((res) => {
-						this.$store.commit('RESET_SELECTED')
+						this.$store.dispatch('dashboard/getSold')
 						})
 						.catch((err) => {
 						console.error(err)
@@ -313,7 +313,10 @@
 					const cancel = functions.httpsCallable('cancelSlot')
 					await cancel({
 						id: this.selectedEvent.bookedSlots.id,
-					}).catch((err) => {
+					}).then((res) => {
+						this.$store.dispatch('dashboard/getPurchase')
+						})
+						.catch((err) => {
 						console.error(err)
 					})
 				}

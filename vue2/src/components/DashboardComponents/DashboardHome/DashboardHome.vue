@@ -32,7 +32,7 @@
 		<v-col class="postContainer d-flex flex-column justify-start">
 			<!-- OLD POSTS COMPONENT -->
 			<div class="bioBox d-flex flex-column justify start">
-				<SessionDetails  />
+				<SessionDetails />
 			</div>
 			<!-- <v-card class="postCard" flat color="transparent">
           <v-card-text class="postTitle mx-auto "> Let your customers know what's up! </v-card-text>
@@ -95,12 +95,11 @@
 			postLoading: false,
 			focus: '',
 			sessions: [],
-			selectedEvent: '',
 			selectedElement: null,
 			sessionToolTip: false,
 		}),
 		computed: mapState({
-			selectedEvent: (state) => state.dashboard.selected,
+			selectedEvent: (state) => state.dashboard.selected.session,
 		}),
 	}
 </script>

@@ -44,7 +44,7 @@ export const dashboard = {
           buyers: [],
           bookedSlots: {}
         }
-      }
+      },
     },
 
     actions: {
