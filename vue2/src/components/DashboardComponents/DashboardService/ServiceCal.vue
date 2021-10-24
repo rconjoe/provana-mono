@@ -4,12 +4,7 @@
 			<!-- v-sheet container left sidebar -->
 			<v-sheet width="250px" height="21.9vw">
 				<!-- Date picker -->
-					<v-date-picker
-						color="secondary"
-						width="240px"
-						v-model="focus"
-						class="datepicker mt-4"
-					></v-date-picker>
+				<v-date-picker color="secondary" width="240px" v-model="focus" class="datepicker mt-4"></v-date-picker>
 				<h3 class="selectedServiceText mt-9"> Selected:</h3>
 				<div class="selectedServiceBox" :style="selectedService ? { borderColor: selectedService.color } : ''">
 					<h3 class="selectedService" v-if="selectedService" :style="{ color: selectedService.color }">
@@ -18,7 +13,6 @@
 					<h3 class="selectedService" v-else> None Selected</h3>
 				</div>
 			</v-sheet>
-
 		</v-col>
 		<v-col class="pl-0">
 			<!-- <v-sheet height="64" color="transparent">
@@ -156,8 +150,8 @@
 						</v-card-title>
 
 						<v-card-text>
-							To confirm you want to delete this session please type the name of the session exactly into the form to
-							enable the delete button.
+							To confirm you want to delete this session please type the name of the session exactly into the form to enable the
+							delete button.
 							<v-text-field single-line v-model="deleteString"></v-text-field>
 							<h3>This action is irrevesible!</h3>
 						</v-card-text>
@@ -177,10 +171,9 @@
 				</v-dialog>
 			</v-sheet>
 			<v-btn class="btnCTA float-right mt-2" color="primary" @click="saveAvailability" :loading="potentialLoading">
-						save availability
-					</v-btn>
+				save availability
+			</v-btn>
 		</v-col>
-
 	</v-row>
 </template>
 
@@ -235,13 +228,12 @@
 				return time
 			},
 			cssVars() {
-				if(this.selectedService){
+				if (this.selectedService) {
 					return {
 						'--serviceColor': this.selectedService.color,
 					}
-				}
-				else{
-					return { '--serviceColor':'transparent'}
+				} else {
+					return { '--serviceColor': 'transparent' }
 				}
 			},
 		},
@@ -251,46 +243,41 @@
 				this.event = []
 				querySnapshot.forEach((doc) => {
 					const data = doc.data()
-          const session = {
-            name: data.name,
-            color: data.color,
-            serviceColor: data.serviceColor,
-            start: formatter(data.start),
-            end: formatter(data.end),
-            status: data.status,
-            participants: data.participants,
-            buyerUid: data.buyerUid,
-            slot: data.slot,
-            slots: data.slots,
-            parentSession: data.parentSession,
-            sellerUid: data.sellerUid,
-            serviceDocId: data.serviceDocId,
-            id: data.id,
-          }
+					const session = {
+						name: data.name,
+						color: data.color,
+						serviceColor: data.serviceColor,
+						start: formatter(data.start),
+						end: formatter(data.end),
+						status: data.status,
+						participants: data.participants,
+						buyerUid: data.buyerUid,
+						slots: data.slots,
+						parentSession: data.parentSession,
+						sellerUid: data.sellerUid,
+						serviceDocId: data.serviceDocId,
+						id: data.id,
+					}
 					this.event.push(session)
 				})
 				this.potentialSessions.forEach((session) => {
 					this.event.push(session)
 				})
 			})
-			this.$watch('selectedEvent', () => {
-				this.bindSlots()
-			})
+			
 			await this.getServices()
 		},
 
 		methods: {
 			async deleteBooked() {
-				if (this.selectedEvent.slots == 1) {
-					const cancelBookedSession = functions.httpsCallable('callableCancelBookedSession')
-					await cancelBookedSession({
-						session: this.selectedEvent.id,
-						uid: this.$user.uid,
-					}).catch((err) => {
-						this.setError(true, err.message, 'red', 'fas fa-alert')
-					})
-					this.setError(true, `Session id#${this.selectedEvent.id} successfully cancelled.`, 'green', 'fas fa-check')
-				}
+				const cancelBookedSession = functions.httpsCallable('cancelSession')
+				await cancelBookedSession({
+					id: this.selectedEvent.id,
+				}).catch((err) => {
+					this.setError(true, err.message, 'red', 'fas fa-alert')
+				})
+				this.setError(true, `Session id#${this.selectedEvent.id} successfully cancelled.`, 'green', 'fas fa-check')
+
 				this.deleteString = ''
 				this.deleteDialog = false
 			},
@@ -345,38 +332,6 @@
 					icon: icon,
 				})
 			},
-			bindSlots() {
-				this.slots = []
-				const session = this.selectedEvent
-				if (session.slots > 1) {
-					const slots = db
-						.collection('sessions')
-						.doc(session.id)
-						.collection('slots')
-					slots.get().then((querySnapshot) => {
-						querySnapshot.forEach((doc) => {
-							const data = doc.data()
-              const session = {
-                name: data.name,
-                color: data.color,
-                serviceColor: data.serviceColor,
-                start: formatter(data.start),
-                end: formatter(data.end),
-                status: data.status,
-                participants: data.participants,
-                buyerUid: data.buyerUid,
-                slot: data.slot,
-                slots: data.slots,
-                parentSession: data.parentSession,
-                sellerUid: data.sellerUid,
-                serviceDocId: data.serviceDocId,
-                id: data.id,
-              }
-							this.slots.push(slot)
-						})
-					})
-				}
-			},
 			async createPotentialSession(time) {
 				if (this.selectedService) {
 					const startMinute = this.round(time.minute)
@@ -396,19 +351,16 @@
 					}, formattedEndTime)
 					if (startOverlap === true || endOverlap === true) {
 						return this.setError(true, 'You cannot book overlapping sessions.', 'warning', 'fas fa-exclamation')
-					}
-					else if (dayjs(formattedStartTime).isBefore(dayjs())) {
+					} else if (dayjs(formattedStartTime).isBefore(dayjs())) {
 						return this.setError(true, 'You can not set a session in the past', 'red', 'fas fa-exclamation-circle')
-					}
-					else if (dayjs(formattedStartTime).isAfter(dayjs().add(6, 'day'))) {
+					} else if (dayjs(formattedStartTime).isAfter(dayjs().add(6, 'day'))) {
 						return this.setError(
 							true,
 							'You can not set a session more than 6 days in the future',
 							'red',
 							'fas fa-exclamation-circle'
 						)
-					}
-					else {
+					} else {
 						this.writePotentialSession(unixStartTime, unixEndTime)
 					}
 				} else {
@@ -470,44 +422,40 @@
 
 			async deleteSession() {
 				this.deleteUnbookedLoading = true
-				const ses = await db
-					.collection('sessions')
-					.doc(this.selectedEvent.id)
+				const ses = await db.collection('sessions').doc(this.selectedEvent.id)
 				const slots = await ses.collection('slots').get()
-				slots.forEach(async slot => await slot.ref.delete())
-				await ses.delete()
-					.then(() => {
-						this.deleteUnbookedLoading = false
-						this.sessionTooltip = false
-						this.toolTipWindow = 0
-						this.selectedEvent = {}
-					})
+				slots.forEach(async (slot) => await slot.ref.delete())
+				await ses.delete().then(() => {
+					this.deleteUnbookedLoading = false
+					this.sessionTooltip = false
+					this.toolTipWindow = 0
+					this.selectedEvent = {}
+				})
 			},
 		},
-
 	}
 </script>
 
 <style scoped>
 	/* calendar background removal */
-	>>>#proCal.theme--dark.v-calendar-daily .v-calendar-daily__day{
-		background-color:transparent !important;
+	>>> #proCal.theme--dark.v-calendar-daily .v-calendar-daily__day {
+		background-color: transparent !important;
 	}
 	/* calendar scrollable area border */
-	>>>.v-calendar-daily__scroll-area{
-		border: 3px solid var(--serviceColor)
+	>>> .v-calendar-daily__scroll-area {
+		border: 3px solid var(--serviceColor);
 	}
 	/* datepicker date outline */
-	>>>.datepicker .v-btn--outlined{
-		border:none;
+	>>> .datepicker .v-btn--outlined {
+		border: none;
 	}
 	/* datepicker background color */
-	>>>.theme--dark.v-picker__body{
+	>>> .theme--dark.v-picker__body {
 		background-color: transparent;
 	}
 	/* datepicker title  */
-	>>>.v-picker__title{
-		display:none;
+	>>> .v-picker__title {
+		display: none;
 	}
 	.datePickerCol {
 		max-width: 250px;
@@ -603,7 +551,7 @@ MASSIVE collection of border styles to change line colors seperating days. */
 	}
 	>>> .theme--dark.v-calendar-daily .v-calendar-daily__day-interval {
 		border-top: #333333 1px solid;
-		background-color:transparent !important;
+		background-color: transparent !important;
 	}
 	>>> .theme--dark.v-calendar-daily .v-calendar-daily__day-interval:nth-child(4n + 5) {
 		border-top: #717171 1px solid !important;
