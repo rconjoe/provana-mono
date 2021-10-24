@@ -101,7 +101,7 @@
 							</v-carousel>
 						</div>
 						<h3 class="imageText">Start turning incentives into experiences.</h3>
-						<v-btn class="btnCTA" color="primary" to="/register"> Make an account</v-btn>
+						<v-btn class="btnCTA" color="primary" @click="makeAccount()"> Make an account</v-btn>
 					</v-col>
 				</v-row>
 			</div>
@@ -353,6 +353,12 @@
 				})
 		},
 		methods: {
+			makeAccount(){
+				this.$store.dispatch('auth/setLoginOverlay',
+					{showLogin: !this.showLogin,
+					loginTab:'register'}
+				) 
+			},
 			showPartner(e) {
 				this.showAlpha = e
 			},
