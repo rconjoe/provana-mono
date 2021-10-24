@@ -284,7 +284,7 @@
 			},
 			async checkout() {
 				this.checkoutLoading = true
-				const checkout = await functions.httpsCallable('checkout')
+				const checkout = functions.httpsCallable('checkout')
 				const response = await checkout({
 					uid: this.$user.uid,
 					username: this.$user.displayName,
