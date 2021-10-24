@@ -29,18 +29,18 @@ export const notifications = {
         .collection('notif')
       .onSnapshot((snapshot) => {
         commit('CLEAR_NOTIF')
-        
-        
+
+
         snapshot.forEach((doc) => {
           const data = doc.data();
-          console.log(data)
           const notif = {
             accType: data.accType,
             category: data.category,
             content: data.content,
             time: dayjs(data.time).format('hh:mm MM-DD-YY'),
             uid: data.uid,
-            unread: data.unread
+            unread: data.unread,
+            id: doc.id
           }
           commit('SET_NOTIF', notif);
         })
