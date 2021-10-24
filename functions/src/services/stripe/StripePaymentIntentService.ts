@@ -52,8 +52,8 @@ export default class StripePaymentIntentService {
    * @param {string} id
    * @returns {Promise<void>}
    */
-  public async cancel(id: string): Promise<void> {
-    await stripe.paymentIntents.cancel(id)
+  public async cancel(id: string): Promise<Stripe.PaymentIntent> {
+    return await stripe.paymentIntents.cancel(id)
     .catch(err => {
       throw new Error(err)
     })
