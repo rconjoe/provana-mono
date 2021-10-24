@@ -20,3 +20,5 @@ export var taskcfg: ClientOptions = {
   servicePath: 'localhost',
   sslCreds: credentials.createInsecure()
 }
+
+// blah blah blah
