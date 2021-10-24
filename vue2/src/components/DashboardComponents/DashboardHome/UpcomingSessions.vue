@@ -17,12 +17,12 @@
 								active-class="selectedItem"
 								class="listItem"
 								dense
-								v-for="session in purchased"
-								:key="session.start"
-								@click="selectSession(session)"
+								v-for="slot in purchased"
+								:key="slot.start"
+								@click="selectSlot(slot)"
 							>
-								<h1 class="sessionItemTitle text-truncate">{{ session.name }}</h1>
-								<h2 class="sessionItemDate">{{ formatDate(session.start) }}@{{ formatTime(session.start) }}</h2>
+								<h1 class="sessionItemTitle text-truncate">{{ slot.name }}</h1>
+								<h2 class="sessionItemDate">{{ formatDate(slot.start) }}@{{ formatTime(slot.start) }}</h2>
 								<h3 class="sessionDetails "> Details</h3>
 							</v-list-item>
 						</v-list-item-group>
@@ -39,12 +39,12 @@
 								active-class="selectedItem"
 								class="listItem"
 								dense
-								v-for="session in sold"
-								:key="session.start"
-								@click="selectSession(session)"
+								v-for="slot in sold"
+								:key="slot.start"
+								@click="selectSlot(slot)"
 							>
-								<h1 class="sessionItemTitle text-truncate">{{ session.name }}</h1>
-								<h2 class="sessionItemDate">{{ formatDate(session.start) }}@{{ formatTime(session.start) }}</h2>
+								<h1 class="sessionItemTitle text-truncate">{{ slot.name }}</h1>
+								<h2 class="sessionItemDate">{{ formatDate(slot.start) }}@{{ formatTime(slot.start) }}</h2>
 								<h3 class="sessionDetails "> Details</h3>
 							</v-list-item>
 						</v-list-item-group>
@@ -76,8 +76,8 @@
 			this.$store.dispatch('dashboard/getSold')
 		},
 		methods: {
-			selectSession(session) {
-				this.$store.dispatch('dashboard/selectSession', session)
+			selectSlot(slot) {
+				this.$store.dispatch('dashboard/selectSlot', slot)
 			},
 			formatTime(e) {
 				return dayjs(e).format('hh:mm a')
