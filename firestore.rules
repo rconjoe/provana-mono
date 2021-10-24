@@ -45,7 +45,7 @@ service cloud.firestore {
     match /sessions/{docId=**} {
       allow read;
       // only a creator can update their own session docs
-      allow update: if request.auth.uid == resource.data.sellerUid
+      allow write: if request.auth.uid == request.resource.data.sellerUid
     }
 
     match /supporters/{docId} {
