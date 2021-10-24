@@ -51,7 +51,7 @@
 	.convoContainer {
 		height: 432px;
 		width: 400px;
-		overflow-y: auto;
-		overflow-x: hide;
+		overflow-y: hide;
+		overflow-x: scroll;
 	}
 </style>

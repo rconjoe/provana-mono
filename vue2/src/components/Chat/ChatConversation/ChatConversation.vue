@@ -20,6 +20,7 @@
 </template>
 
 <script>
+	import { mapState } from 'vuex'
 	import { db } from '../../../plugins/firebase'
 	import dayjs from 'dayjs'
 	import utc from 'dayjs/plugin/utc'
@@ -39,6 +40,9 @@
 			editTitle: false,
 			messages: [],
 			users: [],
+		}),
+		computed: mapState({
+			profile: (state) => state.auth.currentUser,
 		}),
 		mounted() {
 			this.uid = this.$user.uid
@@ -81,12 +85,12 @@
 					.doc(this.chatroom.roomId)
 					.collection('messages')
 					.add({
-						from: this.$user.uid,
-						username: this.$user.displayName,
+						from: this.profile.uid,
+						username: this.profile.username,
 						at: dayjs().unix(),
 						text: `${message}`,
 						room: this.chatroom.roomId,
-						avatar: this.$user.avatar
+						avatar: this.profile.avatar,
 					})
 					.catch((err) => {
 						console.error(`Error sending that message: ${err}`)
@@ -113,6 +117,4 @@
 	}
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -7,7 +7,7 @@
           no-resize
           height="100"
           filled
-          class="messageInput pb-0"
+          class="messageInput p-0"
           name="input-7-4"
           placeholder="Write a reply..."
         >
@@ -20,7 +20,7 @@
 export default {
     data: () => ({
         message:''
-
+        
     }),
     methods:{
         sendMessage(m){

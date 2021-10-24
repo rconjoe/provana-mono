@@ -74,6 +74,7 @@ export default {
 }
 .chatBox {
   margin-bottom: 0;
-  overflow-y:hidden;
+  overflow-x:hidden;
+  overflow-y:scroll;
 }
 </style>
