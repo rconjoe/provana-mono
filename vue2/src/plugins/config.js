@@ -10,3 +10,5 @@ export const config =  {
 
 export const spub = 'pk_test_51HJUgfGoIl5NLNcQKTXPu3CKuckXq6vbUXxASrRZvrXgwtODSI9wFNWdZoo37LY3YXrrfMx2N7Nas1MWbWn7ddu100RWAa63mC'
 
+
+// not the other thing i wrote
