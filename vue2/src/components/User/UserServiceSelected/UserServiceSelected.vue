@@ -121,9 +121,8 @@
 	import CheckoutSessionWindow from '../UserServiceSelected/CheckoutSessionWindow.vue'
 	import CalHeader from '../UserServiceSelected/CalHeader.vue'
 	import SessionDay from './SessionDay.vue'
-	var stripe = Stripe(
-		'pk_test_51HJUgfGoIl5NLNcQKTXPu3CKuckXq6vbUXxASrRZvrXgwtODSI9wFNWdZoo37LY3YXrrfMx2N7Nas1MWbWn7ddu100RWAa63mC'
-	)
+  import { spub } from '../../../plugins/config'
+	var stripe = Stripe(spub)
 	export default {
 		components: {
 			CalHeader,
