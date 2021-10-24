@@ -49,8 +49,8 @@ export default class TaskService {
    * @param {number} fireTime
    * @returns {Promise<string>}
    */
-  public async scheduleSlotStart(slotId: string, fireTime: number): Promise<string> {
-    return await this.schedule(this.buildRequest('slot-start', slotId, fireTime))
+  public async scheduleSlotStart(slotId: string, start: number): Promise<string> {
+    return await this.schedule(this.buildRequest('slot-start', slotId, start))
   }
 
   
@@ -63,8 +63,8 @@ export default class TaskService {
    * @param {number} fireTime
    * @returns {Promise<string>}
    */
-  public async scheduleSessionStart(sessionId: string, fireTime: number): Promise<string> {
-    return await this.schedule(this.buildRequest('session-start', sessionId, fireTime))
+  public async scheduleSessionStart(sessionId: string, start: number): Promise<string> {
+    return await this.schedule(this.buildRequest('session-start', sessionId, start))
   }
 
   
@@ -77,8 +77,8 @@ export default class TaskService {
    * @param {number} fireTime
    * @returns {Promise<string>}
    */
-  public async scheduleCapture(slotId: string, fireTime: number): Promise<string> {
-    return await this.schedule(this.buildRequest('capture', slotId, fireTime))
+  public async scheduleCapture(slotId: string, start: number): Promise<string> {
+    return await this.schedule(this.buildRequest('capture', slotId, start))
   }
 
   public async scheduleRelease(slotId: string, fireTime: number): Promise<string> {
@@ -128,7 +128,7 @@ export default class TaskService {
    * @param {?number} [fireTime]
    * @returns {protos.google.cloud.tasks.v2beta3.ICreateTaskRequest}
    */
-  private buildRequest(type: string, payload: string, fireTime?: number)
+  private buildRequest(type: string, payload: string, start?: number)
   : protos.google.cloud.tasks.v2beta3.ICreateTaskRequest {
     let url: string
     let seconds: number
@@ -142,24 +142,24 @@ export default class TaskService {
       case 'slot-start':
         url = 'https://us-central1-db-abstract.cloudfunctions.net/startSlot'
         // @ slot start time
-        seconds = fireTime!
+        seconds = start!
         break
       case 'session-start':
-        url = 'https://google.com'
+        url = 'https://us-central1-db-abstract.cloudfunctions.net/startSession'
         // @ session start time
-        seconds = fireTime!
+        seconds = start!
         break
       case 'capture':
-        url = 'https://google.com'
-        // 6 hours after session start time
-        seconds = fireTime!
+        url = 'https://us-central1-db-abstract.cloudfunctions.net/caputure'
+        // 5 hours, 50 minutes after session start time
+        seconds = 21000 + start!
       case 'release':
-        url = 'https://google.com'
-        // 6 hours after slot start time, replaces capture task
-        seconds = fireTime!
+        url = 'https://us-central1-db-abstract.cloudfunctions.net/release'
+        // 5 hours, 50 minutes after session start time, replaces capture task
+        seconds = 21000 + start!
       default:
-        url = 'crazy.net'
-        seconds = 10
+        url = ''
+        seconds = 1
         break
     }
     const task: protos.google.cloud.tasks.v2beta3.ITask = {
