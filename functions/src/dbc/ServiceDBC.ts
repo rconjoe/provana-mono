@@ -207,8 +207,9 @@ export default class ServiceDBC extends Service {
     })
   }
 
-  public async deleteService(documentRef: string) {
-    if(this.id === undefined || this.id === "") throw new Error('requires Id')
-      return await db.collection('services').doc(documentRef).delete()
+  public async delete() {
+    if(this.id === undefined || this.id === "") throw new Error('id required to delete service doc')
+    return await db.collection('services').doc(this.id).delete()
+      .catch(err => console.error(err))
   }
 }
