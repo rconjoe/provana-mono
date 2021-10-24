@@ -21,7 +21,7 @@ export const notifications = {
       state.notifications = []
     },
     SET_DISPUTE(state, data) {
-      state.notifications.push(data)
+      state.disputes.push(data)
     },
     CLEAR_DISPUTE(state) {
       state.disputes = []

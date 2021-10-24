@@ -22,7 +22,7 @@
 					<v-btn
 						color="primary"
 						class="btnCTA"
-						@click="disputeDialog = false"
+						@click="readDispute"
 					>
 						I understand
 					</v-btn>
@@ -46,8 +46,9 @@ export default {
         .collection('notifications')
         .doc(this.$user.uid)
         .collection('notif')
-        .doc(dispute.id)
+        .doc(this.dispute.id)
         .update({ unread: false })
+		this.disputeDialog = false
     }
   },
 
