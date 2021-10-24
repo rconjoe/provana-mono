@@ -1,1 +1,4 @@
 functions/src/config/** merge=ours
+vue2/src/plugins/config merge=ours
+firebase.json merge=ours
+.firebaserc merge=ours
