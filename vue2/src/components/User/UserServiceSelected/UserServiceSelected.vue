@@ -300,7 +300,6 @@
 					slotId: this.selectedSlot.id,
 					sessionId: this.selectedEvent.id,
 				})
-				console.log(response.data)
 				this.checkoutLoading = false
 				stripe.redirectToCheckout({ sessionId: response.data })
 			},

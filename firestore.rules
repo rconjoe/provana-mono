@@ -2,8 +2,13 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /chats/{docId} {
-      allow read: if request.auth.uid in get(/databases/{database}/documents/chats/{docId}).users;
-      allow update: if request.auth.uid in get(/database/{database}/documents/chats/{docId}.users);
+      allow read: if request.auth.uid in resource.data.users;
+      allow create: if request.auth.uid in resource.data.users;
+
+      match /messages/{docId} {
+        allow read;
+        allow write;
+      }
     }
 
     match /creators/{creatorUid} {
@@ -24,8 +29,8 @@ service cloud.firestore {
       allow update: if false;
 
       match /notif/{docId} {
-        allow read: if request.auth.uid == resource.data.uid;
-        allow update: if request.auth.uid == resource.data.uid;
+        allow read;
+        allow update;
       }
     }
 
