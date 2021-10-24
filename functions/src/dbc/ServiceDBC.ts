@@ -206,4 +206,9 @@ export default class ServiceDBC extends Service {
       stripePrice: price
     })
   }
+
+  public async deleteService() {
+    if(this.id === undefined || this.id === "") throw new Error('requires Id')
+      return await db.collection('services').doc(this.id).delete()
+  }
 }
