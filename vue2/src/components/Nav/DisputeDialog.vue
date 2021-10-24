@@ -32,12 +32,24 @@
 </template>
 
 <script>
+import { db } from '../../plugins/firebase'
 export default {
 	name:'DisputeDialog',
-    props:['dispute'],
-    data: () => ({
-        disputeDialog:true,
-    }),
+  props:['dispute'],
+  data: () => ({
+    disputeDialog:true,
+  }),
+
+  methods: {
+    async readDispute() {
+      await db
+        .collection('notifications')
+        .doc(this.$user.uid)
+        .collection('notif')
+        .doc(dispute.id)
+        .update({ unread: false })
+    }
+  },
 
 }
 </script>
