@@ -25,8 +25,8 @@ export const dashboard = {
       SET_SOLD(state, data) {
         state.home.sold = data
       },
-      SET_SELECTED_SLOT(state, data) {
-        state.selected.slot = data
+      SET_SELECTED_SESSION(state, data) {
+        state.selected.session = data
       },
       SET_SELECTED_SELLER(state, data) {
         state.selected.seller = data
@@ -119,7 +119,7 @@ export const dashboard = {
           .collection('sessions')
           .doc(slot.parentSession)
         const parent = await parentRef.get()
-        commit('SET_SELECTED_SLOT', parent.data())
+        commit('SET_SELECTED_SESSION', parent.data())
         const qslots = await parentRef
           .collection('slots')
           .get()
