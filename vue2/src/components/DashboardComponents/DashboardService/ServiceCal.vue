@@ -2,10 +2,10 @@
 	<v-row class="ma-0">
 		<v-col class="datePickerCol">
 			<!-- v-sheet container left sidebar -->
-			<v-sheet width="250px" height="21.9vw">
+			<v-sheet width="13.020833333333334vw" height="21.9vw">
 				<!-- Date picker -->
-				<v-date-picker color="secondary" width="240px" v-model="focus" class="datepicker mt-4"></v-date-picker>
-				<h3 class="selectedServiceText mt-9"> Selected:</h3>
+				<v-date-picker color="secondary" width="12.5vw" v-model="focus" class="datepicker mt-4"></v-date-picker>
+				<h3 class="selectedServiceText mt-4"> Selected:</h3>
 				<div class="selectedServiceBox" :style="selectedService ? { borderColor: selectedService.color } : ''">
 					<h3 class="selectedService" v-if="selectedService" :style="{ color: selectedService.color }">
 						{{ selectedService.serviceName }}</h3
@@ -53,7 +53,7 @@
 			<v-sheet class="calSheet" height="23.6vw" color="transparent">
 				<v-calendar
 					id="proCal"
-					interval-height="15"
+					interval-style="intStyle"
 					:interval-format="intervalFormat"
 					interval-minutes="15"
 					interval-count="96"
@@ -269,6 +269,7 @@
 		},
 
 		methods: {
+		
 			async deleteBooked() {
 				const cancelBookedSession = functions.httpsCallable('cancelSession')
 				await cancelBookedSession({
@@ -437,6 +438,7 @@
 </script>
 
 <style scoped>
+
 	/* calendar background removal */
 	>>> #proCal.theme--dark.v-calendar-daily .v-calendar-daily__day {
 		background-color: transparent !important;
@@ -458,7 +460,7 @@
 		display: none;
 	}
 	.datePickerCol {
-		max-width: 250px;
+		max-width: 13.020833333333334vw;
 		margin-top: 1.56vw;
 	}
 	/* background color behind time */
@@ -606,7 +608,7 @@ MASSIVE collection of border styles to change line colors seperating days. */
 	>>> div .v-calendar-daily__interval:nth-child(4n + 5) .v-calendar-daily__interval-text {
 		color: white !important;
 		display: inline;
-		font: normal 500 0.9375vw Arboria;
+		font: normal 500 18px Arboria;
 		text-align: center;
 		top: -0.5208333333333334vw;
 		right: -5px;
@@ -631,7 +633,7 @@ MASSIVE collection of border styles to change line colors seperating days. */
 	}
 	.deleteAlertCard {
 		background-color: #fa4b6bb9;
-		min-height: 400px;
+		min-height: 20.833333333333332vw;
 	}
 	.calSheet {
 		max-height: 31.25vw;
@@ -662,7 +664,6 @@ MASSIVE collection of border styles to change line colors seperating days. */
 		position: absolute;
 		top: 10%;
 		right: 100%;
-		margin-top: -px;
 		border-width: 10px;
 		border-style: solid;
 		border-color: transparent #111111ef transparent transparent;

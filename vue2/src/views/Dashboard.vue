@@ -216,7 +216,7 @@ export default {
   background-size: contain;
   min-height: 50.78125vw;
   min-width: 100vw;
-  padding-left:3vw;
+  padding-left:4%;
 }
 .dashWindow{
   background-color: transparent;
