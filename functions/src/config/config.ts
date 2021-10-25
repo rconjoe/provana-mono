@@ -7,9 +7,10 @@ export var stripe = new Stripe(  "sk_test_51HJUgfGoIl5NLNcQ8xzPwo3tXqwoaGym8ZXwP
   }
 )
 
-export var stripeRedirectUrl = 'http://localhost:8081'
+export var stripeRedirectUrl = 'https://pv-dev-4e2c2.web.app'
 
 sendgrid.setApiKey("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")
 export const sg = sendgrid
 
 export var taskcfg: ClientOptions = {}
+export const project = 'pv-dev-4e2c2'
