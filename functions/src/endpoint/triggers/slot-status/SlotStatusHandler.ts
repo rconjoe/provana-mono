@@ -90,6 +90,7 @@ export default class SlotStatusHandler {
     switch (this.slot.status) {
       case 'resolved-seller':
         await new DisputeDBC(this.slot.id).update({ status: 'resolved-seller' })
+        await new StripePaymentIntentService().cancel(this.slot.paymentIntent!)
         await new NotificationDBC(
           this.slot.buyerUid!,
           'dispute-resolved',
@@ -97,6 +98,7 @@ export default class SlotStatusHandler {
         ).send()
         break
       case 'resolved-refunded':
+        await new StripePaymentIntentService().cancel(this.slot.paymentIntent!)
         await new NotificationDBC(
           this.slot.buyerUid!,
           'dispute-resolved',
@@ -104,6 +106,7 @@ export default class SlotStatusHandler {
         ).send()
         break
       case 'resolved-captured':
+        await new DisputeDBC(this.slot.id).update({ status: 'resolved-capture' })
         const release = await new TaskDBC(this.slot.id).retrieve()
         await new TaskService().cancel(release)
         await new StripePaymentIntentService().capture(this.slot.paymentIntent!)
