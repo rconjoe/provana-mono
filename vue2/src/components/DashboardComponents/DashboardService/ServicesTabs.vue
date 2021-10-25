@@ -1,5 +1,5 @@
 <template>
-	<div class="serviceTabRow ">
+	<div class="serviceTabRow">
 		<v-card class="serviceWrapperCard" color="transparent" flat>
 			<!-- vertical tabs inital element -->
 			<v-tabs
@@ -438,6 +438,7 @@
 	.serviceWrapperCard {
 		height: 9vw;
 		max-width: 64.16666666666667vw;
+
 		overflow: hidden;
 	}
 	.serviceItemDiv {

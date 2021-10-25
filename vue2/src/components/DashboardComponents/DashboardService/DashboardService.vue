@@ -15,7 +15,7 @@
       <v-row>
         
         <v-col class="calCol">
-          <v-sheet class="calSheet ma-2 ml-0 pl-0" height="22.135416666666668vw" width="76.04166666666667vw" color="transparent">
+          <v-sheet class="calSheet ma-2 ml-0 pl-0" height="22.135416666666668vw" width="1460px" color="transparent">
                 <ServiceCal :selectedService="selectedService" />
               </v-sheet>
         </v-col>
@@ -66,7 +66,7 @@ export default {
   padding-left: 4vw;
 }
 .headerCol{
-  max-width:16.26vw;
+  max-width:300px;
 }
 .containHeader {
   padding-left: 20vw;

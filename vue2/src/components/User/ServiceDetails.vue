@@ -5,9 +5,9 @@
         <h1 class="serviceName"> {{service.serviceName}} </h1>
 
         <!-- Row image/info -->
-        <v-row class="imageRow">
+        <div class="row">
             <!-- 1/2 service Image -->
-            <v-col class="serviceImgCol">
+            <v-col cols="6" class="serviceImgCol">
                 <v-img src="../../assets/ProvanaAlphaBadge-02.png" max-width="13.736842105263158vw" max-height="140" />
             </v-col>
             <!-- 2/2 service info -->
@@ -19,7 +19,7 @@
                 </div>
                 <h1 class="serviceSoftware"> {{service.software}} </h1>
             </v-col>
-        </v-row>
+        </div>
         <!-- Service description -->
         <h1 class="serviceDescription">{{service.serviceDescrption}} </h1>
     </v-col>
@@ -34,10 +34,6 @@ export default {
 </script>
 
 <style scoped>
-.image-row{
-    max-width:25vw;
-    overflow:hidden;
-}
 .serviceDescription{
     margin-top:1.5789473684210527vw;
     font: normal 500 0.7894736842105263vw Arboria;
@@ -68,8 +64,7 @@ export default {
     margin-bottom:1.3157894736842106vw;
 }
 .detailsRow{
-    min-width:25vw;
+    min-width:480px;
 }
-
 
 </style>
