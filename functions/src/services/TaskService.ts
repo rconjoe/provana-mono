@@ -1,5 +1,5 @@
 import { CloudTasksClient } from '@google-cloud/tasks'
-import { taskcfg } from '../config/config'
+import { taskcfg, project } from '../config/config'
 import * as protos from '@google-cloud/tasks/build/protos/protos'
 
 
@@ -132,29 +132,29 @@ export default class TaskService {
   : protos.google.cloud.tasks.v2beta3.ICreateTaskRequest {
     let url: string
     let seconds: number
-    const parent = this.client!.queuePath('db-abstract', 'us-central1', type)
+    const parent = this.client!.queuePath(project, 'us-central1', type)
     switch (type) {
       case 'no-abandoned-checkouts':
-        url = 'https://us-central1-db-abstract.cloudfunctions.net/confirmCheckoutComplete'
+        url = `https://us-central1-${project}.cloudfunctions.net/confirmCheckoutComplete`
         // 5 minutes after checkout 
         seconds = 300 + Date.now() / 1000
         break
       case 'slot-start':
-        url = 'https://us-central1-db-abstract.cloudfunctions.net/startSlot'
+        url = `https://us-central1-${project}.cloudfunctions.net/startSlot`
         // @ slot start time
         seconds = start!
         break
       case 'session-start':
-        url = 'https://us-central1-db-abstract.cloudfunctions.net/startSession'
+        url = `https://us-central1-${project}.cloudfunctions.net/startSession`
         // @ session start time
         seconds = start!
         break
       case 'capture':
-        url = 'https://us-central1-db-abstract.cloudfunctions.net/caputure'
+        url = `https://us-central1-${project}.cloudfunctions.net/capture`
         // 5 hours, 50 minutes after session start time
         seconds = 21000 + start!
       case 'release':
-        url = 'https://us-central1-db-abstract.cloudfunctions.net/release'
+        url = `https://us-central1-${project}.cloudfunctions.net/release`
         // 5 hours, 50 minutes after session start time, replaces capture task
         seconds = 21000 + start!
       default:
