@@ -30,7 +30,7 @@
 				.where('serviceDocId', '==', this.service.id)
 				.where('status', '==', 'published')
 				.onSnapshot((querySnapshot) => {
-					this.sessions = []
+					this.sessionTimes = []
 					querySnapshot.forEach((doc) => {
 						const data = doc.data()
 						const session = {
