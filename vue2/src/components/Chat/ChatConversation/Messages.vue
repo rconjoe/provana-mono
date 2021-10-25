@@ -1,6 +1,6 @@
 <template>
-	<v-card class="convoContainer">
-		<v-row justify="start" v-for="(message,i) in messages" :key="i" class=" px-1 ma-0">
+	<v-card class="convoContainer pa-0">
+		<v-row justify="start" v-for="(message,i) in messages" :key="i" class=" px-0 ma-0">
 			<!-- messages from currentUser -->
 			<v-col v-if="message.from === uid" class="pa-0" align="end">
 				<v-row>
@@ -11,7 +11,7 @@
 				</v-row>
 			</v-col>
 			<!-- message from Buyer -->
-			<v-col v-else align-self="end">
+			<v-col v-else align-self="start">
 				<v-row>
 					<v-col cols="2">
 						<v-avatar size="55" class="mr-2">
@@ -41,17 +41,21 @@
 	.buyerMessage {
 		display: inline-block;
 		font: normal 500 13px Poppins;
+		max-width:12vw;
 	}
 	.messageTime {
 		font-size: 12px;
 	}
 	.userMessage {
 		font: normal 600 16px Poppins;
+		max-width:12vw;
+		display: inline-block;
 	}
 	.convoContainer {
 		height: 432px;
-		width: 400px;
-		overflow-y: hide;
-		overflow-x: scroll;
+		max-width: 400px;
+		padding:0 !important;
+		overflow-y:auto;
+		overflow-x:hidden;
 	}
 </style>

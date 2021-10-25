@@ -25,7 +25,7 @@ export default {
     methods:{
         sendMessage(m){
             this.$emit('send-message',m)
-            console.log(m)
+            this.message = ''
         }
     }
 }

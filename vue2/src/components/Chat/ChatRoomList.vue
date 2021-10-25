@@ -27,8 +27,6 @@
             </v-col>
             <!-- date and time column -->
             <v-col cols="2" align="end" class="pl-0">
-              <h4> DAY </h4>
-              <h4> 6:30 pm </h4>
             </v-col>
           </v-row>
         </v-list-item>
