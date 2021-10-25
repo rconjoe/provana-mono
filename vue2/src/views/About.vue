@@ -6,7 +6,7 @@
 				<v-row class="servicesUnleashedRow">
 					<!-- AboutUs / Reachout Col -->
 					<v-col class="videoCol">
-						<div class="platformVideo"> </div>
+						<v-img src="../assets/home_asset1.png"  max-width="50.526315789473685vw"> </v-img>
 					</v-col>
 					<!-- Check this out col -->
 					<v-col class="servicesUnleashedCol">
@@ -45,9 +45,9 @@
 												Our Platform
 											</h3>
 										</a>
-										<h3 class="aboutProvanaItem">
+										<!-- <h3 class="aboutProvanaItem">
 											Alpha Partners
-										</h3>
+										</h3> -->
 									</div>
 								</v-expand-transition>
 							</v-col>
@@ -107,7 +107,7 @@
 			</div>
 
 			<!-- What makes us different? -->
-			<div id="weDifferent" class="card1">
+			<!-- <div id="weDifferent" class="card1">
 				<div class="weDifferentHeader">
 					<h3 class="weDifferentHeaderText">
 						There's more to provana.GG than coaching.
@@ -117,12 +117,10 @@
 					</h3>
 				</div>
 				<v-row>
-					<!-- 1/2 col Image -->
 					<v-col>
 						<div class="weDifferentImage">
 						</div>
 					</v-col>
-					<!-- 2/2 Col Customization list -->
 					<v-col>
 						<div class="weDifferentListWrapper">
 							<h2 class="weDifferentListHeader">
@@ -151,7 +149,7 @@
 						</div>
 					</v-col>
 				</v-row>
-			</div>
+			</div> -->
 
 			<!-- Dashboard screenshot -->
 			<div id="storefront" class="card1">
@@ -262,7 +260,7 @@
 							Through our Alpha Program, users signing up as sellers are helping us stress-test our support, user
 							experience and capabilities and we’d like to pay it forward. :D
 						</p>
-						<h3 class="alphaPerksDate">Sign up before July 31st</h3>
+						<h3 class="alphaPerksDate">Sign up before November 30th</h3>
 					</v-col>
 					<!-- Col 2/2 alphaPerksList -->
 					<v-col class="alphaPerksListCol">
