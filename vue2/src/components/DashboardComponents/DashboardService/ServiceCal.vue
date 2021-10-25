@@ -53,7 +53,7 @@
 			<v-sheet class="calSheet" height="23.6vw" color="transparent">
 				<v-calendar
 					id="proCal"
-					interval-style="intStyle"
+					interval-height="15"
 					:interval-format="intervalFormat"
 					interval-minutes="15"
 					interval-count="96"
