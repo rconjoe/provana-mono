@@ -153,10 +153,12 @@ export default class TaskService {
         url = `https://us-central1-${project}.cloudfunctions.net/capture`
         // 5 hours, 50 minutes after session start time
         seconds = 21000 + start!
+        break
       case 'release':
         url = `https://us-central1-${project}.cloudfunctions.net/release`
         // 5 hours, 50 minutes after session start time, replaces capture task
         seconds = 21000 + start!
+        break
       default:
         url = ''
         seconds = 1
