@@ -14,7 +14,9 @@ export const dashboard = {
         session: {},
         seller: {},
         buyers: [],
-        bookedSlots: []
+        bookedSlots: [],
+        service: {},
+        chatroom: "",
       },
     }),
 
@@ -37,12 +39,20 @@ export const dashboard = {
       SET_SELECTED_BOOKEDSLOTS(state, data) {
         state.selected.bookedSlots = data
       },
+      SET_SELECTED_SERVICE(state, data) {
+        state.selected.service = data
+      },
+      SET_SELECTED_CHATROOM(state, data) {
+        state.selected.chatroom = data
+      },
       RESET_SELECTED(state) {
         state.selected = {
           session: {},
           seller: {},
           buyers: [],
-          bookedSlots: {}
+          bookedSlots: {},
+          service: {},
+          chatroom: "",
         }
       },
     },
@@ -122,19 +132,26 @@ export const dashboard = {
         commit('SET_SELECTED_SESSION', parent.data())
         const qslots = await parentRef
           .collection('slots')
+          .where('status', '==', 'booked')
           .get()
         const fetchUser = functions.httpsCallable('fetchUser')
         qslots.forEach(async slot => {
-          if (slot.data().status === 'booked') {
             let buyer = await fetchUser({uid: slot.data().buyerUid})
             commit('SET_SELECTED_BUYERS', buyer.data)
-          }
         })
         const seller = await db
           .collection('creators')
           .doc(parent.data().sellerUid)
           .get()
         commit('SET_SELECTED_SELLER', seller.data())
+        const chat = await db.collection('chats')
+          .doc(parent.id)
+          .get()
+        commit('SET_SELECTED_CHATROOM', chat.data().title)
+        const srv = await db.collection('services')
+          .doc(parent.data().serviceDocId)
+          .get()
+        commit('SET_SELECTED_SERVICE', srv.data())
         return
       },
     },
