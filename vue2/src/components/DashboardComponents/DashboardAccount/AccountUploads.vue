@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<v-avatar v-if="avatar" class="mb-4  " size="8.072917vw">
-			<v-img :eager="true" :src="avatarUrl"> </v-img>
+		<v-avatar v-if="profile.avatar" class="mb-4  " size="8.072917vw">
+			<v-img :src="profile.avatar"> </v-img>
 		</v-avatar>
 		<p v-else class="bioText">upload an avatar </p>
 		<!-- avatar upload -->
@@ -20,7 +20,7 @@
 		<br />
 		<div v-if="this.$store.state.auth.claims.type === 'creators'">
 			<!-- Banner display -->
-			<v-img v-if="banner" class="banner mb-2" :src="bannerUrl"> </v-img>
+			<v-img v-if="profile.banner" class="banner mb-2" :src="profile.banner"> </v-img>
 			<p v-else class="bioText mt-12"> please upload a banner for your storefront. </p>
 			<!-- Banner upload -->
 			<div class="editBanner" v-if="!bannerEdit">
@@ -36,6 +36,13 @@
 				</form>
 			</div>
 		</div>
+		<br />
+		<br />
+
+		<div>
+		<span class="code"> Discord code: </span> 
+		<span class="bioText"> {{profile.discord}} </span>
+		</div>
 	</div>
 </template>
 
@@ -43,7 +50,7 @@
 	import { db, storage } from '../../../plugins/firebase'
 
 	export default {
-        props:['avatar','banner','avatarUrl','bannerUrl'],
+        props:['profile'],
         data:() => ({
             avatarEdit: false,
 			bannerEdit: false,
@@ -158,6 +165,11 @@
 </script>
 
 <style scoped>
+	.code {
+		font: normal bold 1.4vw Poppins;
+		
+		
+	}
 	.banner {
 		width: 18.02vw;
 		height: 5.625vw;
@@ -170,7 +182,6 @@
 	}
 	.bioText {
 		font: normal normal 0.78125vw/0.78125vw Poppins;
-		width: 14.84375vw;
 		display: inline-block;
 	}
     	.editAvatar {

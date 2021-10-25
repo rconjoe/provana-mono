@@ -24,7 +24,7 @@
 				</v-col>
 				<v-col class="avatarCol">
 					<!-- Avatar/ banner uploads -->
-					<AccountUploads :avatar="this.$store.state.auth.currentUser.avatar" :banner="this.$store.state.auth.currentUser.banner"  :avatarUrl="this.$store.state.auth.currentUser.avatar" :bannerUrl="this.$store.state.auth.currentUser.banner" />
+					<AccountUploads :profile="profile" />
 				</v-col>
 			</v-row>
 		</v-col>
@@ -32,6 +32,7 @@
 </template>
 
 <script>
+	import {mapState} from 'vuex'
 	import AccountSocials from './AccountSocials.vue'
 	import AccountTimezone from './AccountTimezone.vue'
 	import AccountInfo from './AccountInfo.vue'
@@ -44,6 +45,9 @@
 			seller: '',
 			uid: '',
 			closeOnContentClick: false,
+		}),
+		computed: mapState({
+			profile: (state) => state.auth.currentUser,
 		}),
 		async mounted() {
 			this.uid = this.$user.uid
