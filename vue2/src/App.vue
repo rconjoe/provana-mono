@@ -1,12 +1,8 @@
 <template>
   <v-app>
-    <!-- global navbar -->
-
-    <CustomAppBar />
-
-    <!-- router content -->
-    <v-main>
+    <v-main> 
       <v-container fluid>
+         <CustomAppBar />
         <v-progress-linear
           color="grey lighten-5"
           background-color="grey darken-1"
@@ -31,7 +27,7 @@
       </v-container>
     </v-main>
     <!-- footer -->
-    <Footer v-if="!$vuetify.breakpoint.mobile" />
+    <Footer />
   </v-app>
 </template>
 
@@ -54,6 +50,11 @@ export default {
 };
 </script>
 <style>
+#theApp{
+  max-width:1920px;
+  margin:auto;
+  padding:auto;
+}
 /* scroll bar theme */
 :root {
   color-scheme: dark;
