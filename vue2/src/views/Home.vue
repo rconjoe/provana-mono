@@ -68,7 +68,7 @@
 	.homeRow {
 		background-image: linear-gradient(0deg, #111111 0%, #11111181 31%, #11111100 100%), url('../assets/_HomeBG1.png');
 		background-size: cover;
-		min-height: 100vh;
+		min-height: 1080px;
 		width: 100vw;
 		padding-left: 11.979166666666666vw;
 		padding-right: 11.979166666666666vw;
