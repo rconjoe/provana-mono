@@ -160,7 +160,7 @@
 									class="inputText combobox pt-0"
 									append-icon=""
 									color="white"
-									:readonly="form.tags.length >= 3"
+									:readonly="form.tags.length >= 6"
 								>
 								</v-combobox>
 							</div>
@@ -276,7 +276,7 @@
 				serviceCost: null,
 				serviceDescription: '',
 				serviceHours: null,
-				serviceMinutes: null,
+				serviceMinutes: 0,
 				serviceLength: null,
 				attendees: null,
 				tags: [],
@@ -462,13 +462,14 @@
 	}
 	.tagItemDiv {
 		display: flex;
-		height: 3.6041666666666665vw;
+		height: 5.6041666666666665vw;
 		width: 14vw;
 		padding-top: 0.8vw;
 		margin-bottom: 0.625vw;
 	}
 	>>> .combobox .v-select__slot {
-		max-height: 2.6041666666666665vw;
+		min-height: 4.6041666666666665vw;
+		max-height: 4.6vw;
 		max-width: 7.645833333333334vw;
 		overflow-y: scroll;
 		overflow-x: hidden;
@@ -480,6 +481,7 @@
 	}
 	.checkbox {
 		display: inline-block;
+		
 	}
 	.inline {
 		display: inline;
