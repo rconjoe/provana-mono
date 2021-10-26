@@ -186,7 +186,8 @@ export default class CreatorDBC extends Creator {
       this.username = creator.username
       const docRef = db.collection('creators').doc(this.uid!)
       this.ref = docRef
-
+      this.avatar = 'https://storage.googleapis.com/pv-default-avatar-public/creators_avatar.png'
+      this.banner = 'https://storage.googleapis.com/pv-default-avatar-public/default_banner.jpg'
       this.discord = await new InvitationDBC().associate(this.toModel())
       await new DiscordLinkDBC(creator.uid, 'creators').write(this.discord)
       await db.collection('notifications').doc(this.uid)

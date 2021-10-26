@@ -123,6 +123,7 @@ export default class SupporterDBC extends Supporter {
       this.email = supporter.email
       this.username = supporter.username
       this.discord = supporter.discord
+      this.avatar = 'https://storage.googleapis.com/pv-default-avatar-public/supporters_avatar.jpg'
       const docRef = db.collection('supporters').doc(this.uid!)
       this.ref = docRef
 
