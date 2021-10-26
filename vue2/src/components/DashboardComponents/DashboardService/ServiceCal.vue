@@ -270,7 +270,6 @@
 				this.scrollToBottom()
 			})
 
-			await this.getServices()
 		},
 
 		methods: {
@@ -419,16 +418,6 @@
 			},
 			getEventColor(event) {
 				return event.color
-			},
-			async getServices() {
-				const getServices = functions.httpsCallable('callableGetServicesByUid')
-				await getServices({ uid: this.$user.uid }).then((res) => {
-					const services = res.data
-					let servicesArr = []
-					services.forEach((service) => {
-						servicesArr.push(service)
-					})
-				})
 			},
 
 			async deleteSession() {
