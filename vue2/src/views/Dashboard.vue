@@ -8,7 +8,6 @@
           style="height:100%  "
           :links="(claims.type === 'creators') ? creators : supporters"
           :window="window"
-          @update-window="updateWindow"
           :avatar="profile.avatar"
         />
       </div>
@@ -34,14 +33,14 @@
           <!-- account window -->
           <v-window-item name="DashAccountWindow">
             <v-card color="transparent" name="DashAccountCard" class="dashCard" min-height="910px" dark flat tile max-width="100%">
-              <dashboard-account :profile="profile" @update-profile-account="updateProfileAccount"></dashboard-account>
+              <dashboard-account :profile="profile"></dashboard-account>
             </v-card>
           </v-window-item>
 
           <!-- services window -->
           <v-window-item name="DashServiceWindow" id="services">
             <v-card class="dashCard" name="DashServiceCard" color="transparent" min-height="800px" dark flat tile max-width="100vw">
-              <dashboard-service @update-service="updateService"></dashboard-service>
+              <dashboard-service></dashboard-service>
             </v-card>
           </v-window-item>
 
@@ -55,7 +54,7 @@
           <!-- contact window -->
           <v-window-item name="DashContactWindow">
             <v-card color="transparent" name="DashContactCard" class="dashCard" height="800px" dark flat tile max-width="100vw">
-              <dashboard-contact @update-notifications="updateNotifications"></dashboard-contact>
+              <dashboard-contact></dashboard-contact>
             </v-card>
           </v-window-item>
         </v-window>
@@ -190,21 +189,7 @@ export default {
 				})
   },
   methods: {
-    updateWindow(toggle) {
-      console.log(toggle);
-    },
-    updateProfileAccount(newProfile) {
-      console.log(newProfile);
-    },
-    updateService(data) {
-      console.log(data);
-    },
-    updateNotifications(data) {
-      console.log(data);
-    },
-    updateWindow(data) {
-      this.window = data;
-    },
+
   }
   
 };
