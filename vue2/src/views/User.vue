@@ -132,7 +132,7 @@
 	.containerRow {
 		background-image: linear-gradient(to right, #111111 10%, #11111100 100%),
 			linear-gradient(to top, #111111 10%, #11111100 100%), var(--bannerUrl);
-		background-size: contain;
+		background-size: cover;
 		min-height: 50.46875vw;
 		background-color: #cccccc;
 	}
