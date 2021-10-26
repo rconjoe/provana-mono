@@ -118,7 +118,7 @@
 		padding-top: 1.8229166666666667vw;
 	}
 	.servicesLeftBarDiv {
-		max-width: 200px;
+		max-width: 8.416666666666666vw;
 		display: inline-block;
 		vertical-align: top;
 	}

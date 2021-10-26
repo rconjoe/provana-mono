@@ -30,8 +30,8 @@
 	}
 	#alphaAlert {
 		position:fixed ;
-		width:100%;
-		margin-top: 60px;
+		width:99%;
+		margin-top: -20px;
 		z-index:2;
 	}
 </style>

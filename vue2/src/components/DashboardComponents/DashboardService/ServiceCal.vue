@@ -2,10 +2,10 @@
 	<v-row class="ma-0">
 		<v-col class="datePickerCol">
 			<!-- v-sheet container left sidebar -->
-			<v-sheet width="250px" height="21.9vw">
+			<v-sheet width="13.020833333333334vw" height="21.9vw">
 				<!-- Date picker -->
-				<v-date-picker color="secondary" width="240px" v-model="focus" class="datepicker mt-4"></v-date-picker>
-				<h3 class="selectedServiceText mt-9"> Selected:</h3>
+				<v-date-picker color="secondary" width="12.5vw" v-model="focus" class="datepicker mt-4"></v-date-picker>
+				<h3 class="selectedServiceText mt-4"> Selected:</h3>
 				<div class="selectedServiceBox" :style="selectedService ? { borderColor: selectedService.color } : ''">
 					<h3 class="selectedService" v-if="selectedService" :style="{ color: selectedService.color }">
 						{{ selectedService.serviceName }}</h3
@@ -181,6 +181,9 @@
 	import { functions, db } from '@/plugins/firebase'
 	import { formatter } from '../../../plugins/sessionFormatter'
 	import dayjs from 'dayjs'
+	import localizedFormat from 'dayjs/plugin/localizedFormat'
+	dayjs.extend(localizedFormat)
+
 	export default {
 		name: 'ServiceCal',
 		props: ['selectedService'],
@@ -263,12 +266,18 @@
 				this.potentialSessions.forEach((session) => {
 					this.event.push(session)
 				})
+
+				this.scrollToBottom()
 			})
-			
+
 			await this.getServices()
 		},
 
 		methods: {
+			scrollToBottom() {
+				const scrollable = this.$el.querySelector('.v-calendar-daily__scroll-area')
+				scrollable.scrollTop = 640
+			},
 			async deleteBooked() {
 				const cancelBookedSession = functions.httpsCallable('cancelSession')
 				await cancelBookedSession({
@@ -286,7 +295,9 @@
 				this.deleteDialog = false
 			},
 			intervalFormat(time) {
-				return time.time
+				const djs = dayjs(`${time.date} ${time.time}`).format('L LT')
+				const formatted = dayjs(djs).format('h A')
+				return formatted
 			},
 			dateFormat(time) {
 				return dayjs(time.date).format('M/DD - ddd')
@@ -458,12 +469,13 @@
 		display: none;
 	}
 	.datePickerCol {
-		max-width: 250px;
+		max-width: 13.020833333333334vw;
 		margin-top: 1.56vw;
 	}
 	/* background color behind time */
 	>>> .v-calendar-daily__intervals-body {
 		background-color: #1e1e1e;
+		min-width: 3.6458333333333335vw;
 	}
 	/* weekday header text */
 	>>> .v-calendar-daily_head-weekday {
@@ -508,6 +520,7 @@
 	}
 	>>> .v-calendar-daily__scroll-area {
 		overflow-y: scroll !important;
+		top: 300px;
 	}
 	/* v-cal Day-view lines
 MASSIVE collection of border styles to change line colors seperating days. */
@@ -606,7 +619,7 @@ MASSIVE collection of border styles to change line colors seperating days. */
 	>>> div .v-calendar-daily__interval:nth-child(4n + 5) .v-calendar-daily__interval-text {
 		color: white !important;
 		display: inline;
-		font: normal 500 0.9375vw Arboria;
+		font: normal 500 18px Arboria;
 		text-align: center;
 		top: -0.5208333333333334vw;
 		right: -5px;
@@ -631,7 +644,7 @@ MASSIVE collection of border styles to change line colors seperating days. */
 	}
 	.deleteAlertCard {
 		background-color: #fa4b6bb9;
-		min-height: 400px;
+		min-height: 20.833333333333332vw;
 	}
 	.calSheet {
 		max-height: 31.25vw;

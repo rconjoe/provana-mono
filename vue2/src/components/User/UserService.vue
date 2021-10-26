@@ -5,7 +5,7 @@
       <v-col class="serviceCol" @click="serviceClicked(service)">
         <!-- Tittle row -->
         <div class="serviceTitleDiv">
-          <h1 class="serviceTitle"> {{service.serviceName}} </h1>
+          <h1 class="serviceTitle text-truncate"> {{service.serviceName}} </h1>
         </div>
         <!-- Image row -->
         <div class="serviceImageDiv">

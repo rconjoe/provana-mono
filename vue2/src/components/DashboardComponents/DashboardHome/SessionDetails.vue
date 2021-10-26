@@ -23,7 +23,7 @@
 				<div class="flexDiv">
 					<div>
 						<h3 class="label">Chatroom Name:</h3>
-						<h2 class="dateTime"> Custom Chat Name </h2>
+						<h2 class="dateTime"> {{selectedEvent.chatroom}} </h2>
 					</div>
 					<h3 @click="openDescription" class="link"> Session Description</h3>
 				</div>
@@ -240,12 +240,11 @@
 					<v-tab href="#description"> Description</v-tab>
 					<v-tab href="#terms"> Terms </v-tab>
 					<v-tab-item value="description" id="description">
-						<h1 class="tabItemText"> Description</h1>
+					<v-card-text> {{selectedEvent.service.serviceDescription}} </v-card-text>
 					</v-tab-item>
 					<v-tab-item value="terms" id="terms">
-						<h1 class="tabItemText"> Terms</h1>
 						<v-list class="termsListBox" >
-							<v-list-item v-for="(term, i) in sampleTerms" :key="i" no-action class=" termsFont pl-1 elevation-3">
+							<v-list-item v-for="(term, i) in selectedEvent.service.terms" :key="i" no-action class=" termsFont pl-1 elevation-3">
 								{{ i + 1 }}.<span class="termsItem ml-2">{{ term }} </span>
 								<v-spacer> </v-spacer>
 							</v-list-item>

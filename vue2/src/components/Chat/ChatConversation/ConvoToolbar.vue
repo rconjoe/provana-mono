@@ -81,7 +81,7 @@
 		cursor: pointer;
 		line-height: 120%;
 		display: inline-block;
-		max-width: 19.625vw;
+		max-width: 13.625vw;
 		padding-right: 0.5vw;
 	}
 	.pencil {
