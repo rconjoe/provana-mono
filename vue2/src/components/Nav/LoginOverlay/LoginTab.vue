@@ -67,7 +67,6 @@ import gsap from 'gsap'
                             this.closeLogin()
                         })
 						.catch((err) => {
-							console.log(err)
 							this.$store.commit('loading/SET_LOADING', false)
 						})
 				}

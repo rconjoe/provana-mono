@@ -30,7 +30,9 @@ export default {
   methods: {
     pay () {
       // TODO: process payment intent (fetch?) 
-      createToken().then(data => console.log(data.token))
+      createToken().then(data => {
+        return 
+      })
       // TODO: put the error handling back in here
     }
   }
