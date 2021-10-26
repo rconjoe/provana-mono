@@ -96,6 +96,7 @@
 				})
 				
 				this.$store.dispatch('auth/setLoginOverlay', {loginTab:'login'})
+				this.$store.dispatch('error/setError',{color:'success',message:'You have successfully registered. Please login',icon:'fas fa-check',show:true})
 				this.email = ''
 				this.username = ''
 				this.password = ''
