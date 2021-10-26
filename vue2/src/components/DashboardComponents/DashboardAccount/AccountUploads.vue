@@ -12,6 +12,11 @@
 			<v-progress-linear v-if="avatarLoading" color="primary" height="10" v-model="avatarUploadPct" striped>
 			</v-progress-linear>
 			<form v-else>
+				<h1 class="bioText">
+					we recommend a square image
+					<br />
+					500 x 500px for best results
+				</h1>
 				<v-file-input hide-details solo dense @change="processAvatar($event)"></v-file-input>
 				<v-btn class="editBtn" color="success" text @click.prevent="uploadAvatar"> Save</v-btn>
 				<v-btn class="editBtn" color="danger" text @click="avatarEdit = !avatarEdit"> Cancel </v-btn>
@@ -30,6 +35,10 @@
 				<v-progress-linear v-if="bannerLoading" color="primary" height="10" v-model="bannerUploadPct" striped>
 				</v-progress-linear>
 				<form v-else>
+					<h1 class="bioText"> we recommend a 2:1 image 
+					<br /> 
+					 1920 x 960px for best results 
+					 </h1>
 					<v-file-input hide-details solo dense @change="processBanner($event)"></v-file-input>
 					<v-btn class="editBtn" color="success" text @click.prevent="uploadBanner"> Save</v-btn>
 					<v-btn class="editBtn" color="danger" text @click="bannerEdit = !bannerEdit"> Cancel </v-btn>
@@ -40,8 +49,8 @@
 		<br />
 
 		<div>
-		<span class="code"> Discord code: </span> 
-		<span class="bioText"> {{profile.discord}} </span>
+			<span class="code"> Discord code: </span>
+			<span class="bioText"> {{ profile.discord }} </span>
 		</div>
 	</div>
 </template>
@@ -50,9 +59,9 @@
 	import { db, storage } from '../../../plugins/firebase'
 
 	export default {
-        props:['profile'],
-        data:() => ({
-            avatarEdit: false,
+		props: ['profile'],
+		data: () => ({
+			avatarEdit: false,
 			bannerEdit: false,
 			avatarLoading: false,
 			avatarUploadPct: 0,
@@ -60,11 +69,11 @@
 			bannerUploadPct: 0,
 			bannerUrl: '',
 			avatarUrl: '',
-            newAvatar:'',
-            newBanner:''
-        }),
-        methods:{
-            // upload avatar function needs a user's UID and avatar url
+			newAvatar: '',
+			newBanner: '',
+		}),
+		methods: {
+			// upload avatar function needs a user's UID and avatar url
 			uploadAvatar() {
 				// set loading state
 				this.avatarLoading = true
@@ -107,20 +116,22 @@
 			},
 			// gets called on successful photo upload, updates avatar and banner URL strings on profile objects
 			async updateAvatar(downloadUrl) {
-				 await db.collection(this.$store.state.auth.claims.type)
-				 	.doc(this.$user.uid)
+				await db
+					.collection(this.$store.state.auth.claims.type)
+					.doc(this.$user.uid)
 					.update({
-						avatar: downloadUrl
+						avatar: downloadUrl,
 					})
 					.catch((err) => {
 						console.error(err)
 					})
 			},
 			async updateBanner(downloadUrl) {
-				 await db.collection(this.$store.state.auth.claims.type)
-				 	.doc(this.$user.uid)
+				await db
+					.collection(this.$store.state.auth.claims.type)
+					.doc(this.$user.uid)
 					.update({
-						banner: downloadUrl
+						banner: downloadUrl,
 					})
 					.catch((err) => {
 						console.error(err)
@@ -160,15 +171,13 @@
 			processBanner(event) {
 				this.newBanner = event
 			},
-        }
-    }
+		},
+	}
 </script>
 
 <style scoped>
 	.code {
 		font: normal bold 1.4vw Poppins;
-		
-		
 	}
 	.banner {
 		width: 18.02vw;
@@ -184,12 +193,12 @@
 		font: normal normal 0.78125vw/0.78125vw Poppins;
 		display: inline-block;
 	}
-    	.editAvatar {
+	.editAvatar {
 		display: inline-block;
 		vertical-align: bottom;
 		margin-left: -1vw;
 	}
-    	.editBanner {
+	.editBanner {
 		max-width: 18.02vw;
 	}
 </style>
