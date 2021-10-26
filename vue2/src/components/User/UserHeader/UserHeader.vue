@@ -78,7 +78,6 @@
 				const getScore = functions.httpsCallable('getReviewScore')
 				const response = await getScore({ sellerUid: this.$user.uid })
 				this.reviewScore = response.data
-				console.log(response.data)
 			}
 		},
 	}

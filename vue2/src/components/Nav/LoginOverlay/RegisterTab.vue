@@ -38,7 +38,6 @@
 						.signInWithEmailAndPassword(this.email, this.password)
 						.then((resp) => {})
 						.catch((err) => {
-							console.log(err)
 							this.$store.commit('loading/SET_LOADING', false)
 						})
 				} else {
@@ -47,7 +46,6 @@
 						.signInWithEmailAndPassword(this.email, this.password)
 						.then((resp) => {})
 						.catch((err) => {
-							console.log(err)
 							this.$store.commit('loading/SET_LOADING', false)
 						})
 				}

@@ -37,14 +37,12 @@ export default {
 
     async mounted() {
         this.retrievePaymentResult()
-        console.log(checkoutSessionId)
     },
 
     methods: {
         async retrievePaymentResult() {
             const checkoutComplete = functions.httpsCallable('checkoutComplete')
             const response = await checkoutComplete({ checkoutId: this.checkoutSessionId })
-            console.log(response.data)
         }
     }
 }

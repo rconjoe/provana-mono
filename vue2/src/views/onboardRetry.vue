@@ -9,10 +9,8 @@
 		name: 'onboardRetry',
 		components:{LoadingOverlay},
         async mounted() {
-            console.log(this.$user.uid )
 			const stripeAccountOnboard = functions.httpsCallable('stripeAccountOnboard')
 			const response = await stripeAccountOnboard({ uid: this.$user.uid })
-            console.log(response)
 			window.location = response.data.url
            
 		},
