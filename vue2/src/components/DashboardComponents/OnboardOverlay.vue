@@ -5,7 +5,7 @@
   <h3>
     Wish your customers could pay you on the spot? We’ve teamed up with Stripe so you can accept online invoice payments via credit card, debit card, or Apple Pay, to get the cash flowing in without having to go to great lengths
   </h3>
-  <v-btn class="btnCTA mt-4" color="primary" @click="generateLink"> Get Started </v-btn>
+  <v-btn class="btnCTA mt-4" color="primary" @click="generateLink" :loading="redirectLoading"> Get Started </v-btn>
 </div>
 </template>
 
