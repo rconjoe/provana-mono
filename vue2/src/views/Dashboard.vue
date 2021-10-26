@@ -191,16 +191,16 @@ export default {
   },
   methods: {
     updateWindow(toggle) {
-      console.log(toggle);
+      return
     },
     updateProfileAccount(newProfile) {
-      console.log(newProfile);
+      return
     },
     updateService(data) {
-      console.log(data);
+      return
     },
     updateNotifications(data) {
-      console.log(data);
+      return
     },
     updateWindow(data) {
       this.window = data;

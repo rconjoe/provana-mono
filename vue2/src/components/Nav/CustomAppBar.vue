@@ -140,7 +140,6 @@
 		},
 		mounted() {
 			this.$store.dispatch('notifications/bindNotifs')
-			console.log(this.$store.state.notifications.disputes.length)
 		},
 		methods: {
 			toggleLoginOverlay() {

@@ -114,7 +114,6 @@
 				const setYoutube = db.collection(this.$store.state.auth.claims.type).doc(this.$user.uid);
 				const setTwitch = db.collection(this.$store.state.auth.claims.type).doc(this.$user.uid);
 				if (this.socials.twitter !== '') {
-					console.log('made it to twitter if')
 					await setTwitter.set({twitter:this.socials.twitter},{merge:true})
 				}
 				if (this.socials.facebook !== '') {
