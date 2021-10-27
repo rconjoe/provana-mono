@@ -6,7 +6,7 @@ service cloud.firestore {
       allow create: if request.auth.uid in resource.data.users;
       allow update: if request.auth.uid == resource.data.creator;
 
-      match /messages/{docId} {
+      match /messages/{docId=**} {
         allow read;
         allow write;
       }
@@ -63,3 +63,4 @@ service cloud.firestore {
     }
   }
 }
+
