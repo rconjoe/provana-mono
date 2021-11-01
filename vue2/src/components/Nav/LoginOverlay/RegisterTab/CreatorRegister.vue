@@ -22,7 +22,7 @@
 			</div>
 		</v-window-item>
 		<v-window-item>
-			<v-form v-model="valid">
+			<v-form v-model="valid" @submit.prevent="newCreator">
 				<v-text-field
 					class="usernameInput mt-3"
 					color="white"
@@ -70,7 +70,7 @@
 						<v-icon size="1vw" class="mr-2"> fas fa-chevron-left </v-icon> Back
 					</v-btn>
 
-					<v-btn text class="registerBtn" @click="newCreator">
+					<v-btn text class="registerBtn" type="submit">
 						Register
 					</v-btn>
 				</div>

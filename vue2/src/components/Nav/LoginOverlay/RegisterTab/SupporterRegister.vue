@@ -1,5 +1,5 @@
 <template>
-	<v-form v-model="valid">
+	<v-form v-model="valid" @submit.prevent="newSupporter" >
 		<!-- Username -->
 		<v-text-field
 			class="usernameInput mt-4"
@@ -50,7 +50,7 @@
 			<v-btn text class="registerBtn" @click="goBack">
 				<v-icon size="1vw" class="mr-4"> fas fa-chevron-left </v-icon> Back
 			</v-btn>
-			<v-btn text class="registerBtn" @click="newSupporter" :disabled="!valid"> Register</v-btn>
+			<v-btn text class="registerBtn" type="submit" :disabled="!valid"> Register</v-btn>
 		</div>
 	</v-form>
 </template>

@@ -2,7 +2,7 @@
 	<v-card flat color="#111111" class="loginCard">
 		<v-card-text>
 			<p class="loginText"> Login to purchase, track sessions, and make edits to your storefront and services.</p>
-			<v-form>
+			<v-form @submit.prevent="signIn" >
 				<v-text-field class="usernameInput" v-model="email" label="E-mail"> </v-text-field>
 				<v-text-field
 					v-model="password"
@@ -13,11 +13,12 @@
 					label="Password"
 				>
 				</v-text-field>
-			</v-form>
-			<div class="d-flex justify-space-between">
+				<div class="d-flex justify-space-between">
 				<v-spacer> </v-spacer>
-				<v-btn text class="loginBtn" @click="signIn"> Login</v-btn>
+				<v-btn text class="loginBtn" type="submit"  > Login</v-btn>
 			</div>
+			</v-form>
+			
 		</v-card-text>
 	</v-card>
 </template>
