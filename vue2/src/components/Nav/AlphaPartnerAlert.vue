@@ -1,6 +1,6 @@
 <template>
 	<v-alert dense dismissible fixed id="alphaAlert" color="primary" >
-		<h1 class="alphaAlertText">we're looking for alpha partners to give feedback! </h1>
+		<h1 class="alphaAlertText">We're looking for alpha partners to give feedback! </h1>
 		<v-btn dense class="btnCTA" id="discordBtn" href="https://discord.gg/zJh4RaHk" target="_blank" color="#5865F2">
 			join our discord
 		</v-btn>
@@ -29,9 +29,10 @@
 		margin-right: 2vw;
 	}
 	#alphaAlert {
+		left:0;
 		position:fixed ;
-		width:99%;
-		margin-top: -20px;
+		width:100%;
+		margin-top: -.8vw;
 		z-index:2;
 	}
 </style>
