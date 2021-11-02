@@ -35,7 +35,7 @@
 								</h3>
 								<v-expand-transition>
 									<div v-if="showAboutProvana" class="aboutProvanaList">
-										<a href="#weDifferent">
+										<a href="#whatIsProvana">
 											<h3 class="aboutProvanaItem">
 												How We're Different
 											</h3>
@@ -61,14 +61,14 @@
 								</h3>
 								<v-expand-transition>
 									<div v-if="showReachout" class="aboutProvanaList">
-										<a>
+										<router-link to="/contact">
 											<h3 class="aboutProvanaItem">
 												Contact
 											</h3>
-										</a>
-										<h3 class="aboutProvanaItem">
+										</router-link>
+										<!-- <h3 class="aboutProvanaItem">
 											Partnerships
-										</h3>
+										</h3> -->
 									</div>
 								</v-expand-transition>
 							</v-col>
@@ -261,6 +261,7 @@
 							experience and capabilities and we’d like to pay it forward. :D
 						</p>
 						<h3 class="alphaPerksDate">Sign up before November 30th</h3>
+						<v-btn class="btnCTA mt-12 center" color="primary" @click="makeAccount"> Make an account</v-btn>
 					</v-col>
 					<!-- Col 2/2 alphaPerksList -->
 					<v-col class="alphaPerksListCol">

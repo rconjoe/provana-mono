@@ -19,7 +19,7 @@
 							<br />
 							<a class="white--text" href="#alphaPerks"> <p class="whatIsProvana"> Alpha Perks</p> </a>
 							<br />
-							<a class="white--text" href=""> <p class="whatIsProvana"> Contact us</p> </a>
+							<router-link class="white--text" to="/contact"> <p class="whatIsProvana"> Contact us</p> </router-link>
 						</div>
 					</v-col>
 					<!-- Col 2/2  Rocket League image -->
