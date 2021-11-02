@@ -15,7 +15,7 @@
 				<v-tab href="#start" class="pa-0 ma-0 startTab" style="display:none"></v-tab>
 
 				<!-- if services array < 3 show this add service tab.  href linked to tabItem with matching id -->
-				<v-tab v-if="services.length < 3" active-class="addServiceTab" href="#addService">
+				<v-tab v-if="services.length < 3" active-class="addServiceTab" :ripple="false" href="#addService">
 					<!-- if the current selected tab is the addService tab replace the button with an inputfield for the title -->
 					<div v-if="tab === 'addService'">
 						<v-form v-model="serviceNameValid" ref="serviceNameForm">
@@ -436,8 +436,9 @@
 		border-radius: 10px;
 	}
 	.serviceWrapperCard {
-		height: 9vw;
+		height: 9.2vw;
 		max-width: 64.16666666666667vw;
+		background-color: green;
 
 		overflow: hidden;
 	}
