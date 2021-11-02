@@ -2,12 +2,12 @@
 	<div>
 		<!-- form validation tied to disabling of create button -->
 		<v-form v-model="valid" ref="serviceForm">
-			<v-card class="pa-2 formCard" width="48.229166666666664vw" height="9.1vw" color="#1E1E1E">
+			<v-card class="pa-2 formCard" width="48.229166666666664vw"  color="#1E1E1E">
 				<!-- card text element applies x-padding -->
-				<v-card-text class="py-0">
-					<v-row>
+				<v-card-text class="pa-0 ">
+					<v-row class="">
 						<!-- 1/3 Col -->
-						<v-col class="px-0 ">
+						<v-col cols="4" class="serviceCol ">
 							<!-- Price -->
 							<div class="serviceItemDiv">
 								<v-tooltip right max-width="14vw" color="#333333">
@@ -137,12 +137,12 @@
 						</v-col>
 
 						<!-- 2/3 Col  -->
-						<v-col class="px-0">
+						<v-col cols="4" class=" serviceCol">
 							<!-- Tags -->
-							<div class="tagItemDiv">
+							
 								<v-tooltip right max-width="14vw" color="#333333">
 									<template v-slot:activator="{ on, attrs }">
-										<v-icon size="0.78125vw" color="#333333" class="mr-2 tagsIcon" v-on="on" v-bind="attrs"
+										<v-icon size="0.78125vw" color="#333333" class="tagsIcon" v-on="on" v-bind="attrs"
 											>fas fa-exclamation-circle
 										</v-icon>
 									</template>
@@ -163,7 +163,6 @@
 									:readonly="form.tags.length >= 6"
 								>
 								</v-combobox>
-							</div>
 
 							<!-- Add Terms / Description -->
 							<div class="serviceItemDiv">
@@ -173,10 +172,10 @@
 						</v-col>
 
 						<!-- 3/3 Col -->
-						<v-col class="px-0">
+						<v-col cols="4" class=" serviceCol">
 							<!-- ColorPicker are swatches -->
 							<div>
-								<v-color-picker v-model="form.serviceColor" class="colorPicker" hide-inputs hide-mode-switch canvas-height="80">
+								<v-color-picker v-model="form.serviceColor" class="colorPicker mb-2" hide-inputs hide-mode-switch canvas-height="40">
 								</v-color-picker>
 							</div>
 
@@ -360,6 +359,9 @@
 </script>
 
 <style scoped>
+	.serviceCol{
+		max-height:100%;
+	}
 	.termsFontDefault {
 		min-height: 8.333333333333334vw;
 		font: normal normal 1.24vw Poppins;
@@ -384,6 +386,9 @@
 		padding: 0;
 		padding-top: 0.5vw;
 		height: 38px;
+	}
+	>>>.v-color-picker{
+		overflow: hidden;
 	}
 	/* colorpicker alpha slider hide */
 	>>> .v-color-picker__alpha:not(.v-input--is-disabled) .v-slider {
@@ -492,8 +497,9 @@
 		margin-bottom: 0.5vw;
 	}
 	.formCard {
-		max-height: 8.5vw;
-		overflow-y: scroll;
+		overflow-y: auto;
+		overflow-x:hidden
+		
 	}
 	.serviceColorDiv {
 		margin-left: 0.25vw;
