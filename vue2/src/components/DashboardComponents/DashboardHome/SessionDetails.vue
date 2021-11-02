@@ -353,10 +353,10 @@
 				this.sessionDialog = true
 			},
 			formatTime(e) {
-				return dayjs(e).format('h:mm a')
+				return dayjs.unix(e).format('h:mm a')
 			},
 			formatDate(e) {
-				return dayjs(e).format('MM/DD/YY')
+				return dayjs.unix(e).format('MM/DD/YY')
 			},
 		},
 	}
