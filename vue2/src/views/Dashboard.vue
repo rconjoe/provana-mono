@@ -28,7 +28,7 @@
           <!-- home window-->
           <v-window-item name="DashHomeWindow" class="dashWindow">
             <v-card color="transparent" name="DashHomeCard" dark flat class="dashCard">
-              <dashboard-home :profile="profile"></dashboard-home>
+              <dashboard-home :profile="profile" @goto-services="updateWindow(2)"></dashboard-home>
             </v-card>
           </v-window-item>
           <!-- account window -->
@@ -97,15 +97,6 @@ export default {
   },
 
   data: () => ({
-    reviewTest:{
-      sellerUid: 'XVmdlCxlqvXY5JNucHthmDYsRRj2',
-			buyerUid: 'gb5D9dEioCOAWVViKgxL79xR4XZ2',
-			date: 34432242,
-			message: 'test Message',
-      rating: 4,
-      seller:'Dustin10',
-			serviceName: 'TestService',
-    },
     reviews:[],
     drawer: null,
     window: 0,
@@ -190,18 +181,7 @@ export default {
 				})
   },
   methods: {
-    updateWindow(toggle) {
-      return
-    },
-    updateProfileAccount(newProfile) {
-      return
-    },
-    updateService(data) {
-      return
-    },
-    updateNotifications(data) {
-      return
-    },
+    
     updateWindow(data) {
       this.window = data;
     },
