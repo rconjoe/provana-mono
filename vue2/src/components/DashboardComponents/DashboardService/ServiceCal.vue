@@ -437,6 +437,13 @@
 </script>
 
 <style scoped>
+	/* Past days bg */
+	>>> #proCal.theme--dark.v-calendar-daily .v-calendar-daily__day.v-past{
+		background-color: #111111 !important;
+	}
+	>>> #proCal.theme--dark.v-calendar-daily .v-calendar-daily__day.v-past .v-calendar-daily__day-interval{
+		border-top:1px solid #111111 ;
+	}
 	/* calendar background removal */
 	>>> #proCal.theme--dark.v-calendar-daily .v-calendar-daily__day {
 		background-color: transparent !important;
