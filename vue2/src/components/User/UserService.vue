@@ -69,6 +69,9 @@ export default {
   transition-timing-function: ease;
   
 }
+.serviceCol{
+  cursor: pointer;
+}
 .serviceInfo{
   display:inline-block;
   margin-top: .5vw;
