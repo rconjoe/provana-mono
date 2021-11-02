@@ -10,11 +10,11 @@
 							<v-avatar v-if="!item.read" color="primary" size="10px" class="mr-2"></v-avatar>
 							<v-avatar v-else color="#1e1e1e" size="10px" class="mr-2"></v-avatar>
 							<div class="d-flex flex-column notificationContentDiv">
-								<h3
-									><u>{{ item.category }}</u></h3
-								>
-								<h4>{{ item.content }}</h4>
-								<h4 style="font-size: 12px">{{ item.time }}</h4>
+								<h3>
+									<u> {{ item.category }} </u>
+								</h3>
+								<h4> {{ item.content }} </h4>
+								<h4 style="font-size: 12px"> {{ item.time }} </h4>
 							</div>
 						</v-card-text>
 					</v-card>
@@ -33,6 +33,20 @@
 			<v-spacer />
 			<div class="navBtnDiv">
 				<v-btn
+					v-if="user"
+					active-class="activeBtn"
+					min-width="3.905vw"
+					ripple
+					elevation="0"
+					tile
+					text
+					plain
+					class="font-weight-light"
+					small
+					to="/dashboard"
+					>Dashboard
+				</v-btn>
+				<v-btn
 					v-for="link in links"
 					:key="`${link.label}-header-link`"
 					active-class="activeBtn"
@@ -48,7 +62,7 @@
 					>{{ link.label }}
 				</v-btn>
 			</div>
-			<v-badge color="secondary" overlap left dot :value="read">
+			<v-badge v-if="user" color="secondary" overlap left dot :value="read">
 				<v-icon class="mr-4 included" id="bellIcon" :color="iconActive ? 'primary' : ''" @click="iconActive = !iconActive">
 					fas fa-bell
 				</v-icon>
@@ -93,17 +107,13 @@
 			items: [],
 			links: [
 				{
-					label: 'Dashboard',
-					url: '/dashboard',
-				},
-				{
 					label: 'About Provana',
 					url: '/about',
 				},
-				{
-					label: 'Partnerships',
-					url: '/partnerships',
-				},
+				// {
+				// 	label: 'Partnerships',
+				// 	url: '/partnerships',
+				// },
 				{
 					label: 'TOS',
 					url: '/tos',
@@ -123,10 +133,9 @@
 				}
 			},
 			topDispute() {
-				if(this.$store.state.notifications.disputes.length !== 0 ){
+				if (this.$store.state.notifications.disputes.length !== 0) {
 					return this.$store.state.notifications.disputes[0]
-				}
-				else{
+				} else {
 					return ''
 				}
 			},
@@ -135,7 +144,7 @@
 				user: (state) => state.auth.currentUser,
 				loading: (state) => state.loading.show,
 				showLogin: (state) => state.auth.showLogin,
-				loginTab: (state) => state.auth.loginTab
+				loginTab: (state) => state.auth.loginTab,
 			}),
 		},
 		mounted() {
@@ -143,10 +152,7 @@
 		},
 		methods: {
 			toggleLoginOverlay() {
-				this.$store.dispatch('auth/setLoginOverlay',
-					{showLogin: !this.showLogin,
-					loginTab:'register'}
-				) 
+				this.$store.dispatch('auth/setLoginOverlay', { showLogin: !this.showLogin, loginTab: 'register' })
 			},
 		},
 	}
@@ -174,7 +180,7 @@
 	}
 	.appBar {
 		background-image: url('../../assets/_HeaderHexagons1.png');
-		margin-bottom:1vw;
+		margin-bottom: 1vw;
 	}
 	.activeDrawer {
 		background-color: #d91b5c;
