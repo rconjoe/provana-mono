@@ -13,8 +13,8 @@
             <span class="storefrontLink  secondary--text pr-5" :class="$vuetify.breakpoint.mobile ? 'text-center' : 'text-left'">
               <router-link :to="{ name: 'User', params: { username: profile.username } }"> View Storefront</router-link>
             </span>
-            <span class="feedbackLink secondary--text " :class="$vuetify.breakpoint.mobile ? 'text-center' : 'text-left'">
-              Change Availability
+            <span class="feedbackLink secondary--text text-left" >
+             <a @click="gotoServices"> Change Availability </a>
             </span>
             </div>
 				</v-col>
@@ -104,6 +104,11 @@
 			selectedEvent: (state) => state.dashboard.selected.session,
       type: (state) => state.auth.claims.type
 		}),
+		methods:{
+			gotoServices(){
+				this.$emit('goto-services')
+			},
+		}
 	}
 </script>
 
