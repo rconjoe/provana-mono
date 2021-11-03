@@ -1,6 +1,38 @@
+:root {
+	--poppins-150: normal normal bold 1.66rem Poppins;
+	--poppins-120: normal normal normal 1.2rem Poppins;
+	--poppins-100: normal normal normal 1rem Poppins;
+	--arborioa-100: normal normal normal 1rem Arboria;
+}
+$font-size-root: 15px;
+$tooltip-padding: 15px 15px;
+$text-field-details-margin-bottom: 0;
 $headings: (
-  'h2': (
-    'size': 2.25rem,
-    'line-height': 1.5em
-  )
+	'h2': (
+		'size': 2.25rem,
+		'line-height': 1.5em,
+	),
 );
+
+$fonts: (
+	'poppins-150': (
+		'font': normal normal bold 1.5625rem Poppins,
+	),
+	'poppins-100': (
+		'font': normal normal normal 1rem Poppins,
+	),
+);
+.poppins-150 {
+	font: var(--poppins-150);
+	color: white;
+}
+.poppins-120 {
+	font: var(--poppins-120);
+}
+.poppins-100 {
+	font: var(--poppins-100);
+	color: white;
+}
+.arboria-100 {
+	font: var(--arborioa-100);
+}
