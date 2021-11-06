@@ -48,10 +48,6 @@ export default {
 }
 </script>
 <style scoped>
-.v-card__text {
-	padding-right: clamp(1rem, 5%, 4rem);
-	padding-left: clamp(1rem, 5%, 4rem);
-}
 a {
 	text-decoration: none;
 }

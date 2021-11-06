@@ -107,7 +107,7 @@
 
 		<AlphaPartnerAlert />
 
-		<v-overlay :value="showLogin" opacity=".7" color="#111">
+		<v-overlay :value="showLogin" opacity=".9" color="#111">
 			<LoginOverlay @close-login="toggleLoginOverlay" :tab="loginTab" />
 		</v-overlay>
 		<!-- DisputDialog -->

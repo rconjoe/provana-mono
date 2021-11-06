@@ -1,38 +1,73 @@
-:root {
-	--poppins-150: normal normal bold 1.66rem Poppins;
-	--poppins-120: normal normal normal 1.2rem Poppins;
-	--poppins-100: normal normal normal 1rem Poppins;
-	--arborioa-100: normal normal normal 1rem Arboria;
-}
-$font-size-root: 15px;
+@import '~vuetify/src/styles/styles.sass';
+
+$font-size-root: var(--font-root);
 $tooltip-padding: 15px 15px;
 $text-field-details-margin-bottom: 0;
-$headings: (
-	'h2': (
-		'size': 2.25rem,
-		'line-height': 1.5em,
-	),
-);
 
-$fonts: (
-	'poppins-150': (
-		'font': normal normal bold 1.5625rem Poppins,
-	),
-	'poppins-100': (
-		'font': normal normal normal 1rem Poppins,
-	),
-);
-.poppins-150 {
-	font: var(--poppins-150);
+:root {
+	--icon-size: 2rem;
+	--font-root: 15px;
+}
+//  icon default size
+.v-icon.v-icon {
+	font-size: var(--icon-size);
+}
+// btn default size
+.v-btn
+// button ripple
+.v-btn::before {
+	background-color: transparent;
+}
+
+.theme--dark.v-icon:focus::after {
+	opacity: 0;
+}
+// button font
+.v-btn__content {
+	font: normal 600 1.2rem Poppins;
+	letter-spacing: -0.06rem;
+	text-transform: none;
+}
+// toggle button
+.v-btn-toggle > .v-btn.v-btn {
+	opacity: 1;
+	height: 40px;
+}
+.v-btn-toggle:not(.v-btn-toggle--dense) .v-btn.v-btn.v-size--default {
+	height: 40px;
+}
+.v-btn-toggle > .v-btn.v-btn--active {
+	opacity: 1;
 	color: white;
 }
-.poppins-120 {
-	font: var(--poppins-120);
+.v-application--is-ltr .v-btn-toggle > .v-btn.v-btn:first-child {
+	border-bottom-left-radius: 10px;
+	border-top-left-radius: 10px;
+	padding-left: 24px;
 }
-.poppins-100 {
-	font: var(--poppins-100);
-	color: white;
+.v-application--is-ltr .v-btn-toggle > .v-btn.v-btn:last-child {
+	border-bottom-right-radius: 10px;
+	border-top-right-radius: 10px;
+	padding-right: 24px;
 }
-.arboria-100 {
-	font: var(--arborioa-100);
+.v-btn-toggle {
+	border-radius: 10px;
+}
+// #loginTabs.theme--dark.v-tabs > .v-tabs-bar {
+// 	background-color: transparent !important;
+// }
+// xs < 600px
+@media #{map-get($display-breakpoints, 'xs-only')} {
+	:root {
+		--icon-size: 1.5rem;
+		--font-root: 12px;
+	}
+}
+// SM - 600px - 960px
+
+@media #{map-get($display-breakpoints, 'sm-only')} {
+	:root {
+		--icon-size: 1.5rem;
+		--font-root: 12px;
+	}
 }
