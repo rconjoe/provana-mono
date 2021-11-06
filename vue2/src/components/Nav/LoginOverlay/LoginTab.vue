@@ -15,7 +15,7 @@
 				</v-text-field>
 				<div class="d-flex justify-space-between">
 					<v-spacer> </v-spacer>
-					<v-btn text class="loginBtn" type="submit"> Login</v-btn>
+					<v-btn text id="loginBtn" type="submit"> Login</v-btn>
 				</div>
 			</v-form>
 		</v-card-text>
@@ -90,13 +90,16 @@ export default {
 	padding-top: 1%;
 }
 
-.loginBtn {
-	font: normal 600 1.25vw Poppins;
+::v-deep #loginBtn .v-btn__content {
+	font: normal 600 1.67rem Poppins;
+	letter-spacing: -0.083rem;
 	text-transform: none;
-	color: #e61b5b;
 	align-self: center;
 }
-.loginBtn:hover {
+#loginBtn {
+	color: #e61b5b;
+}
+#loginBtn:hover {
 	color: white;
 }
 .loginText {
