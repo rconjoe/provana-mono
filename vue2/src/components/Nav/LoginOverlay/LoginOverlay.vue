@@ -94,8 +94,11 @@ export default {
 .registerTab {
 	border-top-right-radius: 10px;
 	background-color: #111111;
+	color: #ffffff;
 }
-
+.theme--dark.v-tabs > .v-tabs-bar .v-tab:not(.v-tab--active) {
+	color: #fff;
+}
 .loginEyes {
 	margin-left: auto;
 	margin-right: auto;
