@@ -19,11 +19,7 @@
 					<!-- if the current selected tab is the addService tab replace the button with an inputfield for the title -->
 					<div v-if="tab === 'addService'">
 						<v-form v-model="serviceNameValid" ref="serviceNameForm">
-							<v-text-field
-								v-model="newServiceName"
-								@focus="passService(null)"
-								:rules="nameRules"
-							></v-text-field>
+							<v-text-field v-model="newServiceName" :rules="nameRules"></v-text-field>
 						</v-form>
 					</div>
 					<!-- else if addService is not selected tab then just show the add button -->
