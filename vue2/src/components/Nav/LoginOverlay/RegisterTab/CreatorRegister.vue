@@ -23,12 +23,15 @@
 		</v-window-item>
 		<v-window-item>
 			<v-form v-model="valid" @submit.prevent="newCreator">
+				<!-- Username -->
 				<v-text-field
+					@blur="usernameTaken"
+					:error-messages="usernameError"
 					class="usernameInput mt-3"
 					color="white"
 					:rules="usernameRules"
-					:success="!!username"
-					v-model="username"
+					:success="!!vanity"
+					v-model="vanity"
 					label="Username"
 				></v-text-field>
 				<!-- Password -->
@@ -70,7 +73,7 @@
 						<v-icon size="1vw" class="mr-2"> fas fa-chevron-left </v-icon> Back
 					</v-btn>
 
-					<v-btn text class="registerBtn" type="submit">
+					<v-btn text class="registerBtn" type="submit" :disabled="!valid">
 						Register
 					</v-btn>
 				</div>
@@ -80,104 +83,117 @@
 </template>
 
 <script>
-	import { functions } from '../../../../plugins/firebase'
+import { functions, db } from '../../../../plugins/firebase'
 
-	export default {
-		name: 'CreatorRegister',
-		data() {
-			return {
-				showPassword: false,
-				valid: false,
-				codeError: '',
-				alphaCode: '',
-				username: '',
-				email: '',
-				password: '',
-				matchPassword: '',
-				window: 0,
-				usernameRules: [
-					(v) => !!v || 'Username is required',
-					(v) => (v && v.length <= 20) || 'Username must be less than 20 characters',
-					(v) => (v && v.length >= 4) || 'Username must be longer than 3 characters',
-					(v) => /(^(\d|\w)+$)/.test(v) || ' Username must not contain special characters',
-				],
-				passwordRules: [
-					(v) => (v && v.length >= 6) || 'Password must be longer than 6 characters',
-					(v) => /(?=.*[A-Z])/.test(v) || 'Password must contain a Capital letter',
-					(v) => /(?=.*\d)/.test(v) || 'Password must contain at least one number',
-				],
-				emailRules: [
-					(v) => !!v || 'E-mail is required',
-					(v) => /.+@.+/.test(v) || 'Please enter a valid E-mail',
-					(v) => (v && v.length >= 4) || 'Email must be longer than 4 characters',
-				],
+export default {
+	name: 'CreatorRegister',
+	data() {
+		return {
+			usernameError: [],
+			showPassword: false,
+			valid: false,
+			codeError: '',
+			alphaCode: '',
+			vanity: '',
+			email: '',
+			password: '',
+			matchPassword: '',
+			window: 0,
+			usernameRules: [
+				(v) => !!v || 'Username is required',
+				(v) => (v && v.length <= 20) || 'Username must be less than 20 characters',
+				(v) => (v && v.length >= 4) || 'Username must be longer than 3 characters',
+				(v) => /(^(\d|\w)+$)/.test(v) || ' Username must not contain special characters',
+			],
+			passwordRules: [
+				(v) => (v && v.length >= 6) || 'Password must be longer than 6 characters',
+				(v) => /(?=.*[A-Z])/.test(v) || 'Password must contain a Capital letter',
+				(v) => /(?=.*\d)/.test(v) || 'Password must contain at least one number',
+			],
+			emailRules: [
+				(v) => !!v || 'E-mail is required',
+				(v) => /.+@.+/.test(v) || 'Please enter a valid E-mail',
+				(v) => (v && v.length >= 4) || 'Email must be longer than 4 characters',
+			],
+		}
+	},
+	methods: {
+		goBack() {
+			this.$emit('go-back', 0)
+		},
+		async usernameTaken() {
+			this.usernameError = []
+			let qusername = await db
+				.collection('creators')
+				.where('username', '==', this.vanity.toUpperCase())
+				.get()
+			if (!qusername.empty) {
+				return this.usernameError.push('Username Taken.')
+			} else {
+				return (this.usernameError = [])
 			}
 		},
-		methods: {
-			goBack() {
-				this.$emit('go-back', 0)
-			},
-			newCreator() {
-				this.$store.commit('loading/SET_LOADING', true)
-				const newSeller = functions.httpsCallable('registerCreator')
-				const seller = { email: this.email, password: this.password, code: this.alphaCode, username: this.username }
-				newSeller(seller).then(() => {
-					this.$router.push('/login')
-					this.$store.commit('loading/SET_LOADING', false)
-				})
-				this.$store.dispatch('auth/setLoginOverlay', { loginTab: 'login' })
-				this.$store.dispatch('error/setError',{color:'success',message:'You have successfully registered. Please login',icon:'fas fa-check',show:true})
-			},
-			gotoLoginTab() {
-				this.$emit('goto-login')
-			},
-			async allowAlphaPartner() {
-				this.$store.commit('loading/SET_LOADING', true)
-				const validateInvitation = functions.httpsCallable('validateInvitation')
-				await validateInvitation({ code: this.alphaCode }).then((resp) => {
-					if (resp.data === false) {
-						return this.$store.state.error.commit('error/SET_ERROR', {
-							show: true,
-							message: 'Invalid registration code.',
-							color: 'primary',
-							icon: 'fas fa-exclamation',
-						})
-					} else if (resp.data === true) {
-						return (this.window = 1)
-					} else if (resp.data === 'NOTFOUND') {
-						return this.setError(
-							true,
-							'Invalid registration code.',
-							'primary',
-							'fas fa-exclamation',
-			      )
-					}
-				})
+		newCreator() {
+			this.$store.commit('loading/SET_LOADING', true)
+			const newSeller = functions.httpsCallable('registerCreator')
+			const seller = { email: this.email, password: this.password, code: this.alphaCode, vanity: this.vanity }
+			newSeller(seller).then(() => {
+				this.$router.push('/login')
 				this.$store.commit('loading/SET_LOADING', false)
-			},
+			})
+			this.$store.dispatch('auth/setLoginOverlay', { loginTab: 'login' })
+			this.$store.dispatch('error/setError', {
+				color: 'success',
+				message: 'You have successfully registered. Please login',
+				icon: 'fas fa-check',
+				show: true,
+			})
 		},
-	}
+		gotoLoginTab() {
+			this.$emit('goto-login')
+		},
+		async allowAlphaPartner() {
+			this.$store.commit('loading/SET_LOADING', true)
+			const validateInvitation = functions.httpsCallable('validateInvitation')
+			await validateInvitation({ code: this.alphaCode }).then((resp) => {
+				if (resp.data === false) {
+					return this.$store.state.error.commit('error/SET_ERROR', {
+						show: true,
+						message: 'Invalid registration code.',
+						color: 'primary',
+						icon: 'fas fa-exclamation',
+					})
+				} else if (resp.data === true) {
+					return (this.window = 1)
+				} else if (resp.data === 'NOTFOUND') {
+					return this.setError(true, 'Invalid registration code.', 'primary', 'fas fa-exclamation')
+				}
+			})
+			this.$store.commit('loading/SET_LOADING', false)
+		},
+	},
+}
 </script>
 
 <style scoped>
-	.label {
-		padding-top: 3%;
-		font: normal bold 20px Poppins;
-	}
-	.usernameInput {
-		padding-top: 1%;
-		margin-bottom: 1vw;
-	}
-	.nextBtn {
-		align-self: flex-end;
-	}
-	.registerBtn {
-		font: normal 600 1.25vw Poppins;
-		text-transform: none;
-		color: #e61b5b;
-		align-self: center;
-	}
-	.registerBtn:hover {
-		color: white;
-	}
+.label {
+	padding-top: 3%;
+	font: normal bold 20px Poppins;
+}
+.usernameInput {
+	padding-top: 1%;
+	margin-bottom: 1vw;
+}
+.nextBtn {
+	align-self: flex-end;
+}
+.registerBtn {
+	font: normal 600 1.25vw Poppins;
+	text-transform: none;
+	color: #e61b5b;
+	align-self: center;
+}
+.registerBtn:hover {
+	color: white;
+}
 </style>
