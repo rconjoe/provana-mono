@@ -4,7 +4,7 @@
 
 		<!-- router content -->
 		<v-main>
-			<v-container fluid>
+			<v-container class="appContainer pa-0">
 				<CustomAppBar />
 
 				<v-progress-linear
@@ -27,10 +27,10 @@
 					{{ error.message }}
 				</v-alert>
 				<router-view />
+				<Footer />
 			</v-container>
 		</v-main>
 		<!-- footer -->
-		<Footer />
 	</v-app>
 </template>
 
@@ -53,6 +53,9 @@ export default {
 }
 </script>
 <style lang="scss">
+.appContainer {
+	max-width: 1920px;
+}
 /* scroll bar theme */
 :root {
 	color-scheme: dark;
@@ -98,10 +101,11 @@ html {
 /* Global btn style */
 
 .btnCTA.v-btn {
-	font: normal 700 1.2 Poppins;
+	font: normal 600 1.2rem Poppins;
 	letter-spacing: 0px;
 	padding: 0 24px;
 	border-radius: 10px;
+	min-height: 50px;
 }
 .btnCTA:hover {
 	color: #fa4b6b;

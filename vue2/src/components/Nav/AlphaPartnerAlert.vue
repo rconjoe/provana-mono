@@ -1,5 +1,5 @@
 <template>
-	<v-alert dense dismissible fixed id="alphaAlert" color="primary" >
+	<v-alert dense dismissible fixed id="alphaAlert" color="primary">
 		<h1 class="alphaAlertText">We're looking for alpha partners to give feedback! </h1>
 		<v-btn dense class="btnCTA" id="discordBtn" href="https://discord.gg/zJh4RaHk" target="_blank" color="#5865F2">
 			join our discord
@@ -8,31 +8,29 @@
 </template>
 
 <script>
-	export default {}
+export default {}
 </script>
 
 <style scoped>
-	#discordBtn {
-		color: white;
-		font: normal 600 .85vw Arboria;
-        height: 1.5vw;
-	}
-	#discordBtn:hover {
-		color: #5865f2;
-	}
-	.alphaAlertText {
-		vertical-align: middle;
-		font: normal 600 .85vw Arboria;
-		letter-spacing: -0.005125vw;
-		text-transform: none;
-		display: inline-block;
-		margin-right: 2vw;
-	}
-	#alphaAlert {
-		left:0;
-		position:fixed ;
-		width:100%;
-		margin-top: -.8vw;
-		z-index:2;
-	}
+#discordBtn {
+	color: white;
+	font: normal 600 0.85vw Arboria;
+}
+#discordBtn:hover {
+	color: #5865f2;
+}
+.alphaAlertText {
+	vertical-align: middle;
+	font: normal 600 0.85vw Arboria;
+	letter-spacing: -0.005125vw;
+	text-transform: none;
+	display: inline-block;
+	margin-right: 2vw;
+}
+#alphaAlert {
+	left: 0;
+	position: fixed;
+	width: 100%;
+	z-index: 10;
+}
 </style>
