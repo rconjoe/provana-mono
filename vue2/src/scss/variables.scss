@@ -13,7 +13,9 @@ $text-field-details-margin-bottom: 0;
 	font-size: var(--icon-size);
 }
 // btn default size
-.v-btn
+.v-btn {
+	font-size: 1.2rem;
+}
 // button ripple
 .v-btn::before {
 	background-color: transparent;
@@ -60,7 +62,7 @@ $text-field-details-margin-bottom: 0;
 @media #{map-get($display-breakpoints, 'xs-only')} {
 	:root {
 		--icon-size: 1.5rem;
-		--font-root: 12px;
+		--font-root: 16px;
 	}
 }
 // SM - 600px - 960px
@@ -68,6 +70,6 @@ $text-field-details-margin-bottom: 0;
 @media #{map-get($display-breakpoints, 'sm-only')} {
 	:root {
 		--icon-size: 1.5rem;
-		--font-root: 12px;
+		--font-root: 16px;
 	}
 }
