@@ -14,23 +14,31 @@ export default {}
 <style scoped>
 #discordBtn {
 	color: white;
+	align-self: center;
 	font: normal 600 0.85vw Arboria;
 }
 #discordBtn:hover {
 	color: #5865f2;
 }
 .alphaAlertText {
+	max-width: 100%;
 	vertical-align: middle;
-	font: normal 600 0.85vw Arboria;
-	letter-spacing: -0.005125vw;
+	font: normal 600 1.3rem/1.3rem Arboria;
+	letter-spacing: -1px;
 	text-transform: none;
+	text-align: left;
 	display: inline-block;
-	margin-right: 2vw;
+	margin-right: 1rem;
 }
 #alphaAlert {
 	left: 0;
 	position: fixed;
 	width: 100%;
 	z-index: 10;
+}
+@media (max-width: 680px) {
+	#discordBtn {
+		margin-top: 0.8rem;
+	}
 }
 </style>
