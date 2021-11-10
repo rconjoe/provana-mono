@@ -13,6 +13,7 @@ const converter = {
       customer: supporter.customer ? supporter.customer : "",
       email: supporter.email ? supporter.email : "",
       username: supporter.username ? supporter.username : "",
+      vanity: supporter.vanity ? supporter.vanity : "",
       discord: supporter.discord ? supporter.discord : "",
       timezone: supporter.timezone ? supporter.timezone : "",
       avatar: supporter.avatar ? supporter.avatar : "",
@@ -29,6 +30,7 @@ const converter = {
       data.temp,
       data.discord,
       data.username,
+      data.vanity,
       data.timezone,
       data.avatar,
       data.banner,
@@ -76,13 +78,14 @@ export default class SupporterDBC extends Supporter {
     temp?: string | undefined,
     discord?: string | undefined,
     username?: string | undefined,
+    vanity?: string | undefined,
     timezone?: string | undefined,
     avatar?: string | undefined,
     banner?: string | undefined,
     online?: boolean | undefined,
     ref?: FirebaseFirestore.DocumentReference | undefined,
   ) {
-    super(uid, customer, email, temp, discord, username, timezone, avatar, banner, online)
+    super(uid, customer, email, temp, discord, username, vanity, timezone, avatar, banner, online)
     this.ref = ref
   }
 
@@ -100,6 +103,7 @@ export default class SupporterDBC extends Supporter {
       this.temp,
       this.discord,
       this.username,
+      this.vanity,
       this.timezone,
       this.avatar,
       this.banner,
@@ -122,6 +126,7 @@ export default class SupporterDBC extends Supporter {
       this.customer = supporter.customer
       this.email = supporter.email
       this.username = supporter.username
+      this.vanity = supporter.vanity
       this.discord = supporter.discord
       this.avatar = 'https://storage.googleapis.com/pv-default-avatar-public/supporters_avatar.jpg'
       const docRef = db.collection('supporters').doc(this.uid!)
