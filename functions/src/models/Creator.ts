@@ -17,6 +17,7 @@ export default class Creator {
   temp: string | undefined
   code: string | undefined
   username: string | undefined
+  vanity: string | undefined
   timezone: string | undefined
   avatar: string | undefined
   banner: string | undefined
@@ -39,7 +40,8 @@ export default class Creator {
    * @param {?string} [email] The user's email address
    * @param {?string} [temp] Where we store the user's password for a short time during the sign up process
    * @param {?string} [code] The partner code given by the discord bot used to sign up as an alpha partner
-   * @param {?string} [username] The username chosen by the user
+   * @param {?string} [username] The username chosen by the user, stored in all caps
+   * @param {?string} [vanity] The username chosen by the user, stored as the user entered it
    * @param {?string} [timezone] The user's time zone, its picked for them upon first login, and can be changed later
    * @param {?string} [avatar] The user's profile avitar picture url
    * @param {?string} [banner] The user's storefront banner picture
@@ -68,6 +70,7 @@ export default class Creator {
     temp?: string,
     code?: string,
     username?: string,
+    vanity?: string,
     timezone?: string,
     avatar?: string,
     banner?: string,
@@ -87,6 +90,7 @@ export default class Creator {
       this.temp = temp,
       this.code = code,
       this.username = username,
+      this.vanity = vanity,
       this.timezone = timezone,
       this.avatar = avatar,
       this.banner = banner
@@ -113,7 +117,8 @@ export default class Creator {
     this.email = email,
     this.temp = password,
     this.code = code
-    this.username = username
+    this.username = username.toUpperCase()
+    this.vanity = username
     return this
   }
 }

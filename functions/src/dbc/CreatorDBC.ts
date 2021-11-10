@@ -21,6 +21,7 @@ const converter = {
       temp: creator.temp ? creator.temp : "",
       code: creator.code ? creator.code : "",
       username: creator.username ? creator.username : "",
+      vanity: creator.vanity ? creator.vanity : "",
       timezone: creator.timezone ? creator.timezone : "",
       avatar: creator.avatar ? creator.avatar : "",
       banner: creator.banner ? creator.banner : "",
@@ -44,6 +45,7 @@ const converter = {
       data.temp,
       data.code,
       data.username,
+      data.vanity,
       data.timezone,
       data.avatar,
       data.banner,
@@ -87,7 +89,8 @@ export default class CreatorDBC extends Creator {
    * @param {?(string | undefined)} [email] Creator's email address
    * @param {?(string | undefined)} [temp] Temporary field that contains the user's password during the sign up process
    * @param {?(string | undefined)} [code] Alpha partner registration code, generated and dispensed from the discord bot
-   * @param {?(string | undefined)} [username] Creator's chosen username
+   * @param {?(string | undefined)} [username] Creator's chosen username, uppercased
+   * @param {?(string | undefined)} [vanity] Creator's chosen username
    * @param {?(string | undefined)} [timezone] Creator's timezone, its automatically picked at first but can be changed by the creator later
    * @param {?(string | undefined)} [avatar] Creator's avatar picture url
    * @param {?(string | undefined)} [banner] Creator's storefront banner picture url
@@ -108,6 +111,7 @@ export default class CreatorDBC extends Creator {
     temp?: string | undefined,
     code?: string | undefined,
     username?: string | undefined,
+    vanity?: string | undefined,
     timezone?: string | undefined,
     avatar?: string | undefined,
     banner?: string | undefined,
@@ -119,7 +123,7 @@ export default class CreatorDBC extends Creator {
     online?: boolean | undefined,
     ref?: FirebaseFirestore.DocumentReference | undefined,
   ) {
-    super(uid, customer, account, onboarded, partner, email, temp, code, username, timezone, avatar, banner, twitter, twitch, youtube, facebook, discord, online)
+    super(uid, customer, account, onboarded, partner, email, temp, code, username, vanity, timezone, avatar, banner, twitter, twitch, youtube, facebook, discord, online)
     this.ref = ref
   }
 
@@ -140,6 +144,7 @@ export default class CreatorDBC extends Creator {
       this.temp,
       this.code,
       this.username,
+      this.vanity,
       this.timezone,
       this.avatar,
       this.banner,
@@ -184,6 +189,7 @@ export default class CreatorDBC extends Creator {
       this.email = creator.email
       this.code = creator.code
       this.username = creator.username
+      this.vanity = creator.vanity
       const docRef = db.collection('creators').doc(this.uid!)
       this.ref = docRef
       this.avatar = 'https://storage.googleapis.com/pv-default-avatar-public/creators_avatar.png'
