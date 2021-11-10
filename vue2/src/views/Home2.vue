@@ -6,7 +6,7 @@
 			<h2 class="heroH2"> In literally 5 minutes, for free… </h2>
 		</div>
 		<v-img src="../assets/MVP_storefront_1.png" contain class="heroImg"> </v-img>
-		<v-btn class="btnCTA homeBtn" color="primary"> Make a free account </v-btn>
+		<v-btn class="btnCTA homeBtn" color="primary" @click="makeAnAccount"> Make a free account </v-btn>
 	</section>
 </template>
 
@@ -14,21 +14,10 @@
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 export default {
-	data: () => ({}),
-	mounted() {
-		;(this.tl = gsap.timeline({
-			scrollTrigger: {
-				id: 'homeScroll',
-				trigger: '.logoImg',
-				start: ' -170px',
-				end: ' -200px',
-				markers: true,
-				scrub: true,
-			},
-		})),
-			this.scrollbarAnimate()
-	},
 	methods: {
+		makeAnAccount() {
+			this.$store.dispatch('auth/setLoginOverlay', { showLogin: !this.showLogin, loginTab: 'register' })
+		},
 		scrollbarAnimate() {
 			this.tl
 				.fromTo(
@@ -43,16 +32,32 @@ export default {
 						ease: 'power1',
 					}
 				)
-				.from('.appBar', {
-					background: 'transparent',
-					boxShadow: 'none',
-					ease: 'power1',
-				})
+				.from(
+					'.appBar',
+					{
+						backgroundColor: 'transparent',
+						boxShadow: 'none',
+						ease: 'power1',
+					},
+					0
+				)
 		},
 	},
-	beforeDestroy() {
-		console.log(this.tl)
+	mounted() {
+		;(this.tl = gsap.timeline({
+			scrollTrigger: {
+				id: 'homeScroll',
+				trigger: '.logoImg',
+				start: ' -170px',
+				end: ' -200px',
+				markers: true,
+				scrub: 0.3,
+			},
+		})),
+			this.scrollbarAnimate()
+	},
 
+	beforeDestroy() {
 		this.tl.kill()
 	},
 }
