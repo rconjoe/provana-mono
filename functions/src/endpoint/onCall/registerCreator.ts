@@ -5,7 +5,8 @@ import StripeCustomerService from '../../services/stripe/StripeCustomerService'
 import StripeAccountService from '../../services/stripe/StripeAccountService'
 import CreatorDBC from '../../dbc/CreatorDBC'
 
-export const registerCreator = functions.https.onCall(async (data, context) => {
+export const registerCreator = functions.https.onCall(async (data, context): 
+  Promise<void> => {
   if (data === null || data === undefined) throw new Error('Null payload!')
 
   const creator = new Creator().setRegisterData(data.email, data.password, data.code, data.username)
@@ -15,5 +16,5 @@ export const registerCreator = functions.https.onCall(async (data, context) => {
   await new StripeAccountService().create(creator)
 
   await new CreatorDBC().writeNew(creator)
-  return 'ok'
 })
+

@@ -5,7 +5,8 @@ import StripeCustomerService from '../../services/stripe/StripeCustomerService'
 import SupporterDBC from '../../dbc/SupporterDBC'
 import DiscordLink from '../../models/DiscordLink'
 
-export const registerSupporter = functions.https.onCall(async (data, context) => {
+export const registerSupporter = functions.https.onCall(async (data, context):
+  Promise<void> => {
   if (data === null || data === undefined) throw new Error('Null payload!')
  
   // This is a stinky, dirty, silly hack to get quick discord integration in before launch.
@@ -15,5 +16,4 @@ export const registerSupporter = functions.https.onCall(async (data, context) =>
   await new AuthUserService().registerSupporter(supporter)
   await new StripeCustomerService().newSupporter(supporter)
   await new SupporterDBC().writeNew(supporter)
-  return 'ok'
 })
