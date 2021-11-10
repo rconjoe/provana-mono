@@ -80,9 +80,7 @@ body {
 	background: #333333;
 	border-radius: 7px;
 }
-.icon {
-	font-size: 50px;
-}
+
 .v-alert__content {
 	text-transform: uppercase;
 }
@@ -91,7 +89,7 @@ body {
 	z-index: 8;
 	position: fixed !important;
 	width: 99%;
-	font: normal 600 1rem Arboria;
+	font: normal 600 1.2rem Arboria;
 	text-transform: lowercase;
 }
 
@@ -105,7 +103,6 @@ html {
 	letter-spacing: 0px;
 	padding: 0 24px;
 	border-radius: 10px;
-	min-height: 50px;
 }
 .btnCTA:hover {
 	color: #fa4b6b;
