@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<a @click="openLogin"> Login</a>
-		<span class="slash mx-1"> / </span>
-		<a @click="openRegister"> Register</a>
+		<span class="slash mx-1" v-if="!$vuetify.breakpoint.xs"> / </span>
+		<a @click="openRegister" v-if="!$vuetify.breakpoint.xs"> Register</a>
 	</div>
 </template>
 
@@ -20,6 +20,11 @@ export default {
 }
 </script>
 <style scoped>
+@media (max-width: 783px) {
+	a {
+		font: normal 600 0.83rem Poppins;
+	}
+}
 a {
 	text-decoration: none;
 	font: normal 600 1.2rem Poppins;
