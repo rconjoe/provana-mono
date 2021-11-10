@@ -11,19 +11,68 @@
 </template>
 
 <script>
-export default {}
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+export default {
+	data: () => ({}),
+	mounted() {
+		;(this.tl = gsap.timeline({
+			scrollTrigger: {
+				id: 'homeScroll',
+				trigger: '.logoImg',
+				start: ' -170px',
+				end: ' -200px',
+				markers: true,
+				scrub: true,
+			},
+		})),
+			this.scrollbarAnimate()
+	},
+	methods: {
+		scrollbarAnimate() {
+			this.tl
+				.fromTo(
+					'.navLogo',
+					{
+						opacity: 0,
+						y: 10,
+					},
+					{
+						opacity: 1,
+						y: 0,
+						ease: 'power1',
+					}
+				)
+				.from('.appBar', {
+					background: 'transparent',
+					boxShadow: 'none',
+					ease: 'power1',
+				})
+		},
+	},
+	beforeDestroy() {
+		console.log(this.tl)
+
+		this.tl.kill()
+	},
+}
 </script>
 
 <style scoped lang="scss">
 .heroContainer {
-	padding-left: 4%;
+	margin-top: -60px;
+	margin-left: auto;
+	margin-right: auto;
 	padding-top: 5%;
+	padding-bottom: 5%;
 	display: grid;
-	grid-template-rows: [provana] 280px;
+	grid-template-columns: auto;
+	grid-template-rows: auto;
 	grid-template-areas:
-		' provana provana provana provana'
-		' h1 h1 img img'
-		' .   .  . btn';
+		' . provana .'
+		'. h1 .'
+		'. img .'
+		'. btn .';
 	background-image: url(../assets/Mainbg_1.png);
 	background: transparent linear-gradient(180deg, #111111 0%, #03030300 100%) url(../assets/Mainbg_1.png);
 	background-size: cover;
@@ -31,43 +80,48 @@ export default {}
 	min-height: 100vh;
 }
 h1 {
-	font: normal 600 120px/120px Poppins;
-	letter-spacing: -6px;
+	font: normal 600 54px/50px Poppins;
+	letter-spacing: -4px;
 	color: #e61b5b;
-	width: 960px;
+	text-align: center;
+	padding-bottom: 30px;
+}
+h2 {
+	font: normal 600 45px/45px Poppins;
+	letter-spacing: -2.7px;
+	width: auto;
+	display: block;
+	text-align: center;
 }
 .logoImg {
 	grid-area: provana;
+	max-width: 300px;
+	margin: 0 auto;
 }
 .heroText {
-	grid-row: h1;
-	grid-column: h1-start / h1-end;
+	grid-area: h1;
 	z-index: 2;
 }
 .heroImg {
-	justify-self: flex-end;
-	grid-row: provana / img;
-	grid-column: h1-end / img-end;
+	grid-area: img;
 }
-h2 {
-	font: normal 600 54px Poppins;
-	letter-spacing: -2.7px;
-	margin-left: 15%;
-}
+
 .homeBtn {
-	grid-row: h1;
-	grid-column: 4;
+	margin: 0 3%;
+	grid-column: 2;
 }
+
 @media (min-width: 1800px) {
 	.heroContainer {
 		padding-left: 4%;
-		padding-top: 5%;
+		padding-top: 0;
 		display: grid;
-		grid-template-rows: [provana] 280px;
+		grid-template-columns: auto auto auto auto;
+		grid-template-rows: provana 280px btn 300px;
 		grid-template-areas:
-			' provana provana provana provana'
+			' provana . . .'
 			' h1 h1 img img'
-			' .   .  . btn';
+			'.   . .  btn';
 		background: linear-gradient(0deg, #111111 0%, #03030300 100%), url(../assets/Mainbg_1.png);
 		background-size: cover;
 		background-position: left;
@@ -81,6 +135,7 @@ h2 {
 		.logoImg {
 			grid-area: provana;
 			max-width: 300px;
+			margin: none;
 		}
 		.heroText {
 			margin-top: 5%;
@@ -101,39 +156,41 @@ h2 {
 			margin-left: 15%;
 		}
 		.homeBtn {
-			grid-row: h1;
-			grid-column: 4;
-			margin-right: 250px;
-			margin-bottom: 100px;
-			align-self: flex-end;
+			margin-bottom: 200px;
+			grid-row: btn;
+			grid-column: btn;
+			margin-right: 300px;
+			align-self: flex-start;
 		}
 	}
 }
 
-@media screen and (min-width: 1400px) and (max-width: 1800px) {
+@media screen and (min-width: 1530px) and (max-width: 1800px) {
 	.heroContainer {
 		padding-left: 4%;
-		padding-top: 5%;
+		padding-top: 0;
 		display: grid;
 		grid-template-rows: [provana] 280px [h1] 300px;
 		grid-template-areas:
-			' provana provana provana provana'
+			' provana . . .'
 			' h1 h1 img img'
-			' .   .   btn .';
+			' .   .    . btn';
 		background: linear-gradient(0deg, #111111 0%, #03030300 100%), url(../assets/Mainbg_1.png);
 
 		background-size: cover;
 		background-position: left;
 		min-height: 100vh;
 		h1 {
-			font: normal 600 100px/90px Poppins;
+			font: normal 600 120px/90px Poppins;
 			letter-spacing: -6px;
 			color: #e61b5b;
-			width: 960px;
+			width: 890px;
+			text-align: left;
 		}
 		.logoImg {
 			grid-area: provana;
 			max-width: 300px;
+			margin: none;
 		}
 		.heroText {
 			grid-row: h1;
@@ -141,8 +198,8 @@ h2 {
 			z-index: 2;
 		}
 		.heroImg {
-			max-width: 950px;
-			padding-top: 10%;
+			max-width: 840px;
+			margin-top: 20%;
 			justify-self: flex-end;
 			grid-row: provana / img;
 			grid-column: h1-end / img-end;
@@ -151,13 +208,67 @@ h2 {
 			font: normal 600 54px Poppins;
 			letter-spacing: -2.7px;
 			margin-left: 15%;
+			text-align: left;
 		}
 		.homeBtn {
 			grid-row: btn;
-			grid-column: 3;
+			grid-column: btn;
+			margin-right: 200px;
 			align-self: flex-start;
 			justify-items: center;
 		}
+	}
+}
+@media screen and (min-width: 925px) and (max-width: 1530px) {
+	.heroContainer {
+		margin-left: auto;
+		margin-right: auto;
+		padding-top: 5%;
+		padding-bottom: 5%;
+		display: grid;
+		grid-template-columns: auto;
+		grid-template-rows: auto;
+		grid-template-areas:
+			' . provana .'
+			'. h1 .'
+			'. img .'
+			'. btn .';
+		background-image: url(../assets/Mainbg_1.png);
+		background: transparent linear-gradient(180deg, #111111 0%, #03030300 100%) url(../assets/Mainbg_1.png);
+		background-size: cover;
+		background-position: left;
+		min-height: 100vh;
+	}
+	h1 {
+		font: normal 600 120px/120px Poppins;
+		letter-spacing: -6px;
+		color: #e61b5b;
+		text-align: center;
+	}
+	h2 {
+		font: normal 600 54px Poppins;
+		letter-spacing: -2.7px;
+		width: auto;
+		display: block;
+		text-align: center;
+	}
+	.logoImg {
+		grid-area: provana;
+		max-width: 400px;
+		margin: none;
+	}
+	.heroText {
+		grid-area: h1;
+		z-index: 2;
+	}
+	.heroImg {
+		grid-area: img;
+	}
+
+	.btnCTA.homeBtn {
+		margin: 0 20%;
+		font: normal 600 2rem Poppins;
+		grid-column: 2;
 	}
 }
 </style>
