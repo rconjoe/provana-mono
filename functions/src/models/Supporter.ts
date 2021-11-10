@@ -16,6 +16,7 @@ export default class Supporter {
   temp: string | undefined
   discord: string | undefined
   username: string | undefined
+  vanity: string | undefined
   timezone: string | undefined
   avatar: string | undefined
   banner: string | undefined
@@ -30,7 +31,8 @@ export default class Supporter {
    * @param {?string} [customer] Stripe Customer id property from the Stripe Accounts api
    * @param {?string} [email] Email of the Supporter
    * @param {?string} [temp] Where we store the Supporter's password for a short time during the sign up process
-   * @param {?string} [username] Username chosen by the Supporter
+   * @param {?string} [username] Username chosen by the Supporter, uppercased
+   * @param {?string} [vanity] Username chosen by the Supporter
    * @param {?string} [timezone] The supporter's time zone, its picked for them upon first login, and can be changed later
    * @param {?string} [avatar] The Supporter's profile avitar picture url
    * @param {?string} [banner] The Supporter's banner picture url
@@ -43,6 +45,7 @@ export default class Supporter {
     temp?: string,
     discord?: string,
     username?: string,
+    vanity?: string,
     timezone?: string,
     avatar?: string,
     banner?: string,
@@ -54,6 +57,7 @@ export default class Supporter {
       this.temp = temp,
       this.discord = discord,
       this.username = username,
+      this.vanity = vanity,
       this.timezone = timezone,
       this.avatar = avatar,
       this.banner = banner,
@@ -77,6 +81,7 @@ export default class Supporter {
     this.temp = password,
     this.discord = discord,
     this.username = username,
+    this.vanity = username,
     this.timezone = "",
     this.avatar = "",
     this.banner = ""
