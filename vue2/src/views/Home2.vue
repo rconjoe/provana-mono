@@ -1,13 +1,25 @@
 <template>
-	<section class="heroContainer">
-		<v-img src="../assets/Provana_Lockup.png" class="logoImg" contain></v-img>
-		<div class="heroText">
-			<h1 class="heroH1"> Start selling any engagement. </h1>
-			<h2 class="heroH2"> In literally 5 minutes, for free… </h2>
-		</div>
-		<v-img src="../assets/MVP_storefront_1.png" contain class="heroImg"> </v-img>
-		<v-btn class="btnCTA homeBtn" color="primary" @click="makeAnAccount"> Make a free account </v-btn>
-	</section>
+	<div>
+		<section class="heroContainer">
+			<v-img src="../assets/Provana_Lockup.png" class="logoImg" contain></v-img>
+			<div class="heroText">
+				<h1 class="heroH1"> Start selling any engagement. </h1>
+				<h2 class="heroH2"> In literally 5 minutes, for free… </h2>
+			</div>
+			<v-img src="../assets/MVP_storefront_1.png" contain class="heroImg"> </v-img>
+			<v-btn class="btnCTA homeBtn" color="primary" @click="makeAnAccount"> Make a free account </v-btn>
+		</section>
+		<section class="serviceHomeContainer">
+			<div class="serviceText">
+				<h2> Let us handle the legwork. </h2>
+				<p>
+					Schedule, sell, and chat from within our purpose built dashboards and let our system take care of
+					the rest.
+				</p>
+			</div>
+			<v-img src="../assets/MVP_service_1.png" contain position="center top" class="serviceImg"> </v-img>
+		</section>
+	</div>
 </template>
 
 <script>
@@ -64,6 +76,41 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.serviceHomeContainer {
+	min-height: 100vh;
+	padding-top: 30%;
+	background-image: url(../assets/Aboutbg3.png);
+	background-size: cover;
+	grid-template-columns: 6fr 4fr;
+	grid-template-rows: auto;
+	grid-template-areas:
+		'serviceText'
+		'serviceImg';
+	.serviceImg {
+		grid-area: serviceImg;
+		min-height: 200px;
+	}
+
+	.serviceText {
+		grid-area: serviceText;
+		max-width: 620px;
+		margin: 0 auto;
+	}
+	h2 {
+		font: normal 600 60px/60px Poppins;
+		text-align: left;
+		letter-spacing: -4px;
+		margin-left: 10%;
+	}
+	p {
+		margin-top: 2rem;
+		margin-left: 10%;
+		margin-right: auto;
+		font: normal 500 18px Arboria;
+		text-align: left;
+		max-width: 400px;
+	}
+}
 .heroContainer {
 	margin-top: -60px;
 	margin-left: auto;
@@ -168,9 +215,39 @@ h2 {
 			align-self: flex-start;
 		}
 	}
+	//
+	// Service Section
+	.serviceHomeContainer {
+		padding-top: 10%;
+		display: grid;
+		grid-template-columns: repeat(10, 1fr);
+		grid-template-areas: 'serviceImg serviceImg serviceImg serviceText serviceText';
+		.serviceImg {
+			grid-area: serviceImg;
+			grid-column: 1 / span 6;
+			object-fit: contain;
+			background-position: top;
+		}
+		.serviceText {
+			margin: none;
+			grid-area: serviceText;
+			grid-row: serviceText;
+			grid-column: 6 / span 4;
+			z-index: 1;
+		}
+		h2 {
+			max-width: 570px;
+			margin-left: 0;
+		}
+		p {
+			margin-left: 100px;
+		}
+	}
 }
 
 @media screen and (min-width: 1530px) and (max-width: 1800px) {
+	//
+	//  Herosection
 	.heroContainer {
 		padding-left: 4%;
 		padding-top: 0;
@@ -223,8 +300,36 @@ h2 {
 			justify-items: center;
 		}
 	}
+	//
+	// service section
+	.serviceHomeContainer {
+		padding-top: 10%;
+		display: grid;
+		grid-template-columns: repeat(10, 1fr);
+		grid-template-areas: 'serviceImg serviceImg serviceImg serviceText serviceText';
+		.serviceImg {
+			grid-area: serviceImg;
+			grid-column: 1 / span 6;
+			object-fit: contain;
+			background-position: top;
+		}
+		.serviceText {
+			grid-area: serviceText;
+			grid-row: serviceText;
+			grid-column: 6 / span 4;
+			z-index: 1;
+		}
+		h2 {
+			max-width: 400px;
+		}
+		p {
+			margin-left: 150px;
+		}
+	}
 }
 @media screen and (min-width: 925px) and (max-width: 1530px) {
+	//
+	//  Hero section
 	.heroContainer {
 		margin-left: auto;
 		margin-right: auto;
@@ -274,6 +379,17 @@ h2 {
 		margin: 0 20%;
 		font: normal 600 2rem Poppins;
 		grid-column: 2;
+	}
+	//
+	//  Service Section
+	.serviceHomeContainer {
+		.serviceText {
+			align-items: center;
+		}
+		h2 {
+			text-align: left;
+			margin: 0 auto;
+		}
 	}
 }
 </style>
