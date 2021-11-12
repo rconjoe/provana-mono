@@ -213,28 +213,19 @@ export default {
 				})
 			})
 		},
-		prebookCheck() {
-			const startOverlap = this.mySessions.some((session) => {
-				return dayjs(this.selectedEvent.start).isBetween(session.start, session.end, null, '[]')
-			}, this.selectedEvent.start)
-			const endOverlap = this.mySessions.some((session) => {
-				return dayjs(this.selectedEvent.end).isBetween(session.start, session.end, null, '[]')
-			}, this.selectedEvent.end)
-			if (startOverlap === false && endOverlap === false) {
-				this.toolTipWindow = 1
-			} else if (startOverlap === true || endOverlap == true)
-				this.$store.commit('error/SET_ERROR', {
-					show: true,
-					message: 'You already have a session booked during this time slot.',
-					color: 'red',
-					icon: 'fas fa-exclamation-circle',
-				})
-		},
 		prebookSlot(e) {
-			this.selectedSlot = e
-			this.toolTipWindow = 1
+      this.selectedSlot = e
+      this.toolTipWindow = 1
 		},
 		async checkout() {
+      if (this.selectedEvent.sellerUid === this.$user.uid) {
+        return this.$store.commit('error/SET_ERROR', {
+          show: true,
+          message: 'You cannot purchase your own session.',
+          color: 'red',
+          icon: 'fas fa-exclamation-circle'
+        })
+      }
 			this.checkoutLoading = true
 			const checkout = functions.httpsCallable('checkout')
 			const response = await checkout({
@@ -248,7 +239,7 @@ export default {
 				sessionId: this.selectedEvent.id,
 			})
 			this.checkoutLoading = false
-			stripe.redirectToCheckout({ sessionId: response.data })
+      stripe.redirectToCheckout({ sessionId: response.data })
 		},
 	},
 }
