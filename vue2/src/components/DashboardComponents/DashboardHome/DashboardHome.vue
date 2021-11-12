@@ -7,7 +7,7 @@
 				<v-col class="welcome">
 					<span class="welcomeTitle text-left mb-0"> Welcome, </span>
 					<p class="userTitle mb-2" :class="$vuetify.breakpoint.mobile ? 'text-center' : 'text-left '">
-						{{ profile.username }}
+						{{ profile.vanity }}
 					</p>
 					<div v-if="type === 'creators'">
 						<span
