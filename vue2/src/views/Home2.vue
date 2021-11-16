@@ -110,7 +110,7 @@ export default {
 				.from(
 					'.appBar',
 					{
-						backgroundColor: 'transparent',
+						background: 'transparent',
 						boxShadow: 'none',
 						ease: 'power1',
 					},
