@@ -5,7 +5,7 @@
 			<!-- Creator and supporter links are set by checking claim then displaying a limited or full list of links -->
 			<div cols="1" class="pa-0 navDrawerCol">
 				<DashboardNavDrawer
-					style="height:100%  "
+					style="height:100%"
 					:links="claims.type === 'creators' ? creators : supporters"
 					:window="window"
 					@update-window="updateWindow"
