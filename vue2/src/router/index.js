@@ -1,4 +1,4 @@
-import Home from '../views/Home.vue'
+import Home from '../views/Home2.vue'
 import About from '../views/About.vue'
 import User from '../views/User.vue'
 import Dashboard from "../views/Dashboard.vue"
@@ -16,24 +16,24 @@ export const routes = [
     component: Home
   },
   {
-    path:'/about',
-    name:'About',
+    path: '/about',
+    name: 'About',
     component: About
   },
   {
-    path:'/user/:username',
-    name:'User',
+    path: '/user/:username',
+    name: 'User',
     component: User,
     props: true,
   },
   {
-    path:'/dashboard',
-    name:'dashboard',
+    path: '/dashboard',
+    name: 'dashboard',
     component: Dashboard,
     meta: {
       isPrivate: true
-      },
     },
+  },
   {
     path: "/onboardSuccess",
     name: "StripeOnboardSuccess",
