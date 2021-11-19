@@ -125,7 +125,6 @@ export default {
 				trigger: '.logoImg',
 				start: ' -170px',
 				end: ' -200px',
-				markers: true,
 				scrub: 0.3,
 			},
 		})),
@@ -133,7 +132,7 @@ export default {
 	},
 
 	beforeDestroy() {
-		this.tl.kill()
+		this.tl.pause(1).kill()
 	},
 }
 </script>
