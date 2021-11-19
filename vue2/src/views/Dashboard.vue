@@ -5,7 +5,7 @@
 			<!-- Creator and supporter links are set by checking claim then displaying a limited or full list of links -->
 			<div cols="1" class="pa-0 navDrawerCol">
 				<DashboardNavDrawer
-					style="height:100%  "
+					style="height:100%"
 					:links="claims.type === 'creators' ? creators : supporters"
 					:window="window"
 					@update-window="updateWindow"
@@ -176,12 +176,16 @@ export default {
 </script>
 
 <style scoped>
+@media screen and (max-width: 1400px) {
+	.dashWindowWrapper {
+		padding-left: 12px !important;
+	}
+}
 .dashWindowWrapper {
 	background-image: url('../assets/_DashboardBG1.png');
-	background-size: contain;
-	min-height: 50.78125vw;
-	min-width: 100vw;
-	padding-left: 3vw;
+	background-size: cover;
+	min-height: 100vh;
+	padding-left: 65px;
 }
 .dashWindow {
 	background-color: transparent;
