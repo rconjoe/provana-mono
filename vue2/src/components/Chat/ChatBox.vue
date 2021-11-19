@@ -1,11 +1,11 @@
 <template>
 	<!-- Row container for entire Chat component -->
-	<v-row class="fixedChat" v-click-outside="clickOutside">
+	<v-row :class="this.$vuetify.breakpoint.mobile ? 'mobileChat' : 'fixedChat'" v-click-outside="clickOutside">
 		<v-col class="pb-0">
 			<!-- Transition wrapper for the opening/closing of chat box -->
 			<v-expand-transition>
 				<!-- Actual box of the chat that contains 2 different components ChatRoomList or ChatConversation -->
-				<v-card v-if="chatShow" height="600" class="chatBox">
+				<v-card v-if="chatShow" height="500px" class="chatBox">
 					<v-slide-x-transition mode="out-in">
 						<ChatConversation
 							@back-to-rooms="backToRooms"
@@ -79,11 +79,20 @@ export default {
 	right: 10px;
 	z-index: 4;
 }
+.mobileChat {
+	width: 375px;
+	position: fixed;
+	bottom: 50px;
+	right: 10px;
+	z-index: 4;
+}
 .chevronIcon {
 	margin-left: 230px;
 }
 .msgIcon {
 	transform: scaleX(-1);
+}
+#chatBtnFab {
 }
 .chatBox {
 	margin-bottom: 0;
