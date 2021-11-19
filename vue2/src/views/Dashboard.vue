@@ -184,7 +184,8 @@ export default {
 .dashWindowWrapper {
 	background-image: url('../assets/_DashboardBG1.png');
 	background-size: cover;
-	min-height: 100vh;
+	max-height: auto;
+	min-height: 960px;
 	padding-left: 65px;
 }
 .dashWindow {
