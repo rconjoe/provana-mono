@@ -45,15 +45,20 @@
 		</v-navigation-drawer>
 
 		<!-- App bar -->
-		<v-app-bar app color="#1E1E1E" class="appBar">
+		<v-app-bar app color="#1E1E1E" class="appBar pt-0">
 			<!-- provana Img -->
 			<router-link to="/">
-				<v-img class="mx-2" src="@/assets/ProvanaHeaderAnimated.png" max-width="9.333rem" contain></v-img>
+				<v-img
+					class="mx-2 navLogo"
+					src="@/assets/ProvanaHeaderAnimated.png"
+					max-width="9.333rem"
+					contain
+				></v-img>
 			</router-link>
 			<v-spacer></v-spacer>
 
 			<!-- navbar -->
-			<v-btn-toggle v-if="!$vuetify.breakpoint.xs" borderless>
+			<v-btn-toggle v-if="!$vuetify.breakpoint.smAndDown" borderless>
 				<v-btn
 					color="#333"
 					v-if="user"
@@ -83,7 +88,7 @@
 			<v-icon
 				:color="mobileDrawer ? 'primary' : ''"
 				@click="mobileDrawer = !mobileDrawer"
-				v-if="$vuetify.breakpoint.xs"
+				v-if="$vuetify.breakpoint.smAndDown"
 				>fas fa-bars</v-icon
 			>
 
@@ -123,6 +128,8 @@ import Logout from '@/components/Nav/Logout.vue'
 import DisputeDialog from '@/components/Nav/DisputeDialog.vue'
 import LoginOverlay from '../Nav/LoginOverlay/LoginOverlay.vue'
 import AlphaPartnerAlert from './AlphaPartnerAlert.vue'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { mapState } from 'vuex'
 export default {
 	name: 'CustomAppBar',

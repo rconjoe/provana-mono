@@ -1,5 +1,5 @@
 <template>
-	<v-footer app absolute color="#1E1E1E" dark>
+	<v-footer color="#1E1E1E" dark min-height="280">
 		<v-container class="footerRow">
 			<v-row>
 				<v-col cols="12" md="3" class="align-center pa-0">

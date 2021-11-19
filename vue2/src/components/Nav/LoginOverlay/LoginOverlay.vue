@@ -115,5 +115,11 @@ export default {
 	#windowRadius {
 		border-radius: 0;
 	}
+	.v-tab {
+		font: normal 600 2rem Poppins;
+		letter-spacing: -0.12rem;
+		text-transform: none;
+		padding: 0 8px;
+	}
 }
 </style>

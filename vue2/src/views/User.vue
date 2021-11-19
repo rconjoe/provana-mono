@@ -90,7 +90,7 @@
 		methods: {
     async fetchProfile(username) {
       const _fetchProfile = functions.httpsCallable('fetchProfile')
-      return await _fetchProfile({username: username})
+      return await _fetchProfile({username: username.toUpperCase()})
     },
 			
 			showServices() {
