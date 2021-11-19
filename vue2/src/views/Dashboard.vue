@@ -176,12 +176,16 @@ export default {
 </script>
 
 <style scoped>
+@media screen and (max-width: 1400px) {
+	.dashWindowWrapper {
+		padding-left: 12px !important;
+	}
+}
 .dashWindowWrapper {
 	background-image: url('../assets/_DashboardBG1.png');
-	background-size: contain;
-	min-height: 50.78125vw;
-	min-width: 100vw;
-	padding-left: 3vw;
+	background-size: cover;
+	min-height: 100vh;
+	padding-left: 65px;
 }
 .dashWindow {
 	background-color: transparent;
