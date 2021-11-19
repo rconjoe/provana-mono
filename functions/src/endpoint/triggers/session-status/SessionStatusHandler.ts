@@ -153,7 +153,7 @@ export default class SessionStatusHandler {
   public async active(): Promise<void> {
     switch (this.session.status) {
       case 'succeeded': 
-        // we still need this session to stick around for review purposes
+        await new ChatRoomDBC().removeFromRoom(this.session.sellerUid!, this.session.id!)
         break
     }
   }
