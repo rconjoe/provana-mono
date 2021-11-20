@@ -9,9 +9,46 @@
 		</v-col>
 		<v-col>
 			<h1 class="userHeader text-xs-h3 "> Display name </h1>
-			<div v-if="profile.username">
+			<div v-if="!vanityEdit" class="d-flex justify-space-between">
 				<h2 class="userText"> {{ profile.vanity }} </h2>
+				<v-btn text class="editBtn" @click="toggleVanity"> EDIT </v-btn>
 			</div>
+			<v-form v-model="vanityValid" v-else>
+				<v-text-field
+					color="white"
+					:error-messages="vanityError"
+					dense
+					:rules="vanityRules"
+					v-model="vanity"
+					:placeholder="profile.vanity"
+					class="editInput"
+					single-line
+					required
+					counter="20"
+				>
+					<div v-if="!vanityLoading" slot="append">
+						<v-icon
+							:loading="vanityLoading"
+							slot="append"
+							@click="updateVanity"
+							:disabled="!vanityValid"
+							color="success"
+						>
+							fas fa-save
+						</v-icon>
+						<v-icon
+							:loading="tagLoading"
+							slot="append"
+							@click="toggleVanity"
+							class="ml-2"
+							color="red darken-4"
+						>
+							fas fa-times
+						</v-icon>
+					</div>
+					<v-progress-circular slot="append" v-else indeterminate color="primary"></v-progress-circular>
+				</v-text-field>
+			</v-form>
 		</v-col>
 
 		<!-- Tagline Col -->
@@ -35,7 +72,12 @@
 					counter="30"
 				>
 					<div v-if="!tagLoading" slot="append">
-						<v-icon :loading="tagLoading" slot="append" @click="updateTag" color="success"
+						<v-icon
+							:loading="tagLoading"
+							:disabled="!tagValid"
+							slot="append"
+							@click="updateTag"
+							color="success"
 							>fas fa-save</v-icon
 						>
 						<v-icon
@@ -99,12 +141,23 @@ export default {
 	data: () => ({
 		tagline: '',
 		bio: '',
+		vanity: '',
+		vanityEdit: false,
+		vanityError: [],
+		vanityValid: false,
+		vanityLoading: false,
 		bioValid: false,
 		tagValid: false,
 		tagEdit: false,
 		tagLoading: false,
 		bioEdit: false,
 		bioLoading: false,
+		vanityRules: [
+			(v) => !!v || 'Username is required',
+			(v) => (v && v.length <= 20) || 'Username must be less than 20 characters',
+			(v) => (v && v.length >= 4) || 'Username must be longer than 3 characters',
+			(v) => /(^(\d|\w)+$)/.test(v) || ' Username must not contain special characters',
+		],
 		tagRules: [
 			(v) => !!v || 'Tagline is required',
 			(v) => (v && v.length <= 30) || 'Tagline must be less than 30 characters.',
@@ -115,19 +168,38 @@ export default {
 		],
 	}),
 	methods: {
+		async vanityTaken() {
+			this.usernameError = []
+			let qusername = await db
+				.collection('creators')
+				.where('username', '==', this.vanity.toUpperCase())
+				.get()
+			let qvanity = await db
+				.collection('creators')
+				.where('vanity', '==', this.vanity)
+				.get()
+			if (!qusername.empty || !qvanity.empty) {
+				return this.vanityError.push('Username Taken.')
+			} else {
+				return (this.vanityError = [])
+			}
+		},
 		toggleTag() {
 			this.tagEdit = !this.tagEdit
 		},
 		toggleBio() {
 			this.bioEdit = !this.bioEdit
 		},
+		toggleVanity() {
+			this.vanityEdit = !this.vanityEdit
+		},
 		async updateTag() {
 			this.tagLoading = true
-			const updateTagline = db
+			const setTagline = db
 				.collection(this.$store.state.auth.claims.type)
 				.doc(this.$user.uid)
 				.set({ tagline: this.tagline }, { merge: true })
-			return await updateTagline.then((resp) => {
+			return await setTagline.then((resp) => {
 				this.tagLoading = false
 				this.toggleTag()
 			})
@@ -142,6 +214,28 @@ export default {
 				this.bioLoading = false
 				this.toggleBio()
 			})
+		},
+		async updateVanity() {
+			this.vanityLoading = true
+			const setVanity = db
+				.collection(this.$store.state.auth.claims.type)
+				.doc(this.$user.uid)
+				.set({ vanity: this.vanity }, { merge: true })
+			return await setVanity.then((resp) => {
+				this.vanityLoading = false
+				this.toggleVanity()
+			})
+		},
+	},
+	watch: {
+		vanity: function(val) {
+			if (!this.awaitingSearch) {
+				setTimeout(() => {
+					this.vanityTaken()
+					this.awaitingSearch = false
+				}, 500)
+			}
+			this.awaitingSearch = true
 		},
 	},
 }
@@ -169,14 +263,12 @@ export default {
 	display: inline-block;
 }
 .tagHeader {
-	font: normal bold 1.3021vw Poppins;
+	font: normal bold 25px Poppins;
 }
-.editInput {
-	margin-right: 1.0417vw;
-}
+
 .bioText {
 	font: normal normal 15px Poppins;
-	width: 14.84375vw;
+	width: 285px;
 	display: inline-block;
 	align-self: center;
 }
