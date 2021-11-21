@@ -39,19 +39,4 @@ export default class UserFinder {
     return user
   }
 
-  public async usernameAvailable(username: string): Promise<boolean> {
-    let qsupporter = await db
-      .collection('supporters')
-      .where('username', '==', username)
-      .get()
-    if (!qsupporter.empty) return false
-    else {
-      let qcreator = await db
-        .collection('supporters')
-        .where('username', '==', username)
-        .get()
-      if (!qcreator.empty) return false
-      else return true
-    }
-  }
 }

@@ -78,6 +78,14 @@ export default class SlotStatusHandler {
       await new TaskService().cancel(capture)
       const release = await new TaskService().scheduleRelease(this.slot.id!, this.slot.start!)
       await new TaskDBC(this.slot.id).write(release)
+      await new ChatRoomDBC().removeFromRoom(this.slot.buyerUid!, this.slot.parentSession!)
+    }
+    else if (this.slot.status === 'succeeded') {
+      await new ChatRoomDBC().removeFromRoom(this.slot.buyerUid!, this.slot.parentSession!)
+      const session = await new SessionDBC().fetch(this.slot.parentSession!)
+      if (session.status !== 'succeeded') {
+        return await session.update({ status: 'succeeded' })
+      }
     }
     return
   }
