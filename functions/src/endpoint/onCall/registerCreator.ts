@@ -9,7 +9,7 @@ export const registerCreator = functions.https.onCall(async (data, context):
   Promise<void> => {
   if (data === null || data === undefined) throw new Error('Null payload!')
 
-  const creator = new Creator().setRegisterData(data.email, data.password, data.code, data.username)
+  const creator = new Creator().setRegisterData(data.email, data.password, data.code, data.vanity)
   await new AuthUserService().registerCreator(creator)
 
   await new StripeCustomerService().newCreator(creator)
