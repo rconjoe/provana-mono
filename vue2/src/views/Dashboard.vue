@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<v-row class="pa-0  dashRow">
+		<v-row class="pa-0">
 			<!-- Dashboard nav drawer must sit outside of the column -->
 			<!-- Creator and supporter links are set by checking claim then displaying a limited or full list of links -->
 			<div cols="1" class="pa-0 navDrawerCol">
@@ -187,6 +187,7 @@ export default {
 	max-height: auto;
 	min-height: 960px;
 	padding-left: 65px;
+	box-sizing: border-box;
 }
 .dashWindow {
 	background-color: transparent;

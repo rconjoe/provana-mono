@@ -172,12 +172,8 @@ export default {
 </script>
 
 <style scoped>
-.code {
-	font: normal bold 1.4vw Poppins;
-}
 .banner {
-	width: 320px;
-	height: 160px;
+	max-width: 320px;
 	margin-top: 50px;
 	border-radius: 10px;
 }
@@ -196,6 +192,6 @@ export default {
 	margin-left: -20px;
 }
 .editBanner {
-	max-width: 18.02vw;
+	max-width: 90%;
 }
 </style>

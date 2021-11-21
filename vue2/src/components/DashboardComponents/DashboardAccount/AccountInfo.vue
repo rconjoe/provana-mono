@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<!-- Username -->
-		<v-col>
+		<v-col class="pt-0">
 			<h1 class="userHeader text-xs-h3 "> Username </h1>
 			<div v-if="profile.username">
 				<h2 class="userText"> {{ profile.username }} </h2>
@@ -55,42 +55,37 @@
 		<v-col>
 			<h1 class="tagHeader text-xs-h3"> Tagline </h1>
 			<div class="d-flex justify-space-between" v-if="!tagEdit">
-				<h2 v-if="profile.tagline" class="tagText"> {{ profile.tagline }} </h2>
+				<h2 v-if="profile.tagline" class="bioText"> {{ profile.tagline }} </h2>
 				<h2 v-else class="tagText"> please create your tagline.</h2>
 				<v-btn text class="editBtn" @click="toggleTag"> EDIT </v-btn>
 			</div>
 			<v-form v-model="tagValid" v-else>
-				<v-text-field
+				<v-textarea
 					color="white"
-					dense
-					:rules="tagRules"
+					auto-grow
 					v-model="tagline"
-					:placeholder="profile.tagline"
-					class="editInput"
+					:rules="tagRules"
+					counter="80"
 					single-line
-					required
-					counter="30"
+					:label="profile.tagline"
+					class="editInput"
 				>
 					<div v-if="!tagLoading" slot="append">
+						<v-icon slot="append" @click="updateTag" :disabled="!tagValid" color="success">
+							fas fa-save
+						</v-icon>
 						<v-icon
-							:loading="tagLoading"
-							:disabled="!tagValid"
-							slot="append"
-							@click="updateTag"
-							color="success"
-							>fas fa-save</v-icon
-						>
-						<v-icon
-							:loading="tagLoading"
+							v-if="!tagLoading"
 							slot="append"
 							@click="tagEdit = !tagEdit"
 							class="ml-2"
 							color="red darken-4"
-							>fas fa-times</v-icon
 						>
+							fas fa-times
+						</v-icon>
 					</div>
 					<v-progress-circular slot="append" v-else indeterminate color="primary"></v-progress-circular>
-				</v-text-field>
+				</v-textarea>
 			</v-form>
 		</v-col>
 
@@ -114,17 +109,18 @@
 					class="editInput"
 				>
 					<div v-if="!bioLoading" slot="append">
-						<v-icon slot="append" @click="updateBio" :disabled="!bioValid" color="success"
-							>fas fa-save</v-icon
-						>
+						<v-icon slot="append" @click="updateBio" :disabled="!bioValid" color="success">
+							fas fa-save
+						</v-icon>
 						<v-icon
 							v-if="!bioLoading"
 							slot="append"
 							@click="bioEdit = !bioEdit"
 							class="ml-2"
 							color="red darken-4"
-							>fas fa-times</v-icon
 						>
+							fas fa-times
+						</v-icon>
 					</div>
 					<v-progress-circular slot="append" v-else indeterminate color="primary"></v-progress-circular>
 				</v-textarea>
@@ -160,7 +156,7 @@ export default {
 		],
 		tagRules: [
 			(v) => !!v || 'Tagline is required',
-			(v) => (v && v.length <= 30) || 'Tagline must be less than 30 characters.',
+			(v) => (v && v.length <= 80) || 'Tagline must be less than 80 characters.',
 		],
 		bioRules: [
 			(v) => !!v || 'Bio is required',
@@ -271,6 +267,7 @@ export default {
 	width: 285px;
 	display: inline-block;
 	align-self: center;
+	word-break: break-word;
 }
 ::v-deep .v-textarea textarea {
 	font: normal normal 15px Poppins;

@@ -3,15 +3,19 @@
 		<h1 class="tagHeader text-xs-h3"> Timezone </h1>
 		<div v-if="timezoneEdit">
 			<v-select v-model="newTimezone" :items="timezoneList" single-line>
-				<h3 slot="append"> {{ timezoneFormatted(newTimezone) }}</h3>
+				<h3 slot="append" class="align-self-center"> {{ timezoneFormatted(newTimezone) }}</h3>
 			</v-select>
-			<div class="d-flex justify-space-between">
-				<v-btn @click="saveTimezone" color="primary" class="btnCTA"> Save </v-btn>
-				<v-btn @click="timezoneEdit = !timezoneEdit" color="#333333" class="btnCTA"> Cancel </v-btn>
+			<div class="d-flex justify-end ml-2" slot="append">
+				<v-icon @click="saveTimezone" color="success">
+					fas fa-save
+				</v-icon>
+				<v-icon @click="timezoneEdit = !timezoneEdit" size="30px" class="ml-2 " color="red darken-4">
+					fas fa-times
+				</v-icon>
 			</div>
 		</div>
-		<div v-else>
-			<h3 class="tagText"> {{ timezoneSelect }} ( {{ timezoneFormatted(timezoneSelect) }} )</h3>
+		<div v-else class="d-flex justify-space-between">
+			<h3 class="tagText"> {{ timezoneSelect }} {{ timezoneFormatted(timezoneSelect) }} </h3>
 			<v-btn text class="editBtn" @click="timezoneEdit = !timezoneEdit"> EDIT </v-btn>
 		</div>
 	</div>
@@ -63,17 +67,15 @@ export default {
 <style scoped>
 .tagText {
 	font: normal normal 15px Poppins;
-	padding-left: 10px;
 	display: inline-block;
 }
 .tagHeader {
-	font: normal bold 1.3021vw Poppins;
+	font: normal bold 25px Poppins;
 	padding-top: 12px;
-	padding-bottom: 12px;
 }
 .editBtn {
-	font: normal normal bold 0.78125vw/0.78125vw Poppins;
+	font: normal normal bold 15px Poppins;
 	color: #fa4b6b;
-	float: right;
+	justify-self: flex-end;
 }
 </style>
