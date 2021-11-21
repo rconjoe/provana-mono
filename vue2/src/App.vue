@@ -4,7 +4,7 @@
 
 		<!-- router content -->
 		<v-main>
-			<v-container class="appContainer pa-0">
+			<v-container class="appContainer ">
 				<CustomAppBar />
 
 				<v-progress-linear
