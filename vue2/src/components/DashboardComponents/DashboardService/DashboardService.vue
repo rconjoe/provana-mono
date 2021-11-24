@@ -1,45 +1,27 @@
 <template>
-	<v-row class="serviceRow">
-		<v-col class="serviceCol">
-			<v-row>
-				<v-col class="headerCol pb-0">
-					<h2 class="servicesTitle"> Set your schedule</h2>
-					<h1 class="dashHeader"> Services </h1>
-				</v-col>
-				<v-col class="pb-0">
-					<!-- Services tab component left col -->
-					<ServicesTabs
-						@pass-service="setSelectedService"
-						@service-tabs-reload="serviceTabsReload"
-						:key="tabsKey"
-					/>
-				</v-col>
-			</v-row>
-			<v-row>
-				<v-col class="calCol">
-					<v-sheet
-						class="calSheet ma-2 ml-0 pl-0"
-						height="22.135416666666668vw"
-						width="76.04166666666667vw"
-						color="transparent"
-					>
-						<ServiceCal :selectedService="selectedService" />
-					</v-sheet>
-				</v-col>
-			</v-row>
-		</v-col>
-	</v-row>
+	<div>
+		<h2 class="servicesTitle"> Set your schedule</h2>
+		<h1 class="dashHeader"> Services </h1>
+		<div class="pb-0">
+			<ServiceAccordion @pass-service="setSelectedService" />
+		</div>
+		<div class="calendar">
+			<ServiceCal :selectedService="selectedService" />
+		</div>
+	</div>
 </template>
 
 <script>
 import ServiceCal from './ServiceCal.vue'
 import ServicesTabs from './ServicesTabs'
+import ServiceAccordion from './ServiceAccordion.vue'
 
 export default {
 	name: 'DashboardService',
 	components: {
 		ServiceCal,
 		ServicesTabs,
+		ServiceAccordion,
 	},
 	data: () => ({
 		selectedService: null,
