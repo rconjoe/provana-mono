@@ -3,7 +3,7 @@
 		<v-row class="pa-0">
 			<!-- Dashboard nav drawer must sit outside of the column -->
 			<!-- Creator and supporter links are set by checking claim then displaying a limited or full list of links -->
-			<div cols="1" class="pa-0 navDrawerCol">
+			<div cols="1" class=" navDrawerCol">
 				<DashboardNavDrawer
 					style="height:100%"
 					:links="claims.type === 'creators' ? creators : supporters"
@@ -22,7 +22,7 @@
 				<Review :review="reviews[0]" />
 			</Overlay>
 			<!-- Column wraps all dashboard windows. -->
-			<v-col class="pa-0 DashCol">
+			<v-col class=" DashCol">
 				<!-- Dashboard components are displayed using seperate window-items. We can't loop them because each window has different components. -->
 				<v-window v-model="window" v-if="profile !== null" class="dashWindowWrapper">
 					<!-- home window-->
@@ -36,7 +36,7 @@
 
 					<!-- services window -->
 					<v-window-item name="DashServiceWindow" id="services">
-						<DashboardService />
+						<ServiceCal />
 					</v-window-item>
 
 					<!-- payment window -->
@@ -62,7 +62,7 @@ import { mapState } from 'vuex'
 import ChatBox from '@/components/Chat/ChatBox.vue'
 import DashboardHome from '../components/DashboardComponents/DashboardHome/DashboardHome.vue'
 import DashboardAccount from '@/components/DashboardComponents/DashboardAccount/DashboardAccount.vue'
-import DashboardService from '@/components/DashboardComponents/DashboardService/DashboardService.vue'
+import ServiceCal from '../components/DashboardComponents/DashboardService/ServiceCal.vue'
 import DashboardPayments from '@/components/DashboardComponents/DashboardPayments.vue'
 import DashboardContact from '@/components/DashboardComponents/DashboardContact.vue'
 import DashboardNavDrawer from '@/components/DashboardComponents/DashboardNavDrawer.vue'
@@ -78,7 +78,7 @@ export default {
 		ChatBox,
 		DashboardHome,
 		DashboardAccount,
-		DashboardService,
+		ServiceCal,
 		DashboardPayments,
 		DashboardContact,
 		DashboardNavDrawer,
