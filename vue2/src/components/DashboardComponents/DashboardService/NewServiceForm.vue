@@ -5,17 +5,17 @@
 			<h2 class="newServiceBtn"> New Service </h2>
 		</div>
 		<div v-else>
-      <form ref="serviceForm">
-        <div class="fieldsContainer">
-          <h1> New Service </h1>
-          <div class="field">
-            <span class="titleLabel">
-              <v-text-field v-model="newServiceName" :rules="nameRules"></v-text-field>
-          </div>
-        </div>
-
-      </form>
-       <v-btn @click="animateForm"> Cancel </v-btn> </div>
+			<form ref="serviceForm">
+				<div class="fieldsContainer">
+					<h1> New Service </h1>
+					<div class="field">
+						<span class="titleLabel"> </span>
+						<v-text-field v-model="newServiceName" :rules="nameRules"></v-text-field>
+					</div>
+				</div>
+			</form>
+			<v-btn @click="animateForm"> Cancel </v-btn>
+		</div>
 	</div>
 </template>
 
