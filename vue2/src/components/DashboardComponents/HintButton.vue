@@ -1,10 +1,12 @@
 <template>
-	<div class="hintDiv">
-		<div class="hintContent">
+	<div class="hintDiv" ref="hintBox">
+		<div class="d-flex justify-end">
+			<v-icon class="icon" color="secondary" @click="grow"> fas fa-question</v-icon>
+		</div>
+		<div class="hintContent" ref="hintContent">
 			<h1 class="hintHeader"> What do I do here? </h1>
 			<p class="hintText"> <slot> </slot></p>
 		</div>
-		<v-icon class="icon" color="secondary" @click="grow"> fas fa-question</v-icon>
 	</div>
 </template>
 
@@ -28,14 +30,15 @@ export default {
 	},
 	mounted() {
 		this.growTween = this.timeline
-			.to('.hintDiv', {
-				minWidth: '300px',
-				minHeight: '375px',
+			.set(this.$refs.hintBox, { height: 'auto', width: '300px' })
+			.from(this.$refs.hintBox, {
+				width: '50px',
+				height: '50px',
 				duration: 0.3,
 			})
-			.from('.hintContent', {
+			.from(this.$refs.hintContent, {
 				opacity: 0,
-				duration: 0.1,
+				duration: 0.3,
 			})
 			.pause(0)
 	},
@@ -45,14 +48,12 @@ export default {
 <style scoped lang="scss">
 .hintDiv {
 	overflow: hidden;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-end;
-	border-bottom-left-radius: 20px;
-	border-top-left-radius: 20px;
-	border-bottom-right-radius: 20px;
-	height: 40px;
-	width: 40px;
+	display: block;
+	border-bottom-left-radius: 25px;
+	border-top-left-radius: 25px;
+	border-bottom-right-radius: 25px;
+	height: auto;
+	width: 300px;
 	border-top-right-radius: none;
 	border: 3px solid #fa4b6b;
 	background-color: #1e1e1e;
@@ -67,11 +68,12 @@ export default {
 .icon {
 	align-self: flex-start;
 	justify-self: flex-end;
-	margin-top: 5px;
-	margin-right: 7px;
+	margin-top: 10px;
+	margin-right: 12px;
 }
 .hintText {
 	font: normal 500 15px Arboria;
+	padding-bottom: 50px;
 }
 .hintContent {
 	margin-top: 50px;
