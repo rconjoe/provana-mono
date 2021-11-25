@@ -1,54 +1,82 @@
 <template>
-	<div>
-		<h2 class="servicesTitle"> Set your schedule</h2>
-		<h1 class="dashHeader"> Services </h1>
-		<div class="pb-0">
-			<ServiceAccordion @pass-service="setSelectedService" />
+	<div class="serviceContainer">
+		<div class="hint">
+			<Tooltip height="100px">
+				Here you’ll be able to build out your three best services. We limit sellers to 3 to increase
+				discoverability to all our users and ensure everyone’s creating services that are quality experiences
+				for fans. You can create and delete services from this page, then navigate to SCHEDULE to place these
+				services on your calendar. :D Read up on what we consider best practice for building the perfect
+				services here!
+			</Tooltip>
 		</div>
-		<div class="calendar">
-			<ServiceCal :selectedService="selectedService" />
+		<h1 class="dashHeader"> Services </h1>
+
+		<h2 class="servicesTitle"> Services</h2>
+		<div class="cardsContainer">
+			<NewServiceForm />
+			<div class="service" v-for="service in services" :key="service.id">
+				<ServiceCard :service="service" />
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import ServiceCal from './ServiceCal.vue'
-import ServicesTabs from './ServicesTabs'
-import ServiceAccordion from './ServiceAccordion.vue'
+import ServiceCard from './ServiceCard.vue'
+import Tooltip from '../HintButton.vue'
+import NewServiceForm from './NewServiceForm.vue'
+import { functions, db } from '../../../plugins/firebase'
 
 export default {
 	name: 'DashboardService',
-	components: {
-		ServiceCal,
-		ServicesTabs,
-		ServiceAccordion,
-	},
+	components: { ServiceCard, Tooltip, NewServiceForm },
 	data: () => ({
-		selectedService: null,
-		tabsKey: 1,
+		services: [],
 	}),
-	methods: {
-		setSelectedService(e) {
-			this.selectedService = e
-		},
-		serviceTabsReload() {
-			this.tabsKey = this.tabsKey
-			this.selectedService = null
-		},
+	methods: {},
+	mounted() {
+		db.collection('services')
+			.where('uid', '==', this.$user.uid)
+			.where('active', '==', true)
+			.onSnapshot((snapshot) => {
+				this.services = []
+				snapshot.forEach((doc) => {
+					this.services.push(doc.data())
+				})
+			})
 	},
 }
 </script>
 
 <style scoped>
+.serviceContainer {
+	position: relative;
+	padding-top: 75px;
+}
 .dashHeader {
 	transform: rotate(-90deg);
 	position: absolute;
-	font: normal normal bold 5.208vw Poppins;
+	font: normal normal bold 100px Poppins;
 	color: #1e1e1e;
-	left: -3.6vw;
-	top: 5vw;
+	left: 80px;
+	top: 80px;
+}
+.hint {
+	position: absolute;
+	top: 10px;
+	right: 0;
+	z-index: 1;
 }
 
+.cardsContainer {
+	display: flex;
+	width: 100%;
+	height: 100vh;
+	justify-content: space-around;
+}
+.service {
+	max-width: 355px;
+}
 .calSheet {
 	padding-left: 4vw;
 }
