@@ -34,15 +34,15 @@
 						<DashboardAccount :profile="profile" />
 					</v-window-item>
 
-					<!-- services window -->
+					<!-- storefront window -->
 					<v-window-item name="DashServiceWindow" id="services">
 						<ServiceCal />
 					</v-window-item>
 
-					<!-- payment window -->
-					<!-- <v-window-item name="DashPaymentWindow">
-							<dashboard-payments></dashboard-payments>
-					</v-window-item> -->
+					<!-- services window -->
+					<v-window-item name="DashPaymentWindow">
+						<DashboardService />
+					</v-window-item>
 
 					<!-- contact window -->
 					<!-- <v-window-item name="DashContactWindow">
@@ -62,7 +62,8 @@ import { mapState } from 'vuex'
 import ChatBox from '@/components/Chat/ChatBox.vue'
 import DashboardHome from '../components/DashboardComponents/DashboardHome/DashboardHome.vue'
 import DashboardAccount from '@/components/DashboardComponents/DashboardAccount/DashboardAccount.vue'
-import ServiceCal from '../components/DashboardComponents/DashboardService/ServiceCal.vue'
+import ServiceCal from '../components/DashboardComponents/DashboardCalendar/ServiceCal.vue'
+import DashboardService from '../components/DashboardComponents/DashboardService/DashboardService.vue'
 import DashboardPayments from '@/components/DashboardComponents/DashboardPayments.vue'
 import DashboardContact from '@/components/DashboardComponents/DashboardContact.vue'
 import DashboardNavDrawer from '@/components/DashboardComponents/DashboardNavDrawer.vue'
@@ -83,6 +84,7 @@ export default {
 		DashboardContact,
 		DashboardNavDrawer,
 		OnboardOverlay,
+		DashboardService,
 		Overlay,
 	},
 
@@ -122,14 +124,14 @@ export default {
 			},
 			{
 				icon: 'far fa-calendar-alt',
-				text: 'Services',
+				text: 'Storefront',
 				value: 2,
 			},
-			// {
-			//   icon: 'fas fa-credit-card',
-			//   text: 'Payment',
-			//   value: 3,
-			// },
+			{
+				icon: 'fas fa-credit-card',
+				text: 'Services',
+				value: 3,
+			},
 			// {
 			//   icon: 'fas fa-bell',
 			//   text: 'Contact',
