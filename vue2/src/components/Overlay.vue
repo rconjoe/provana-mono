@@ -1,30 +1,31 @@
 <template>
-	<v-overlay class="dialogContainer" v-model="dialog">
+	<v-overlay class="overlayContainer" v-model="overlay">
 		<!-- Card Wrapper -->
 		<v-card class="outerCard">
 			<div class="d-flex flex-column">
-				<v-icon class="closeIcon" @click="closeDialog"> fas fa-times </v-icon>
+				<v-icon class="closeIcon" @click="closeOverlay"> fas fa-times </v-icon>
 			</div>
 
-			<h3 class="dialogTitle"> <slot name="title"> </slot></h3>
+			<h3 class="overlayTitle"> <slot name="title"> </slot></h3>
 			<div class="innerCard">
-				<div class="dialogContentContainer">
-					<p class="dialogContent">
+				<div class="overlayContentContainer">
+					<p class="overlayContent">
 						<slot name="content"> </slot>
 					</p>
 				</div>
 			</div>
+			<slot name="buttons"></slot>
 		</v-card>
 	</v-overlay>
 </template>
 
 <script>
 export default {
-	props: ['dialog'],
+	props: ['overlay'],
 	data: () => ({}),
 	methods: {
-		closeDialog() {
-			this.$emit('close-dialog')
+		closeOverlay() {
+			this.$emit('close-overlay')
 		},
 	},
 }
@@ -37,13 +38,13 @@ export default {
 	margin-right: 25px;
 	margin-top: 15px;
 }
-.dialogTitle {
+.overlayTitle {
 	font: normal 600 30px Poppins;
 	letter-spacing: -1.5px;
 	color: white;
 	margin-left: 55px;
 }
-.dialogContent {
+.overlayContent {
 	font: normal 500 15px Arboria;
 	color: white;
 }
