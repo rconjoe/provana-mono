@@ -375,7 +375,6 @@ export default {
 				serviceColor: { hex: '#FA4B6B' },
 				uid: '',
 			}
-			this.cancelCreate()
 		},
 		openTermsForm() {
 			this.termsTab = 'terms'

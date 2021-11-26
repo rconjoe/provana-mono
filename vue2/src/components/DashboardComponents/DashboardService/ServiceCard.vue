@@ -68,7 +68,7 @@
 				</div>
 				<span class="label"> Terms: </span>
 				<div class="value">
-					<span class="link" @click="termsDialog = !termsDialog"> View Terms </span>
+					<span class="link" @click="termsOverlay = !termsOverlay"> View Terms </span>
 				</div>
 			</div>
 			<!-- Description -->
@@ -78,36 +78,36 @@
 				</div>
 				<span class="label"> Description: </span>
 				<div class="value">
-					<span class="link" @click="descriptionDialog = !descriptionDialog"> View Description </span>
+					<span class="link" @click="descriptionOverlay = !descriptionOverlay"> View Description </span>
 				</div>
 			</div>
 		</div>
-		<!-- Terms dialog -->
-		<Dialog :dialog="termsDialog" @close-dialog="termsDialog = !termsDialog">
+		<!-- Terms overlay -->
+		<Overlay :overlay="termsOverlay" @close-overlay="termsOverlay = !termsOverlay">
 			<p slot="title"> Terms </p>
 			<v-list slot="content" class="termsListBox" v-if="service.terms.length > 0">
 				<v-list-item v-for="(term, i) in service.terms" :key="i" no-action class=" termsFont pl-1 elevation-3">
 					{{ i + 1 }}.<span class="termsItem ml-2">{{ term }} </span>
 				</v-list-item>
 			</v-list>
-		</Dialog>
-		<!-- Description Dialog -->
-		<Dialog :dialog="descriptionDialog" @close-dialog="descriptionDialog = !descriptionDialog">
+		</Overlay>
+		<!-- Description Overlay -->
+		<Overlay :overlay="descriptionOverlay" @close-overlay="descriptionOverlay = !descriptionOverlay">
 			<p slot="title"> Description </p>
 			<p slot="content"> {{ service.serviceDescription }}</p>
-		</Dialog>
+		</Overlay>
 	</div>
 </template>
 
 <script>
 import Tooltip from '../../Tooltip.vue'
-import Dialog from '../../Overlay.vue'
+import Overlay from '../../Overlay.vue'
 export default {
-	components: { Tooltip, Dialog },
+	components: { Tooltip, Overlay },
 	props: ['service'],
 	data: () => ({
-		termsDialog: false,
-		descriptionDialog: false,
+		termsOverlay: false,
+		descriptionOverlay: false,
 	}),
 	computed: {
 		cssProps() {
@@ -124,7 +124,6 @@ h1 {
 	color: var(--serviceColor);
 	font: normal 600 30px/30px Poppins;
 	letter-spacing: -1.5px;
-	margin-bottom: 25px;
 }
 .label {
 	color: #666666;
