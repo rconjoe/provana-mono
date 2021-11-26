@@ -14,7 +14,9 @@
 					</p>
 				</div>
 			</div>
-			<slot name="buttons"></slot>
+			<div class="slotButtons">
+				<slot name="buttons"></slot>
+			</div>
 		</v-card>
 	</v-overlay>
 </template>
@@ -66,5 +68,9 @@ export default {
 	margin-right: 55px;
 	border-bottom-left-radius: 0 !important;
 	border-bottom-right-radius: 0 !important;
+}
+.slotButtons {
+	margin-right: 55px;
+	margin-top: 55px;
 }
 </style>

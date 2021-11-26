@@ -5,7 +5,7 @@
 			<h2 class="newServiceBtn"> New Service </h2>
 		</div>
 		<div v-else>
-			<form ref="serviceForm" @submit.prevent="">
+			<v-form ref="serviceForm" @submit.prevent="createService" v-model="serviceValid">
 				<div class="fieldsContainer">
 					<!-- Header -->
 					<h1> New Service </h1>
@@ -176,7 +176,7 @@
 										{{ i + 1 }}.<span class="termsItem ml-2">{{ term }} </span>
 									</v-list-item>
 								</v-list>
-								<v-form ref="termsForm" @submit.prevent="termsSubmit">
+								<v-form ref="termsForm" @submit.prevent="termsSubmit" v-model="termsValid">
 									<v-text-field v-model="term">
 										<v-icon slot="append-outer"> fas fa-paper-plane </v-icon>
 									</v-text-field>
@@ -185,7 +185,7 @@
 							<div class="termsSave d-flex justify-end" slot="buttons">
 								<v-btn
 									color="primary"
-									class="btnCTA termsButton"
+									class="btnCTA "
 									width="110"
 									:ripple="false"
 									@click="termsOverlay = !termsOverlay"
@@ -207,21 +207,23 @@
 						>
 							<span slot="title"> Service Description </span>
 							<div slot="content">
-								<v-textarea
-									color="white"
-									no-resize
-									v-model="form.serviceDescription"
-									height="182px"
-									class="descriptionTextarea pt-0"
-									:rules="descriptionRules"
-									counter="120"
-								>
-								</v-textarea>
+								<v-form v-model="descriptionValid">
+									<v-textarea
+										color="white"
+										no-resize
+										v-model="form.serviceDescription"
+										height="182px"
+										class="descriptionTextarea pt-0"
+										:rules="descriptionRules"
+										counter="120"
+									>
+									</v-textarea>
+								</v-form>
 							</div>
 							<div class="termsSave d-flex justify-end" slot="buttons">
 								<v-btn
 									color="primary"
-									class="btnCTA termsButton"
+									class="btnCTA"
 									width="110"
 									:ripple="false"
 									@click="descriptionOverlay = !descriptionOverlay"
@@ -252,22 +254,30 @@
 						</v-combobox>
 					</div>
 				</div>
-			</form>
-			<v-btn @click="animateForm"> Cancel </v-btn>
+				<v-btn @click="animateForm"> Cancel </v-btn>
+				<v-btn type="submit" :disabled="!serviceValid || !form.terms.length > 0 || !descriptionValid">
+					Submit
+				</v-btn>
+			</v-form>
 		</div>
 	</div>
 </template>
 
 <script>
+import { functions } from '../../../plugins/firebase'
 import { gsap } from 'gsap'
 import Overlay from '../../Overlay.vue'
 import Tooltip from '../../Tooltip.vue'
 export default {
 	components: { Overlay, Tooltip },
 	data: () => ({
+		createServiceLoading: false,
 		pictureOverlay: false,
 		descriptionOverlay: false,
 		termsOverlay: false,
+		serviceValid: true,
+		termsValid: true,
+		descriptionValid: false,
 		term: '',
 		form: {
 			terms: [],
@@ -310,6 +320,7 @@ export default {
 			await createService({ ...e })
 				.then(() => {
 					this.createServiceLoading = false
+					this.animateForm
 				})
 				.catch((err) => {
 					console.error(err)
@@ -321,6 +332,23 @@ export default {
 				this.showForm = true
 			} else {
 				this.formTween.reverse()
+				this.form = {
+					terms: [],
+					mandatoryFill: false,
+					serviceName: '',
+					serviceCost: null,
+					serviceDescription: '',
+					serviceHours: null,
+					serviceMinutes: 0,
+					serviceLength: null,
+					attendees: null,
+					tags: [],
+					software: '',
+					platform: '',
+					serviceColor: { hex: '#FA4B6B' },
+					uid: '',
+					active: true,
+				}
 				this.showForm = false
 			}
 		},
@@ -334,29 +362,25 @@ export default {
 			this.form.terms.push(this.term)
 			this.term = ''
 		},
-    createService() {
+		async createService() {
 			const hoursToMinutes = this.form.serviceHours * 60
 			const minutesLength = hoursToMinutes + this.form.serviceMinutes
 			const hexColor = this.form.serviceColor.hex
 			this.form.color = hexColor
 			this.form.serviceColor = hexColor
-			this.form.serviceName = this.serviceNameProp
 			this.form.serviceLength = minutesLength
 			this.form.uid = this.$user.uid
-			this.$emit('create-service', this.form)
-			this.form = {
-				terms: [],
-				serviceName: '',
-				serviceCost: null,
-				serviceDescription: '',
-				serviceLength: null,
-				attendees: null,
-				tags: [],
-				software: '',
-				mandatoryFill: false,
-				serviceColor: { hex: '#FA4B6B' },
-				uid: '',
-			}
+			this.createServiceLoading = true
+			const createService = functions.httpsCallable('createService')
+			await createService({ ...this.form })
+				.then(() => {
+					this.$refs.serviceForm.reset()
+					this.createServiceLoading = false
+				})
+				.catch((err) => {
+					console.error(err)
+				})
+		},
 	},
 }
 </script>

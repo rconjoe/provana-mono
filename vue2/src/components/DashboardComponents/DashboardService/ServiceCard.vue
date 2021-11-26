@@ -81,6 +81,11 @@
 					<span class="link" @click="descriptionOverlay = !descriptionOverlay"> View Description </span>
 				</div>
 			</div>
+			<!-- delete button -->
+
+			<div class=" fieldContainer d-flex justify-end">
+				<h2 class="link" @click="deleteOverlay = !deleteOverlay"> Delete Service</h2>
+			</div>
 		</div>
 		<!-- Terms overlay -->
 		<Overlay :overlay="termsOverlay" @close-overlay="termsOverlay = !termsOverlay">
@@ -96,6 +101,35 @@
 			<p slot="title"> Description </p>
 			<p slot="content"> {{ service.serviceDescription }}</p>
 		</Overlay>
+
+		<Overlay :overlay="deleteOverlay" @close-overlay="deleteOverlay = !deleteOverlay">
+			<span slot="title"> Delete Service? </span>
+			<p slot="content"> Are you sure? {{ this.deleteOverlayText }} </p>
+			<div class="termsSave d-flex justify-end" slot="buttons" v-if="!deleteLoading">
+				<v-btn
+					color="#333333"
+					class="btnCTA termsButton"
+					width="110"
+					:ripple="false"
+					@click="deleteOverlay = !deleteOverlay"
+				>
+					Cancel
+				</v-btn>
+				<v-btn
+					color="primary"
+					class="btnCTA termsButton"
+					width="110"
+					:ripple="false"
+					@click="deleteServiceFlow"
+				>
+					Delete
+				</v-btn>
+			</div>
+
+			<div class="termsSave d-flex justify-end" slot="buttons" v-else>
+				<v-progress-circular indeterminate color="primary"> </v-progress-circular>
+			</div>
+		</Overlay>
 	</div>
 </template>
 
@@ -108,7 +142,52 @@ export default {
 	data: () => ({
 		termsOverlay: false,
 		descriptionOverlay: false,
+		deleteLoading: false,
+		deleteOverlay: false,
+		sessionsBlockingServiceDeletion: [],
+		deleteOverlayText: '',
 	}),
+	methods: {
+		async deleteServiceFlow() {
+			const checkArray = this.service.sessionDocIdArray
+			if (checkArray.length < 1) {
+				this.deleteServiceDoc()
+			} else {
+				checkArray.forEach((id) => {
+					db.collection('sessions')
+						.doc(id)
+						.get()
+						.then((doc) => {
+							const sessionData = doc.data()
+							if (sessionData.status == 'booked') {
+								this.sessionsBlockingServiceDeletion.push(sessionData)
+								this.displaySessionsBlockingServiceDeletion()
+							} else {
+								this.deleteServiceDoc()
+							}
+						})
+				})
+			}
+		},
+		async deleteServiceDoc() {
+			const deleteServiceDoc = functions.httpsCallable('deleteService')
+			this.deleteLoading = true
+			await deleteServiceDoc({ id: this.service.id }).then(() => {
+				this.deleteOverlay = false
+				this.deleteLoading = false
+			})
+		},
+		displaySessionsBlockingServiceDeletion() {
+			const toDisplay = []
+			this.sessionsBlockingServiceDeletion.forEach((session) => {
+				toDisplay.push(` ${session.name} at ${session.start}`)
+				toDisplay.join(', ')
+			})
+			const text = `The following sessions must be rendered still: ${toDisplay}! You must handle cancellations of purchased services individually.`
+			this.deleteOverlayText = text
+			this.deleteOverlay = true
+		},
+	},
 	computed: {
 		cssProps() {
 			return {
