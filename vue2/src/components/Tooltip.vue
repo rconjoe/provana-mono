@@ -1,7 +1,7 @@
 <template>
-	<v-tooltip right color="#333333">
+	<v-tooltip right :color="bgColor">
 		<template v-slot:activator="{ on, attrs }">
-			<v-icon size="15px" color="#333333" class="mr-2 align-self-center" v-on="on" v-bind="attrs"
+			<v-icon size="15px" :color="color" class="mr-2 align-self-center" v-on="on" v-bind="attrs"
 				>fas fa-exclamation-circle
 			</v-icon>
 		</template>
@@ -12,7 +12,18 @@
 </template>
 
 <script>
-export default {}
+export default {
+	props: {
+		color: {
+			type: String,
+			default: '#333333',
+		},
+		bgColor: {
+			type: String,
+			default: '#333333',
+		},
+	},
+}
 </script>
 
 <style scoped lang="scss">
