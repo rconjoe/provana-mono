@@ -5,7 +5,7 @@
 			<h2 class="newServiceBtn"> New Service </h2>
 		</div>
 		<div v-else>
-			<form ref="serviceForm">
+			<form ref="serviceForm" @submit.prevent="">
 				<div class="fieldsContainer">
 					<!-- Header -->
 					<h1> New Service </h1>
@@ -334,11 +334,39 @@ export default {
 			this.form.terms.push(this.term)
 			this.term = ''
 		},
+    createService() {
+			const hoursToMinutes = this.form.serviceHours * 60
+			const minutesLength = hoursToMinutes + this.form.serviceMinutes
+			const hexColor = this.form.serviceColor.hex
+			this.form.color = hexColor
+			this.form.serviceColor = hexColor
+			this.form.serviceName = this.serviceNameProp
+			this.form.serviceLength = minutesLength
+			this.form.uid = this.$user.uid
+			this.$emit('create-service', this.form)
+			this.form = {
+				terms: [],
+				serviceName: '',
+				serviceCost: null,
+				serviceDescription: '',
+				serviceLength: null,
+				attendees: null,
+				tags: [],
+				software: '',
+				mandatoryFill: false,
+				serviceColor: { hex: '#FA4B6B' },
+				uid: '',
+			}
 	},
 }
 </script>
 
 <style scoped lang="scss">
+h1 {
+	font: normal 600 30px/30px Poppins;
+	letter-spacing: -1.5px;
+	color: #555555;
+}
 .serviceImg {
 	border-radius: 5px;
 }
