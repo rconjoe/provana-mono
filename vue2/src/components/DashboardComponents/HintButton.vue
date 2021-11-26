@@ -1,7 +1,7 @@
 <template>
 	<div class="hintDiv" ref="hintBox">
 		<div class="d-flex justify-end">
-			<v-icon class="icon" color="secondary" @click="grow"> fas fa-question</v-icon>
+			<v-icon class="icon" size="20px" color="secondary" @click="grow"> fas fa-question</v-icon>
 		</div>
 		<div class="hintContent" ref="hintContent">
 			<h1 class="hintHeader"> What do I do here? </h1>
@@ -31,14 +31,17 @@ export default {
 	mounted() {
 		this.growTween = this.timeline
 			.set(this.$refs.hintBox, { height: 'auto', width: '300px' })
-			.from(this.$refs.hintBox, {
-				width: '50px',
-				height: '50px',
-				duration: 0.3,
-			})
-			.from(this.$refs.hintContent, {
+			.from(
+				this.$refs.hintBox,
+				0.3,
+				{
+					width: '50px',
+					height: '50px',
+				},
+				0
+			)
+			.from(this.$refs.hintContent, 0.2, {
 				opacity: 0,
-				duration: 0.3,
 			})
 			.pause(0)
 	},
@@ -47,6 +50,9 @@ export default {
 
 <style scoped lang="scss">
 .hintDiv {
+	position: sticky;
+	top: 0;
+	right: 0;
 	overflow: hidden;
 	display: block;
 	border-bottom-left-radius: 25px;
@@ -68,8 +74,8 @@ export default {
 .icon {
 	align-self: flex-start;
 	justify-self: flex-end;
-	margin-top: 10px;
-	margin-right: 12px;
+	margin-top: 12px;
+	margin-right: 14px;
 }
 .hintText {
 	font: normal 500 15px Arboria;
