@@ -1,5 +1,5 @@
 <template>
-	<div class="underContainer" :style="cssProps">
+	<div class="underContainer" :style="cssProps" ref="serviceCard">
 		<div class="serviceContainer">
 			<h1 :style="cssProps"> {{ service.serviceName }}</h1>
 			<!-- service picture -->
@@ -84,7 +84,7 @@
 			<!-- delete button -->
 
 			<div class=" fieldContainer d-flex justify-end">
-				<h2 class="link" @click="deleteOverlay = !deleteOverlay"> Delete Service</h2>
+				<h2 class="link" @click="deleteServiceFlow"> Delete Service</h2>
 			</div>
 		</div>
 		<!-- Terms overlay -->
@@ -104,7 +104,29 @@
 
 		<Overlay :overlay="deleteOverlay" @close-overlay="deleteOverlay = !deleteOverlay">
 			<span slot="title"> Delete Service? </span>
-			<p slot="content"> Are you sure? {{ this.deleteOverlayText }} </p>
+			<!-- If there are sessions blocking Deletion -->
+			<div slot="content" v-if="sessionsBlockingServiceDeletion.length > 0">
+				<p class="mb-4">
+					The following sessions are booked in association with this service. You will force cancel these
+					sessions and refunds will be issued to the buyers.
+				</p>
+				<v-list slot="content">
+					<v-list-item
+						v-for="(session, i) in sessionsBlockingServiceDeletion"
+						:key="i"
+						no-action
+						class=" pl-1 elevation-3"
+					>
+						{{ i + 1 }}.<span class=" ml-2">{{ session.name }} @ {{ formatTime(session.start) }} </span>
+					</v-list-item>
+				</v-list>
+			</div>
+
+			<!-- If there are no sessions Blocking deletion -->
+			<div slot="content" v-else>
+				<h2> Are you sure?</h2>
+				<p> There are no sessions booked for this service.</p>
+			</div>
 			<div class="termsSave d-flex justify-end" slot="buttons" v-if="!deleteLoading">
 				<v-btn
 					color="#333333"
@@ -115,13 +137,7 @@
 				>
 					Cancel
 				</v-btn>
-				<v-btn
-					color="primary"
-					class="btnCTA termsButton"
-					width="110"
-					:ripple="false"
-					@click="deleteServiceFlow"
-				>
+				<v-btn color="primary" class="btnCTA termsButton" width="110" :ripple="false" @click="animateDelete">
 					Delete
 				</v-btn>
 			</div>
@@ -136,6 +152,11 @@
 <script>
 import Tooltip from '../../Tooltip.vue'
 import Overlay from '../../Overlay.vue'
+import gsap from 'gsap'
+import { db, functions } from '../../../plugins/firebase'
+import { formatter } from '../../../plugins/sessionFormatter'
+
+import dayjs from 'dayjs'
 export default {
 	components: { Tooltip, Overlay },
 	props: ['service'],
@@ -145,13 +166,12 @@ export default {
 		deleteLoading: false,
 		deleteOverlay: false,
 		sessionsBlockingServiceDeletion: [],
-		deleteOverlayText: '',
 	}),
 	methods: {
 		async deleteServiceFlow() {
 			const checkArray = this.service.sessionDocIdArray
 			if (checkArray.length < 1) {
-				this.deleteServiceDoc()
+				this.deleteOverlay = true
 			} else {
 				checkArray.forEach((id) => {
 					db.collection('sessions')
@@ -159,11 +179,11 @@ export default {
 						.get()
 						.then((doc) => {
 							const sessionData = doc.data()
-							if (sessionData.status == 'booked') {
+							if (sessionData.booked > 0) {
 								this.sessionsBlockingServiceDeletion.push(sessionData)
-								this.displaySessionsBlockingServiceDeletion()
+								this.deleteOverlay = true
 							} else {
-								this.deleteServiceDoc()
+								this.deleteOverlay = true
 							}
 						})
 				})
@@ -177,15 +197,18 @@ export default {
 				this.deleteLoading = false
 			})
 		},
-		displaySessionsBlockingServiceDeletion() {
-			const toDisplay = []
-			this.sessionsBlockingServiceDeletion.forEach((session) => {
-				toDisplay.push(` ${session.name} at ${session.start}`)
-				toDisplay.join(', ')
+		animateDelete() {
+			this.deleteOverlay = false
+			gsap.to(this.$refs.serviceCard, {
+				scale: 0,
+				opacity: 0,
+				delay: 0.3,
+				onComplete: this.deleteServiceDoc,
 			})
-			const text = `The following sessions must be rendered still: ${toDisplay}! You must handle cancellations of purchased services individually.`
-			this.deleteOverlayText = text
-			this.deleteOverlay = true
+		},
+		formatTime(e) {
+			const time = formatter(e)
+			return dayjs(time).format('MM/DD h:mma')
 		},
 	},
 	computed: {
