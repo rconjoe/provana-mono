@@ -18,16 +18,14 @@
 				</h3>
 			</div>
 		</div>
-		<div class="tipCard">
-			<TipCard>
-				Your Dashboard is a quick glance at what’s coming up. Under Upcoming Sessions, you can see all upcoming
-				and underway sessions, the details, and participants.
-				<br />
-				<br />
-				Make sure to keep up with buyers through our onboard chat system, letting them know about what they may
-				need to have ready and hype them up :D
-			</TipCard>
-		</div>
+		<HelpButton>
+			Your Dashboard is a quick glance at what’s coming up. Under Upcoming Sessions, you can see all upcoming and
+			underway sessions, the details, and participants.
+			<br />
+			<br />
+			Make sure to keep up with buyers through our onboard chat system, letting them know about what they may need
+			to have ready and hype them up :D
+		</HelpButton>
 		<!-- Content Row with 2 cols side by side components -->
 		<!-- col 1/2 Upcoming sessions Component -->
 		<div class="upcomingDiv">
@@ -35,29 +33,32 @@
 				<h2 class="upcomingTitle"> Upcoming Sessions</h2>
 				<UpcomingSessions />
 			</div>
-			<div class="sessionDetails">
-				<SessionDetails v-if="selectedEvent.name" />
-			</div>
+			<transition tag="div" class="sessionDetails" @enter="detailsEnter">
+				<div ref="sessionDeets" class="sessionDetails" v-if="selectedEvent.name">
+					<SessionDetails />
+				</div>
+			</transition>
 		</div>
 	</div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import { gsap } from 'gsap'
 import dayjs from 'dayjs'
 import isBetween from 'dayjs/plugin/isBetween'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import SessionDetails from './SessionDetails.vue'
 import UpcomingSessions from './UpcomingSessions.vue'
-import TipCard from '../TipCard.vue'
+import HelpButton from '../HintButton.vue'
 dayjs.extend(isBetween)
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
 export default {
 	name: 'DashboardHome',
-	components: { SessionDetails, UpcomingSessions, TipCard },
+	components: { SessionDetails, UpcomingSessions, HelpButton },
 	props: ['profile'],
 
 	data: () => ({
@@ -77,6 +78,14 @@ export default {
 		},
 		isEmpty(obj) {
 			return Object.keys(obj).length === 0
+		},
+		detailsEnter() {
+			gsap.from(this.$refs.sessionDeets, {
+				opacity: 0,
+				duration: 0.5,
+				x: '-700px',
+				ease: 'power2',
+			})
 		},
 	},
 }
@@ -102,6 +111,7 @@ export default {
 		grid-column: 2 / 3;
 	}
 	.upcomingDiv {
+		z-index: 1;
 		margin-top: 125px;
 		display: grid;
 		grid-row: 1 / -1;
@@ -116,11 +126,13 @@ export default {
 			display: inline-block;
 			color: #666666;
 		}
-		.upcomingSession {
+		.upcomingSessions {
 			grid-area: a1;
+			z-index: 1;
 		}
 		.sessionDetails {
 			grid-area: b1;
+			z-index: 0;
 		}
 	}
 	.tipCard {
