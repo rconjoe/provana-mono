@@ -50,11 +50,10 @@ export default {
 
 <style scoped lang="scss">
 .hintDiv {
-	position: sticky;
-	top: 0;
-	right: 0;
+	position: fixed;
+	right: 12px;
+	margin-top: 20px;
 	overflow: hidden;
-	display: block;
 	border-bottom-left-radius: 25px;
 	border-top-left-radius: 25px;
 	border-bottom-right-radius: 25px;
@@ -63,6 +62,7 @@ export default {
 	border-top-right-radius: none;
 	border: 3px solid #fa4b6b;
 	background-color: #1e1e1e;
+	z-index: 2;
 }
 .hintHeader {
 	font: normal 600 20px Poppins;
