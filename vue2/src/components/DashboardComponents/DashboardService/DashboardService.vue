@@ -1,39 +1,46 @@
 <template>
 	<div class="serviceContainer">
-		<div class="hint">
-			<Tooltip height="100px">
-				Here you’ll be able to build out your three best services. We limit sellers to 3 to increase
-				discoverability to all our users and ensure everyone’s creating services that are quality experiences
-				for fans. You can create and delete services from this page, then navigate to SCHEDULE to place these
-				services on your calendar. :D Read up on what we consider best practice for building the perfect
-				services here!
-			</Tooltip>
-		</div>
-		<h1 class="dashHeader"> Services </h1>
+		<HintButton>
+			Here you’ll be able to build out your three best services. We limit sellers to 3 to increase discoverability
+			to all our users and ensure everyone’s creating services that are quality experiences for fans. You can
+			create and delete services from this page, then navigate to SCHEDULE to place these services on your
+			calendar. :D Read up on what we consider best practice for building the perfect services here!
+		</HintButton>
+		<h1 class="dashHeader" v-if="!$vuetify.breakpoint.mobile"> Services </h1>
 
 		<h2 class="servicesTitle"> Services</h2>
-		<div class="cardsContainer">
-			<NewServiceForm />
+
+		<transition-group tag="div" class="cardsContainer" @enter="enterService">
+			<NewServiceForm v-if="services.length < 3" key="addService" />
 			<div class="service" v-for="service in services" :key="service.id">
 				<ServiceCard :service="service" />
 			</div>
-		</div>
+		</transition-group>
 	</div>
 </template>
 
 <script>
 import ServiceCard from './ServiceCard.vue'
-import Tooltip from '../HintButton.vue'
+import HintButton from '../HintButton.vue'
 import NewServiceForm from './NewServiceForm.vue'
 import { functions, db } from '../../../plugins/firebase'
+import { gsap } from 'gsap'
 
 export default {
 	name: 'DashboardService',
-	components: { ServiceCard, Tooltip, NewServiceForm },
+	components: { ServiceCard, HintButton, NewServiceForm },
 	data: () => ({
 		services: [],
 	}),
-	methods: {},
+	methods: {
+		enterService(el) {
+			gsap.from(el, {
+				duration: 2,
+				opacity: 0,
+				ease: 'power1',
+			})
+		},
+	},
 	mounted() {
 		db.collection('services')
 			.where('uid', '==', this.$user.uid)
@@ -48,34 +55,41 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .serviceContainer {
 	position: relative;
-	padding-top: 75px;
+	display: grid;
+	grid:
+		'. b .' 150px
+		'. . c' auto
+		/ 140px auto 1fr;
 }
 .dashHeader {
 	transform: rotate(-90deg);
 	position: absolute;
 	font: normal normal bold 100px Poppins;
 	color: #1e1e1e;
-	left: 80px;
-	top: 80px;
+	left: -180px;
+	top: 150px;
 }
 .hint {
-	position: absolute;
-	top: 10px;
-	right: 0;
+	position: fixed;
+	top: 80px;
+	right: 12px;
+
 	z-index: 1;
 }
 
 .cardsContainer {
+	margin-right: 50px;
+	flex-wrap: wrap;
+	grid-area: c;
 	display: flex;
-	width: 100%;
-	height: 100vh;
-	justify-content: space-around;
+	justify-content: space-between;
 }
 .service {
 	max-width: 355px;
+	margin-top: 15px;
 }
 .calSheet {
 	padding-left: 4vw;
@@ -87,10 +101,11 @@ export default {
 	padding-left: 20vw;
 }
 .servicesTitle {
-	font: normal 600 2.6vw/2.6vw Poppins;
-	width: 11.25vw;
-	margin-bottom: 1vw;
-	letter-spacing: -0.13020833333333334vw;
+	grid-area: b;
+	font: normal 600 50px Poppins;
+	letter-spacing: -2.5px;
+	text-align: left;
+	align-self: flex-end;
 }
 .serviceRow {
 	position: relative;
@@ -104,12 +119,25 @@ export default {
 .calTitle {
 	font: normal bold 1.56vw Poppins;
 }
-.dashHeader {
-	transform: rotate(-90deg);
-	position: absolute;
-	font: normal bold 5.2vw Poppins;
-	color: #1e1e1e;
-	margin-left: -14.4vw;
-	margin-top: 3vw;
+@media screen and (max-width: 1400px) {
+	.serviceContainer {
+		position: relative;
+		display: grid;
+		grid:
+			'.' 75px
+			'b' auto
+			'c' auto
+			/ 1fr;
+	}
+}
+@media screen and (max-width: 900px) {
+	.serviceContainer {
+		margin: 0;
+	}
+}
+@media screen and (max-width: 685px) {
+	.cardsContainer {
+		justify-content: space-around;
+	}
 }
 </style>
