@@ -1,17 +1,15 @@
 <template>
 	<div class="scheduleContainer">
-		<div class="hint">
-			<HintButton>
-				Select a service and then click anywhere on the calendar to populate your availability!
-				<br />
-				<br />
+		<HintButton>
+			Select a service and then click anywhere on the calendar to populate your availability!
+			<br />
+			<br />
 
-				Don’t forget to click SAVE AVAILABILITY once you’re done setting your schedule! Read up on what we
-				consider best practice for building the perfect services here!
-			</HintButton>
-		</div>
-		<h2 class="storefrontTitle"> Storefront</h2>
-		<h1 class="dashHeader" v-if="!$vuetify.breakpoint.mobile"> Storefront </h1>
+			Don’t forget to click SAVE AVAILABILITY once you’re done setting your schedule! Read up on what we consider
+			best practice for building the perfect services here!
+		</HintButton>
+		<h2 class="storefrontTitle"> Schedule</h2>
+		<h1 class="dashHeader" v-if="!$vuetify.breakpoint.mobile"> Schedule </h1>
 		<div class="accordion">
 			<ServiceAccordion @pass-service="setSelectedService" />
 		</div>
@@ -411,7 +409,7 @@ export default {
 	display: grid;
 	position: relative;
 	grid:
-		'. a s .' auto
+		'. a s h' auto
 		'. b c .' auto
 		'. d c .' 1fr
 		'. . . .' 60px
@@ -480,15 +478,10 @@ export default {
 	position: absolute;
 	font: normal normal bold 100px Poppins;
 	color: #1e1e1e;
-	left: -230px;
+	left: -200px;
 	top: 180px;
 }
-.hint {
-	position: absolute;
-	top: 0;
-	right: 0;
-	z-index: 1;
-}
+
 ::v-deep .v-calendar-daily__intervals-head {
 	width: 72px !important;
 }
