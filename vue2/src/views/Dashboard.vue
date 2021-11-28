@@ -22,11 +22,11 @@
 				<Review :review="reviews[0]" />
 			</Overlay>
 			<!-- Column wraps all dashboard windows. -->
-			<v-col class=" DashCol">
+			<v-col class=" DashCol px-0">
 				<!-- Dashboard components are displayed using seperate window-items. We can't loop them because each window has different components. -->
 				<v-window v-model="window" v-if="profile !== null" class="dashWindowWrapper">
 					<!-- home window-->
-					<v-window-item name="DashHomeWindow" class="dashWindow ">
+					<v-window-item name="DashHomeWindow" class="dashWindow px-0">
 						<DashboardHome :profile="profile" @goto-services="updateWindow(2)" />
 					</v-window-item>
 					<!-- account window -->
@@ -124,7 +124,7 @@ export default {
 			},
 			{
 				icon: 'far fa-calendar-alt',
-				text: 'Storefront',
+				text: 'Schedule',
 				value: 2,
 			},
 			{
