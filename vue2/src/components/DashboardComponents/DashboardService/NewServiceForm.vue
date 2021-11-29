@@ -19,7 +19,9 @@
 				<!-- Image upload -->
 				<div class="field" :key="2">
 					<div class="pictureTip">
-						<Tooltip color="#222222" bgColor="#222222"> save picture </Tooltip>
+						<Tooltip color="#222222" bgColor="#222222">
+							16:9 image that will represent your service.
+						</Tooltip>
 					</div>
 					<div>
 						<h3 class="label mb-4 align-self-start" slot="prepend"> Service Picture: </h3>
@@ -48,7 +50,9 @@
 				<!-- ColorPicker -->
 				<div class="field mt-2" :key="3">
 					<div>
-						<Tooltip color="#222222" bgColor="#222222"> save picture </Tooltip>
+						<Tooltip color="#222222" bgColor="#222222">
+							Service color that will be represented on your calendar when scheduling.
+						</Tooltip>
 					</div>
 					<span class="label align-self-start" slot="prepend"> Service Color: </span>
 					<v-color-picker
@@ -64,7 +68,9 @@
 
 				<!-- Price -->
 				<div class="field" :key="4">
-					<Tooltip color="#222222" bgColor="#222222"> save picture </Tooltip>
+					<Tooltip color="#222222" bgColor="#222222">
+						Price of your service should be rounded to the nearest dollar.
+					</Tooltip>
 					<span class="label"> Price: </span>
 					<v-text-field
 						data-test="servicePrice-input"
@@ -84,7 +90,7 @@
 
 				<!-- Length -->
 				<div class="field" :key="5">
-					<Tooltip color="#222222" bgColor="#222222"> save picture </Tooltip>
+					<Tooltip color="#222222" bgColor="#222222"> The time it will take to complete the service.</Tooltip>
 					<span class="label "> Length: </span>
 					<!-- hours -->
 					<v-select
@@ -113,7 +119,9 @@
 
 				<!-- Buyers -->
 				<div class="field" :key="6">
-					<Tooltip color="#222222" bgColor="#222222"> save picture </Tooltip>
+					<Tooltip color="#222222" bgColor="#222222">
+						Number of poeple who can purchase the same session.
+					</Tooltip>
 					<span class="label"> Buyers:</span>
 					<v-text-field
 						class="pt-0 mt-0 mr-2"
@@ -127,8 +135,12 @@
 						:rules="hoursRules"
 					>
 					</v-text-field>
+
+					<!-- Mandatory fill -->
 					<div class="d-flex align-center ">
-						<Tooltip color="#222222" bgColor="#222222"> save picture </Tooltip>
+						<Tooltip color="#222222" bgColor="#222222">
+							Session will automatically be canceld if the number of buyers is not met.</Tooltip
+						>
 						<span class="mr-2" style="color:#dbdbdb; font: normal 600 15px Arboria">Mandatory Fill?</span>
 						<v-checkbox
 							v-model="form.mandatoryFill"
@@ -143,7 +155,7 @@
 
 				<!-- Software -->
 				<div class="field" :key="7">
-					<Tooltip color="#222222" bgColor="#222222"> save picture </Tooltip>
+					<Tooltip color="#222222" bgColor="#222222"> Software required to complete the service. </Tooltip>
 					<span class="label"> Software:</span>
 					<v-text-field
 						data-test="software-input"
@@ -161,7 +173,9 @@
 
 				<!-- Terms -->
 				<div class="field" :key="8">
-					<Tooltip color="#222222" bgColor="#222222"> save picture </Tooltip>
+					<Tooltip color="#222222" bgColor="#222222">
+						Terms the buyer must agree to before purchase.
+					</Tooltip>
 					<span class="label"> Terms:</span>
 					<span class="link align-self-center" @click="termsOverlay = !termsOverlay"> Add Terms</span>
 					<Overlay :overlay="termsOverlay" @close-overlay="termsOverlay = !termsOverlay">
@@ -200,7 +214,9 @@
 
 				<!-- Description -->
 				<div class="field" :key="9">
-					<Tooltip color="#222222" bgColor="#222222"> save picture </Tooltip>
+					<Tooltip color="#222222" bgColor="#222222">
+						Brief summary of the service to display in your storefront.
+					</Tooltip>
 					<span class="label"> Description:</span>
 					<span class="link align-self-center" @click="descriptionOverlay = !descriptionOverlay">
 						Add Description</span
@@ -237,7 +253,7 @@
 
 				<!-- Tags -->
 				<div class="field" :key="10">
-					<Tooltip color="#222222" bgColor="#222222"> save picture </Tooltip>
+					<Tooltip color="#222222" bgColor="#222222"> Keywords help searchability of your service. </Tooltip>
 					<span class="label"> Tags:</span>
 					<v-combobox
 						clearable

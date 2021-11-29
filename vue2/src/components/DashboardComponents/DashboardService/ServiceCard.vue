@@ -5,7 +5,7 @@
 			<!-- service picture -->
 			<div class="fieldContainer">
 				<div class="mt-1">
-					<Tooltip> Picture that is relevant to your service </Tooltip>
+					<Tooltip> 16:9 image that will represent your service. </Tooltip>
 				</div>
 				<span class="label"> Service Picuture: </span>
 				<v-img class="serviceImg" src="../../../assets/DemoStorefront-01.png" ratio="16/9" max-width="174">
@@ -30,7 +30,7 @@
 			<!-- Length -->
 			<div class="fieldContainer">
 				<div class="d-flex align-content-center ">
-					<Tooltip> Duration of the event in minutes. </Tooltip>
+					<Tooltip> Duration of this service in minutes. </Tooltip>
 				</div>
 				<span class="label"> Length: </span>
 				<div class="value"> {{ service.serviceLength }} min </div>
@@ -41,12 +41,15 @@
 					<Tooltip> Number of poeple who can purchase the same session. </Tooltip>
 				</div>
 				<span class="label"> Buyers: </span>
-				<div class="value"> {{ service.attendees }} </div>
+				<div class="value mr-4"> {{ service.attendees }} </div>
+				<Tooltip color="warning" v-if="service.mandatoryFill == true">
+					session will cancel automatically unless all buyers are met.
+				</Tooltip>
 			</div>
 			<!-- Software -->
 			<div class="fieldContainer">
 				<div class="d-flex align-content-center ">
-					<Tooltip> Software neccessary to complete the session. Discord, games ,etc.. </Tooltip>
+					<Tooltip> Software required to complete the service.</Tooltip>
 				</div>
 				<span class="label"> Software: </span>
 				<div class="value"> {{ service.software }} </div>
@@ -54,7 +57,7 @@
 			<!-- Tags -->
 			<div class="fieldContainer">
 				<div class="d-flex align-content-center ">
-					<Tooltip> Improve your searchability with tags. </Tooltip>
+					<Tooltip> Keywords help searchability of your service. </Tooltip>
 				</div>
 				<span class="label"> Tags: </span>
 				<div class="value">
@@ -64,7 +67,7 @@
 			<!-- Terms -->
 			<div class="fieldContainer">
 				<div class="d-flex align-content-center ">
-					<Tooltip> Terms of agreement for this service. </Tooltip>
+					<Tooltip> Terms the buyer must agree to before purchase. </Tooltip>
 				</div>
 				<span class="label"> Terms: </span>
 				<div class="value">
@@ -74,7 +77,7 @@
 			<!-- Description -->
 			<div class="fieldContainer">
 				<div class="d-flex align-content-center ">
-					<Tooltip> Brief summary of the service for the buyer. </Tooltip>
+					<Tooltip> Brief summary of the service to display in your storefront. </Tooltip>
 				</div>
 				<span class="label"> Description: </span>
 				<div class="value">
