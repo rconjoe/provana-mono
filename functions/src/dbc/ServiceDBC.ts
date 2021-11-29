@@ -229,7 +229,7 @@ export default class ServiceDBC extends Service {
     if (service !== 'NOTFOUND') {
       await addToArray({
         ref: service.ref!,
-        field: 'serviceDocIdArray',
+        field: 'sessionDocIdArray',
         value: sessionId
       })
     }
@@ -240,7 +240,7 @@ export default class ServiceDBC extends Service {
     if (service !== 'NOTFOUND') {
       await removeFromArray({
         ref: service.ref!,
-        field: 'serviceDocIdArray',
+        field: 'sessionDocIdArray',
         value: sessionId
       })
     }
