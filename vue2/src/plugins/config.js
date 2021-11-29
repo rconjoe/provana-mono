@@ -1,12 +1,11 @@
 export const config =  {
-    apiKey: "AIzaSyCK5FG09eWoYvWPvV9QMADFx81vNXgAla4",
-    authDomain: "pv-stage-1.firebaseapp.com",
-    projectId: "pv-stage-1",
-    storageBucket: "pv-stage-1.appspot.com",
-    messagingSenderId: "776342617534",
-    appId: "1:776342617534:web:7fe156642bacabb598cdef",
-    measurementId: "G-BH2R0PEF1T"
-
+  apiKey: "AIzaSyBWXyt6r4-dRqddIWt7PIRC7M3D3O-u6D4",
+  authDomain: "pv-dev-4e2c2.firebaseapp.com",
+  projectId: "pv-dev-4e2c2",
+  storageBucket: "pv-dev-4e2c2.appspot.com",
+  messagingSenderId: "17716284907",
+  appId: "1:17716284907:web:72b1b0ce4b25e90ff01dae",
+  measurementId: "G-K1R3DSZR6H"
 }
 
-export const spub = 'pk_live_51HJUgfGoIl5NLNcQADO9Pu5gFcpCNZtZuWbTC5ffGAa14gqo9qoA275l9aUpm6PdYL8QfQiyU8vNMAviIkVp5pDc00KOWaZ3PX'
+export const spub = 'pk_test_51HJUgfGoIl5NLNcQKTXPu3CKuckXq6vbUXxASrRZvrXgwtODSI9wFNWdZoo37LY3YXrrfMx2N7Nas1MWbWn7ddu100RWAa63mC'
