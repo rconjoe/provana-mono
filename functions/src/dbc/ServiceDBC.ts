@@ -1,5 +1,6 @@
 import { db } from '../admin'
 import Service from '../models/Service'
+import { addToArray, removeFromArray } from '../util'
 
 
 /**
@@ -211,5 +212,37 @@ export default class ServiceDBC extends Service {
     if(this.id === undefined || this.id === "") throw new Error('id required to delete service doc')
     return await db.collection('services').doc(this.id).delete()
       .catch(err => console.error(err))
+  }
+
+  public async fetch(serviceId: string): Promise<ServiceDBC|'NOTFOUND'> {
+    const service = await db
+      .collection('services')
+      .doc(serviceId)
+      .withConverter(converter)
+      .get()
+    if (!service.exists) return 'NOTFOUND'
+    return service.data()!
+  }
+
+  public async addSessionToService(serviceId: string, sessionId: string): Promise<void> {
+    const service = await this.fetch(serviceId)
+    if (service !== 'NOTFOUND') {
+      await addToArray({
+        ref: service.ref!,
+        field: 'serviceDocIdArray',
+        value: sessionId
+      })
+    }
+  }
+
+  public async removeSessionFromService(serviceId: string, sessionId: string): Promise<void> {
+    const service = await this.fetch(serviceId)
+    if (service !== 'NOTFOUND') {
+      await removeFromArray({
+        ref: service.ref!,
+        field: 'serviceDocIdArray',
+        value: sessionId
+      })
+    }
   }
 }
