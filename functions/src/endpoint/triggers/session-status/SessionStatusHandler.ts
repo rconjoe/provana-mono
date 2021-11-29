@@ -6,6 +6,7 @@ import TaskService from '../../../services/TaskService'
 import NotificationDBC from '../../../dbc/NotificationDBC'
 import StripePaymentIntentService from '../../../services/stripe/StripePaymentIntentService'
 import CancellationDBC from '../../../dbc/CancellationDBC'
+import ServiceDBC from '../../../dbc/ServiceDBC'
 
 export default class SessionStatusHandler {
   session: SessionDBC 
@@ -35,6 +36,7 @@ export default class SessionStatusHandler {
           undefined
         ).publish()
       }
+      await new ServiceDBC().addSessionToService(this.session.serviceDocId, this.session.id)
       await new ChatRoomDBC().initialize({
         id: this.session.id!,
         creator: this.session.sellerUid!,
