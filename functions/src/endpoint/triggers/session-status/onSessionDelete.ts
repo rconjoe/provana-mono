@@ -9,6 +9,6 @@ export const onSessionDelete = functions
     await new ServiceDBC().removeSessionFromService(snap.data().serviceDocId, snap.id)
     const slots = await new SlotDBC().fromParent(snap.id)
     slots.forEach(async (slot: SlotDBC) => {
-      await slot.ref.delete()
+      await slot.ref!.delete()
     })
 })

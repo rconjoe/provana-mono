@@ -7,9 +7,9 @@ export const deleteService = functions.https.onCall(async (data, context) => {
   const service = await new ServiceDBC().fetch(data.id)
   if (service !== 'NOTFOUND') {
     // fetch all sessions associated with service
-    service.sessionDocIdArray.forEach(async (sessionId: string) => {
+    service.sessionDocIdArray!.forEach(async (sessionId: string) => {
       const session = await new SessionDBC().fetch(sessionId)
-      await session.ref.delete()
+      await session.ref!.delete()
     })
     // delete service
     await service.delete()
