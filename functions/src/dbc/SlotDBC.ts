@@ -370,4 +370,17 @@ export default class SlotDBC extends Slot {
     return slots
   }
 
+  public async fromParent(parentSession: string): Promise<Array<SlotDBC>> {
+    const slots: Array<SlotDBC> = []
+    const qSlots = await db.collection('sessions')
+      .doc(parentSession)
+      .collection('slots')
+      .withConverter(converter)
+      .get()
+    qSlots.forEach(slot => {
+      slots.push(slot.data())
+    })
+    return slots
+  }
+
 }
