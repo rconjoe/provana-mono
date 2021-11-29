@@ -36,7 +36,7 @@ export default class SessionStatusHandler {
           undefined
         ).publish()
       }
-      await new ServiceDBC().addSessionToService(this.session.serviceDocId, this.session.id)
+      await new ServiceDBC().addSessionToService(this.session.serviceDocId!, this.session.id!)
       await new ChatRoomDBC().initialize({
         id: this.session.id!,
         creator: this.session.sellerUid!,
