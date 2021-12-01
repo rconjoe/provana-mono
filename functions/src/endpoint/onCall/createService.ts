@@ -21,5 +21,5 @@ export const createService = functions.https.onCall(async (data, context) => {
   await service.initialize()
   const price: string = await new StripePriceService().create(service.toModel())
   await service.updatePrice(price)
-  return 'ok'
+  return service.id
 })
