@@ -202,7 +202,7 @@ a:hover {
 .welcomeTitle {
 	font: normal 300 25px/50px Arboria;
 	color: #9f9f9e;
-	text-align: center;
+	text-align: left;
 }
 .userTitle {
 	font: normal 600 50px/45px Poppins;
@@ -237,14 +237,10 @@ a:hover {
 			'b b'
 			'. .';
 		.homeHeader {
-			justify-self: center;
+			justify-self: left;
 			grid-column: a;
 		}
-		.tipCard {
-			justify-self: center;
-			max-width: 100%;
-			margin-top: 0;
-		}
+
 		.upcomingDiv {
 			margin-top: 20px;
 			margin-bottom: 50px;
@@ -265,11 +261,7 @@ a:hover {
 		.homeHeader {
 			margin-bottom: 20px;
 		}
-		.tipCard {
-			justify-self: center;
-			max-width: 560px;
-			grid-row: 3;
-		}
+
 		.upcomingDiv {
 			margin-top: 20px;
 			grid-template-columns: 1fr;
