@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<v-row class="pa-0">
+		<v-row class="pa-0 ma-0">
 			<!-- Dashboard nav drawer must sit outside of the column -->
 			<!-- Creator and supporter links are set by checking claim then displaying a limited or full list of links -->
 			<div cols="1" class=" navDrawerCol">
@@ -13,14 +13,14 @@
 				/>
 			</div>
 			<!-- Onboard Overlay -->
-			<Overlay :show="this.profile.onboarded !== undefined && this.profile.onboarded === false">
+			<v-overlay :value="this.profile.onboarded !== undefined && this.profile.onboarded === false">
 				<OnboardOverlay />
-			</Overlay>
+			</v-overlay>
 
 			<!-- Review overlay -->
-			<Overlay :show="reviews.length > 1">
+			<v-overlay :value="reviews.length > 1">
 				<Review :review="reviews[0]" />
-			</Overlay>
+			</v-overlay>
 			<!-- Column wraps all dashboard windows. -->
 			<v-col class=" DashCol px-0">
 				<!-- Dashboard components are displayed using seperate window-items. We can't loop them because each window has different components. -->
@@ -188,7 +188,6 @@ export default {
 	background-size: cover;
 	max-height: auto;
 	min-height: 960px;
-	padding-left: 65px;
 	box-sizing: border-box;
 }
 .dashWindow {
