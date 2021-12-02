@@ -27,7 +27,7 @@
 				ref="calendar"
 				v-model="focus"
 				:events="event"
-				:type="$vuetify.breakpoint.width <= 950 ? 'day' : $vuetify.breakpoint.width <= 1400 ? '4day' : 'week'"
+				:type="$vuetify.breakpoint.width <= 950 ? 'day' : '4day'"
 				color="secondary"
 				:event-color="getEventColor"
 				@click:event="showEvent"
@@ -41,11 +41,20 @@
 			>
 				<template v-slot:event="{ event, start }">
 					<div v-if="start" class="eventCard">
+						<Tooltip
+							color="#111111"
+							size="20px"
+							icon="fas fa-dollar-sign"
+							v-if="event.booked == event.attendees"
+						>
+							<p> This session has been booked</p>
+						</Tooltip>
+
 						<h3 class="pt-0 white--text text-truncate eventName">
 							{{ event.name }}
 						</h3>
-						<v-icon v-if="event.status == 'booked'" size="15px" color="black" class="bookedIcon">
-							fas fa-dollar-sign
+						<v-icon size="20px" color="white" class="menuIcon">
+							fas fa-ellipsis-v
 						</v-icon>
 					</div>
 				</template>
@@ -57,13 +66,13 @@
 					<v-window v-model="toolTipWindow">
 						<v-window-item>
 							<!-- tooltip  Content-->
-							<div>
+							<div class="d-flex justify-space-between">
 								<h3 class="toolTipTitle">
 									{{ selectedEvent.name }}
 								</h3>
 								<!-- Delete icon if booked opens dialog -->
 								<v-icon
-									v-if="selectedEvent.status === 'booked'"
+									v-if="selectedEvent.booked === selectedEvent.attendees"
 									color="#272727"
 									icon
 									@click="deleteDialog = true"
@@ -82,15 +91,14 @@
 								>
 									fas fa-trash
 								</v-icon>
-								<br />
-								<h3 class="toolTipTime"> {{ startDate }}</h3>
-								<h3 class="toolTipTime">{{ startTime }} - {{ endTime }} </h3>
-								<v-card-actions class="pl-0">
-									<v-btn class="pl-0" text color="secondary" @click="sessionTooltip = false">
-										Close
-									</v-btn>
-								</v-card-actions>
 							</div>
+							<h3 class="toolTipTime"> {{ startDate }}</h3>
+							<h3 class="toolTipTime">{{ startTime }} - {{ endTime }} </h3>
+							<v-card-actions class="pl-0">
+								<v-btn class="pl-0" text color="secondary" @click="sessionTooltip = false">
+									Close
+								</v-btn>
+							</v-card-actions>
 						</v-window-item>
 						<!-- window 1 deletion window -->
 						<v-window-item>
@@ -145,13 +153,14 @@ import { functions, db } from '@/plugins/firebase'
 import { formatter } from '../../../plugins/sessionFormatter'
 import ServiceAccordion from './ServiceAccordion.vue'
 import HintButton from '../HintButton.vue'
+import Tooltip from '../../Tooltip.vue'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 dayjs.extend(localizedFormat)
 
 export default {
 	name: 'ServiceCal',
-	components: { ServiceAccordion, HintButton },
+	components: { ServiceAccordion, HintButton, Tooltip },
 	data: function() {
 		return {
 			selectedService: '',
@@ -405,21 +414,25 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.menuIcon {
+	margin-left: auto;
+	align-items: flex-start;
+}
 .scheduleContainer {
+	padding-top: 75px;
 	display: grid;
 	position: relative;
 	grid:
-		'. a s h' auto
-		'. b c .' auto
-		'. d c .' 1fr
-		'. . . .' 60px
-		/ 130px minmax(auto, 300px) auto 100px;
+		'. a . s .' 90px
+		'. . b c .' auto
+		'. . d c .' 1fr
+		'. . . . .' 60px
+		/1fr 270px minmax(auto, 300px) 9fr 1fr;
 	.storefrontTitle {
 		grid-area: a;
 		font: normal normal 600 50px Poppins;
 		letter-spacing: -2.5px;
 		max-width: 300px;
-		padding-top: 75px;
 	}
 	.saveBtn {
 		grid-area: s;
@@ -435,7 +448,6 @@ export default {
 		align-self: flex-end;
 	}
 	.calSheet {
-		grid-row: 2/3;
 		grid-area: c;
 	}
 }
@@ -625,8 +637,8 @@ MASSIVE collection of border styles to change line colors seperating days. */
 }
 
 .eventName {
-	max-width: 103px;
 	display: inline-block;
+	font: normal 500 15px/15px Poppins;
 }
 .saveBtn {
 	display: block;
@@ -661,16 +673,20 @@ MASSIVE collection of border styles to change line colors seperating days. */
 	border-top: none !important;
 	border-bottom: none !important;
 }
+::v-deep .theme--dark.v-calendar-events .v-event-timed {
+	border-radius: 10px;
+	border-top-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
 .bookedIcon {
 	vertical-align: top;
-	margin-top: 4px;
-	float: right;
+	margin-right: 5px;
 }
 
 .eventCard {
+	display: flex;
 	padding: 5px;
-	padding-top: 1px;
-	min-height: 100%;
+	padding-top: 10px;
 }
 .deleteAlertCard {
 	background-color: #fa4b6bb9;
@@ -684,7 +700,7 @@ MASSIVE collection of border styles to change line colors seperating days. */
 }
 .toolTipTitle {
 	margin-top: 4px;
-	font: normal 500 15px Arboria;
+	font: normal 500 15px Poppins;
 	display: inline-block;
 }
 .toolTipTime {
