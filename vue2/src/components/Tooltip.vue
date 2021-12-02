@@ -1,8 +1,8 @@
 <template>
 	<v-tooltip right :color="bgColor">
 		<template v-slot:activator="{ on, attrs }">
-			<v-icon size="15px" :color="color" class="mr-2 align-self-center" v-on="on" v-bind="attrs"
-				>fas fa-exclamation-circle
+			<v-icon :size="size" :color="color" class="mr-2 align-self-center" v-on="on" v-bind="attrs">
+				{{ icon }}
 			</v-icon>
 		</template>
 		<span id="toolTip">
@@ -21,6 +21,14 @@ export default {
 		bgColor: {
 			type: String,
 			default: '#333333',
+		},
+		size: {
+			type: String,
+			default: '15px',
+		},
+		icon: {
+			type: String,
+			default: 'fas fa-exclamation-circle ',
 		},
 	},
 }
