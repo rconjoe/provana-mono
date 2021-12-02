@@ -1,5 +1,5 @@
 <template>
-	<v-dialog value="true" :fullscreen="true">
+	<v-overlay value="true">
 		<section id="loginOverlayContainer">
 			<v-img src="../../../assets/ProvanaEyes_Footer.png" max-width="266" class="loginEyes" />
 			<v-tabs
@@ -27,7 +27,7 @@
 				</v-tab-item>
 			</v-tabs-items>
 		</section>
-	</v-dialog>
+	</v-overlay>
 </template>
 
 <script>
