@@ -2,13 +2,13 @@
 	<div class="newServiceContainer " ref="formBox">
 		<div class="d-flex justify-center my-auto fill-height" v-if="!showForm" @click="animateForm">
 			<v-icon color="#ED2970" class="mr-1" size="14px"> fas fa-plus </v-icon>
-			<h2 class="newServiceBtn"> New Service </h2>
+			<h2 class="newServiceBtn" :style="cssVars"> New Service </h2>
 		</div>
 
 		<div v-show="showForm" class="fill-height">
 			<v-form ref="serviceForm" class="fieldsContainer" @submit.prevent="createService" v-model="serviceValid">
 				<!-- Header -->
-				<h1 class="field"> New Service </h1>
+				<h1 class="field" :style="cssVars"> New Service </h1>
 				<!-- Title -->
 				<div class="field" :key="1">
 					<v-text-field v-model="form.serviceName" :rules="nameRules" hide-details class="pt-0">
@@ -20,29 +20,31 @@
 				<div class="field" :key="2">
 					<div class="pictureTip">
 						<Tooltip color="#222222" bgColor="#222222">
-							16:9 image that will represent your service.
+							348 x 196 image that will represent your service.
 						</Tooltip>
 					</div>
 					<div>
 						<h3 class="label mb-4 align-self-start" slot="prepend"> Service Picture: </h3>
 						<h3 class="link" @click="pictureOverlay = !pictureOverlay"> Add </h3>
 					</div>
-					<v-img
-						class="serviceImg"
-						src="https://dummyimage.com/1920x960/1e1e1e/dbdbdb"
-						ratio="16/9"
-						max-width="174"
-					>
-					</v-img>
+					<v-img class="serviceImg" :src="this.previewUrl" ratio="16/9" max-width="174"> </v-img>
 					<Overlay :overlay="pictureOverlay" @close-overlay="pictureOverlay = !pictureOverlay">
 						<span slot="title"> Service Picture </span>
 						<div slot="content">
-							<v-file-input @change="processStorePic($event)" truncate-length="15"></v-file-input>
-
-							<v-btn @click="uploadStorePic" color="#fa4b6b" text :ripple="false"> Save </v-btn>
-							<v-btn @click="pictureOverlay = !pictureOverlay" color="#666666" text :ripple="false">
-								Cancel
-							</v-btn>
+							<v-file-input
+								@change="processServicePic($event)"
+								:rules="servicePicRules"
+								truncate-length="15"
+							>
+							</v-file-input>
+							<div class="d-flex justify-end">
+								<v-btn @click="cancelServicePic" color="#666666" text :ripple="false">
+									Reset
+								</v-btn>
+								<v-btn @click="pictureOverlay = !pictureOverlay" color="#fa4b6b" text :ripple="false">
+									Save
+								</v-btn>
+							</div>
 						</div>
 					</Overlay>
 				</div>
@@ -56,10 +58,11 @@
 					</div>
 					<span class="label align-self-start" slot="prepend"> Service Color: </span>
 					<v-color-picker
-						v-model="form.serviceColor"
+						:style="cssVars"
+						v-model="form.serviceColor.hex"
 						class="colorPicker mb-2"
-						hide-inputs
 						hide-mode-switch
+						mode="hexa"
 						width="174px"
 						canvas-height="60"
 					>
@@ -277,7 +280,7 @@
 						:loading="createServiceLoading"
 						type="submit"
 						color="primary"
-						:disabled="!serviceValid || !form.terms.length > 0 || !descriptionValid"
+						:disabled="!serviceValid || !form.terms.length > 0 || !descriptionValid || servicePicFile == ''"
 					>
 						Submit
 					</v-btn>
@@ -288,13 +291,14 @@
 </template>
 
 <script>
-import { functions } from '../../../plugins/firebase'
+import { functions, storage, db } from '../../../plugins/firebase'
 import { gsap } from 'gsap'
 import Overlay from '../../Overlay.vue'
 import Tooltip from '../../Tooltip.vue'
 export default {
 	components: { Overlay, Tooltip },
 	data: () => ({
+		previewUrl: 'https://dummyimage.com/348x196/1e1e1e/dbdbdb',
 		createServiceLoading: false,
 		pictureOverlay: false,
 		descriptionOverlay: false,
@@ -302,6 +306,7 @@ export default {
 		serviceValid: true,
 		termsValid: true,
 		descriptionValid: false,
+		servicePicFile: '',
 		term: '',
 		form: {
 			terms: [],
@@ -326,8 +331,103 @@ export default {
 		softwareRules: [(v) => !!v || '', (v) => (v && v.length <= 20) || ''],
 		descriptionRules: [(v) => !!v || '', (v) => (v && v.length <= 120) || ''],
 		nameRules: [(v) => !!v || '', (v) => (v && v.length >= 3) || '', (v) => (v && v.length <= 25) || ''],
+		servicePicRules: [(value) => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!'],
 		showForm: false,
 	}),
+	computed: {
+		cssVars() {
+			return {
+				'--serviceColor': this.form.serviceColor.hex,
+			}
+		},
+	},
+	methods: {
+		animateForm() {
+			if (this.showForm == false) {
+				this.formTween.play()
+			} else {
+				this.$refs.serviceForm.resetValidation()
+				this.formTween.reverse()
+				this.form = {
+					terms: [],
+					mandatoryFill: false,
+					serviceName: '',
+					serviceCost: null,
+					serviceDescription: '',
+					serviceHours: null,
+					serviceMinutes: 0,
+					serviceLength: null,
+					attendees: null,
+					tags: [],
+					software: '',
+					platform: '',
+					serviceColor: { hex: '#FA4B6B' },
+					uid: '',
+					active: true,
+				}
+				this.previewUrl = 'https://dummyimage.com/348x196/1e1e1e/dbdbdb'
+			}
+		},
+		closeForm() {
+			this.showForm = false
+		},
+		openForm() {
+			this.showForm = true
+		},
+		processServicePic(event) {
+			this.servicePicFile = event
+			this.previewUrl = URL.createObjectURL(this.servicePicFile)
+		},
+		cancelServicePic() {
+			this.previewUrl = 'https://dummyimage.com/348x196/1e1e1e/dbdbdb'
+			this.pictureOverlay = !this.pictureOverlay
+		},
+		async createService() {
+			const hoursToMinutes = this.form.serviceHours * 60
+			const minutesLength = hoursToMinutes + this.form.serviceMinutes
+			const hexColor = this.form.serviceColor.hex
+			this.form.color = hexColor
+			this.form.serviceColor = hexColor
+			this.form.serviceLength = minutesLength
+			this.form.uid = this.$user.uid
+			this.createServiceLoading = true
+			const createService = functions.httpsCallable('createService')
+			const createRes = await createService({ ...this.form })
+			await this.uploadServicePic(createRes)
+				.then(() => {
+					this.animateForm()
+					this.createServiceLoading = false
+				})
+				.catch((err) => {
+					console.error(err)
+				})
+		},
+		async uploadServicePic(service) {
+			const storageRef = storage.ref()
+			const pictureName = 'Storefront-Services/' + this.$user.uid + '/' + service.data
+			const pictureFileRef = storageRef.child(pictureName)
+			await pictureFileRef.put(this.servicePicFile)
+			const uploadUrl = await pictureFileRef.getDownloadURL()
+			this.updateServicePic(service, uploadUrl)
+		},
+		async updateServicePic(service, imageUrl) {
+			db.collection('services')
+				.doc(service.data)
+				.update({
+					serviceImage: imageUrl,
+				})
+				.catch((err) => {
+					console.error(err)
+				})
+		},
+		termsSubmit() {
+			this.form.terms.push(this.term)
+			this.term = ''
+		},
+		termDelete(i) {
+			this.form.terms.splice(i, 1)
+		},
+	},
 	mounted() {
 		this.formTween = gsap
 			.timeline({ onReverseComplete: this.closeForm, onStart: this.openForm })
@@ -347,70 +447,6 @@ export default {
 				0
 			)
 			.pause(0)
-	},
-	methods: {
-		animateForm() {
-			if (this.showForm == false) {
-				this.formTween.play()
-			} else {
-				this.formTween.reverse()
-				this.form = {
-					terms: [],
-					mandatoryFill: false,
-					serviceName: '',
-					serviceCost: null,
-					serviceDescription: '',
-					serviceHours: null,
-					serviceMinutes: 0,
-					serviceLength: null,
-					attendees: null,
-					tags: [],
-					software: '',
-					platform: '',
-					serviceColor: { hex: '#FA4B6B' },
-					uid: '',
-					active: true,
-				}
-			}
-		},
-		closeForm() {
-			this.showForm = false
-		},
-		openForm() {
-			this.showForm = true
-		},
-		processStorePic(event) {
-			this.newStorePic = event
-		},
-		uploadStorePic() {
-			console.log(this.newStorePic)
-		},
-		termsSubmit() {
-			this.form.terms.push(this.term)
-			this.term = ''
-		},
-		termDelete(i) {
-			this.form.terms.splice(i, 1)
-		},
-		async createService() {
-			const hoursToMinutes = this.form.serviceHours * 60
-			const minutesLength = hoursToMinutes + this.form.serviceMinutes
-			const hexColor = this.form.serviceColor.hex
-			this.form.color = hexColor
-			this.form.serviceColor = hexColor
-			this.form.serviceLength = minutesLength
-			this.form.uid = this.$user.uid
-			this.createServiceLoading = true
-			const createService = functions.httpsCallable('createService')
-			await createService({ ...this.form })
-				.then(() => {
-					this.animateForm()
-					this.createServiceLoading = false
-				})
-				.catch((err) => {
-					console.error(err)
-				})
-		},
 	},
 }
 </script>
@@ -432,7 +468,7 @@ export default {
 h1 {
 	font: normal 600 30px/30px Poppins;
 	letter-spacing: -1.5px;
-	color: #555555;
+	color: var(--serviceColor);
 }
 .serviceImg {
 	border-radius: 5px;
@@ -463,6 +499,7 @@ h1 {
 	height: 175px;
 	background-color: #333333;
 	padding: 25px;
+	margin-right: 15px;
 	overflow-x: hidden;
 }
 .newServiceBtn {
@@ -504,15 +541,36 @@ h1 {
 /* colorpicker hue slider alignment */
 ::v-deep .v-color-picker__sliders {
 	margin-top: 4px;
+	max-height: 20px;
 }
 /* colorpicker preview dot alignment */
 ::v-deep .v-color-picker__preview {
 	align-items: flex-start;
 }
+// hex input top margin
+::v-deep .v-color-picker__edit {
+	margin-top: 5px;
+}
+// borderColor
+::v-deep .theme--dark.v-color-picker .v-color-picker__input input {
+	border: thin solid var(--serviceColor);
+}
+// hide hex span
+::v-deep .v-color-picker__input span {
+	display: none;
+}
+// hide slider hover glow
+::v-deep .v-slider__thumb-container:hover .v-slider__thumb:before {
+	content: '';
+	width: 0;
+	height: 0;
+}
+::v-deep .v-slider__thumb-container:hover .v-slider__thumb:before {
+	transform: none;
+}
 ::v-deep .v-color-picker__controls {
 	padding: 0;
 	padding-top: 12px;
-	max-height: 32px;
 }
 ::v-deep .v-color-picker[data-v-c44ffd26] {
 	border: none;

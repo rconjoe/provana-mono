@@ -23,7 +23,7 @@
 import ServiceCard from './ServiceCard.vue'
 import HintButton from '../HintButton.vue'
 import NewServiceForm from './NewServiceForm.vue'
-import { functions, db } from '../../../plugins/firebase'
+import { db } from '../../../plugins/firebase'
 import { gsap } from 'gsap'
 
 export default {
@@ -35,9 +35,11 @@ export default {
 	methods: {
 		enterService(el) {
 			gsap.from(el, {
-				duration: 2,
+				duration: 0.3,
+				delay: 1,
 				opacity: 0,
-				ease: 'power1',
+				height: '20px',
+				overflow: 'hidden',
 			})
 		},
 	},
@@ -82,14 +84,18 @@ export default {
 
 .cardsContainer {
 	margin-right: 50px;
+	display: grid;
 	flex-wrap: wrap;
 	grid-area: c;
-	display: flex;
-	justify-content: space-between;
+	grid:
+		'a b c' auto
+		/ 1fr 1fr 1fr;
+	justify-content: flex-start;
 }
 .service {
-	max-width: 355px;
+	max-width: 405px;
 	margin-top: 15px;
+	margin-right: 15px;
 }
 .calSheet {
 	padding-left: 4vw;
