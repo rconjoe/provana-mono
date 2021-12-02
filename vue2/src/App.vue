@@ -15,17 +15,7 @@
 					:active="loading"
 				>
 				</v-progress-linear>
-				<v-alert
-					class="errorMessage"
-					dismissible
-					id="error"
-					type="warning"
-					:icon="error.icon"
-					:color="error.color"
-					v-model="error.show"
-				>
-					{{ error.message }}
-				</v-alert>
+
 				<router-view />
 				<Footer />
 			</v-container>
@@ -46,6 +36,7 @@ export default {
 	data: () => ({
 		scrollTop: 1,
 	}),
+	methods: {},
 	computed: mapState({
 		error: (state) => state.error.data,
 		loading: (state) => state.loading.show,
@@ -55,6 +46,8 @@ export default {
 <style lang="scss">
 .appContainer {
 	max-width: 1920px;
+	position: relative;
+	padding: 0;
 }
 /* scroll bar theme */
 :root {
@@ -63,8 +56,6 @@ export default {
 html {
 	--scrollbarBG: #111;
 	--thumbBG: #90a4ae;
-}
-::-webkit-scrollbar {
 }
 body {
 	scrollbar-width: thin;
@@ -83,14 +74,6 @@ body {
 
 .v-alert__content {
 	text-transform: uppercase;
-}
-#error {
-	opacity: 1;
-	z-index: 8;
-	position: fixed !important;
-	width: 99%;
-	font: normal 600 1.2rem Arboria;
-	text-transform: lowercase;
 }
 
 html {
