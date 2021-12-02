@@ -44,6 +44,7 @@ service cloud.firestore {
 
     match /services/{docId} {
       allow read;
+      allow update;
       // only allow creators to update their own services
       allow create: if request.auth.uid == resource.data.uid;
     }
