@@ -92,12 +92,18 @@ export default {
 	max-height: 50px;
 	box-sizing: border-box;
 }
+.serviceContent {
+	border: 3px solid var(--tabColor);
+	border-right: none;
+	border-top: none;
+}
 .v-expansion-panel-header--active {
 	max-height: 50px;
 }
 .activeItem .serviceHeader {
 	border: 3px solid var(--tabColor);
 	border-right: none;
+	border-bottom: none;
 	border-top-right-radius: 0;
 }
 @media screen and (max-width: 750px) {
