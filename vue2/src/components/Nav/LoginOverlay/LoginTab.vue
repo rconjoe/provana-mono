@@ -59,14 +59,16 @@ export default {
 						this.closeLogin()
 						this.$router.push('/dashboard')
 					})
-					.catch((err) => {
+					.catch(async (err) => {
 						this.shake()
-						this.$store.dispatch('error/setError', {
+						await this.$store.dispatch('error/setShowError', false)
+						await this.$store.dispatch('error/setError', {
 							show: true,
 							color: 'warning',
 							message: err,
 							icon: 'fas fa-exclamation',
 						})
+
 						this.$store.commit('loading/SET_LOADING', false)
 					})
 			} else {

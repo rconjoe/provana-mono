@@ -6,7 +6,7 @@
 				<h1 class="serviceTitle text-truncate"> {{ service.serviceName }} </h1>
 			</div>
 			<!-- Image row -->
-			<div class="serviceImageDiv">
+			<div class="serviceImageDiv" :style="cssVars">
 				<!-- price/length div -->
 				<div class="serviceInfoDiv">
 					<span class="serviceInfo"> ${{ service.serviceCost }}</span>
@@ -39,6 +39,13 @@ export default {
 	data: () => ({
 		hover: false,
 	}),
+	computed: {
+		cssVars() {
+			return {
+				'--serviceImage': 'url(' + this.service.serviceImage + ')',
+			}
+		},
+	},
 	methods: {
 		async serviceClicked() {
 			this.$emit('service-clicked', this.service)
@@ -94,8 +101,9 @@ export default {
 .serviceImageDiv {
 	margin-top: 1.09375vw;
 	background-position-x: center;
-	min-height: 10.416666666666666vw;
-	background-image: url('../../assets/ProvanaAlphaBadge-02.png');
+	height: 196px;
+	width: 348px;
+	background-image: var(--serviceImage);
 	background-color: #f5f5f5;
 	background-size: contain;
 }

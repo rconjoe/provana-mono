@@ -5,7 +5,7 @@
 		<!-- Main Content Row  with 3 columns -->
 		<h1 class="accountTitle"> Account </h1>
 		<div class="tipCard">
-			<TipCard>
+			<HelpButton>
 				This information is what’s used to fill out your storefront.
 				<br />
 				<br />
@@ -13,7 +13,7 @@
 				<br />
 				<br />
 				Have your storefront visitors navigate to your other social media profiles through the Socials links :D
-			</TipCard>
+			</HelpButton>
 		</div>
 		<!-- Left Column Content -->
 		<div class="accountInfo">
@@ -44,11 +44,11 @@ import AccountSocials from './AccountSocials.vue'
 import AccountTimezone from './AccountTimezone.vue'
 import AccountInfo from './AccountInfo.vue'
 import AccountUploads from './AccountUploads.vue'
-import TipCard from '../TipCard.vue'
+import HelpButton from '../HintButton.vue'
 export default {
 	name: 'DashboardAccount',
 	props: ['profile'],
-	components: { AccountSocials, AccountTimezone, AccountInfo, AccountUploads, TipCard },
+	components: { AccountSocials, AccountTimezone, AccountInfo, AccountUploads, HelpButton },
 	data: () => ({
 		seller: '',
 		uid: '',
@@ -90,12 +90,6 @@ export default {
 	}
 	.accountUploads {
 		grid-area: e;
-	}
-	.tipCard {
-		grid-area: b;
-		height: auto;
-		margin-top: 170px;
-		max-width: 250px;
 	}
 }
 

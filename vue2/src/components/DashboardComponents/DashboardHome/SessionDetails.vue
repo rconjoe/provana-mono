@@ -45,7 +45,7 @@
 						</v-tooltip>
 					</div>
 					<!-- Dispute Link v-if="this.$user.uid !== selectedEvent.seller.uid" -->
-					<h3 class="link" @click="disputeDialog = true"> Dispute Session</h3>
+					<h3 class="link" @click="disputeDialog = true" v-if="disputable"> Dispute Session</h3>
 				</div>
 				<!-- Avatar Box -->
 				<div class="avatarDiv">
@@ -273,6 +273,7 @@ import dayjs from 'dayjs'
 import { db } from '../../../plugins/firebase'
 import { mapState } from 'vuex'
 import { functions } from '../../../plugins/firebase'
+import { formatter } from '../../../plugins/sessionFormatter'
 export default {
 	name: 'SessionDetails',
 	data: () => ({
@@ -295,6 +296,13 @@ export default {
 		selectedElement: null,
 	}),
 	computed: {
+		time() {
+			dayjs()
+		},
+		disputable() {
+			const start = formatter(this.selectedEvent.session.start)
+			return dayjs().isAfter(start, 'minute')
+		},
 		...mapState({
 			selectedEvent: (state) => state.dashboard.selected,
 			claims: (state) => state.auth.claims,
