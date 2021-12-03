@@ -1,72 +1,102 @@
 <template>
-	<v-row class="serviceRow">
-		<v-col class="serviceCol">
-			<v-row>
-				<v-col class="headerCol pb-0">
-					<h2 class="servicesTitle"> Set your schedule</h2>
-					<h1 class="dashHeader"> Services </h1>
-				</v-col>
-				<v-col class="pb-0">
-					<!-- Services tab component left col -->
-					<ServicesTabs
-						@pass-service="setSelectedService"
-						@service-tabs-reload="serviceTabsReload"
-						:key="tabsKey"
-					/>
-				</v-col>
-			</v-row>
-			<v-row>
-				<v-col class="calCol">
-					<v-sheet
-						class="calSheet ma-2 ml-0 pl-0"
-						height="22.135416666666668vw"
-						width="76.04166666666667vw"
-						color="transparent"
-					>
-						<ServiceCal :selectedService="selectedService" />
-					</v-sheet>
-				</v-col>
-			</v-row>
-		</v-col>
-	</v-row>
+	<div class="serviceContainer">
+		<HintButton>
+			Here you’ll be able to build out your three best services. We limit sellers to 3 to increase discoverability
+			to all our users and ensure everyone’s creating services that are quality experiences for fans. You can
+			create and delete services from this page, then navigate to SCHEDULE to place these services on your
+			calendar. :D Read up on what we consider best practice for building the perfect services here!
+		</HintButton>
+		<h1 class="dashHeader" v-if="!$vuetify.breakpoint.mobile"> Services </h1>
+
+		<h2 class="servicesTitle"> Services</h2>
+
+		<transition-group tag="div" class="cardsContainer" @enter="enterService">
+			<NewServiceForm v-if="services.length < 3" key="addService" />
+			<div class="service" v-for="service in services" :key="service.id">
+				<ServiceCard :service="service" />
+			</div>
+		</transition-group>
+	</div>
 </template>
 
 <script>
-import ServiceCal from './ServiceCal.vue'
-import ServicesTabs from './ServicesTabs'
+import ServiceCard from './ServiceCard.vue'
+import HintButton from '../HintButton.vue'
+import NewServiceForm from './NewServiceForm.vue'
+import { db } from '../../../plugins/firebase'
+import { gsap } from 'gsap'
 
 export default {
 	name: 'DashboardService',
-	components: {
-		ServiceCal,
-		ServicesTabs,
-	},
+	components: { ServiceCard, HintButton, NewServiceForm },
 	data: () => ({
-		selectedService: null,
-		tabsKey: 1,
+		services: [],
 	}),
 	methods: {
-		setSelectedService(e) {
-			this.selectedService = e
+		enterService(el) {
+			gsap.from(el, {
+				duration: 0.3,
+				delay: 1,
+				opacity: 0,
+				height: '20px',
+				overflow: 'hidden',
+			})
 		},
-		serviceTabsReload() {
-			this.tabsKey = this.tabsKey
-			this.selectedService = null
-		},
+	},
+	mounted() {
+		db.collection('services')
+			.where('uid', '==', this.$user.uid)
+			.where('active', '==', true)
+			.onSnapshot((snapshot) => {
+				this.services = []
+				snapshot.forEach((doc) => {
+					this.services.push(doc.data())
+				})
+			})
 	},
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.serviceContainer {
+	position: relative;
+	display: grid;
+	grid:
+		'. b .' 150px
+		'. . c' auto
+		/ 140px auto 1fr;
+}
 .dashHeader {
 	transform: rotate(-90deg);
 	position: absolute;
-	font: normal normal bold 5.208vw Poppins;
+	font: normal normal bold 100px Poppins;
 	color: #1e1e1e;
-	left: -3.6vw;
-	top: 5vw;
+	left: -180px;
+	top: 150px;
+}
+.hint {
+	position: fixed;
+	top: 80px;
+	right: 12px;
+
+	z-index: 1;
 }
 
+.cardsContainer {
+	margin-right: 50px;
+	display: grid;
+	flex-wrap: wrap;
+	grid-area: c;
+	grid:
+		'a b c' auto
+		/ 1fr 1fr 1fr;
+	justify-content: flex-start;
+}
+.service {
+	max-width: 405px;
+	margin-top: 15px;
+	margin-right: 15px;
+}
 .calSheet {
 	padding-left: 4vw;
 }
@@ -77,10 +107,11 @@ export default {
 	padding-left: 20vw;
 }
 .servicesTitle {
-	font: normal 600 2.6vw/2.6vw Poppins;
-	width: 11.25vw;
-	margin-bottom: 1vw;
-	letter-spacing: -0.13020833333333334vw;
+	grid-area: b;
+	font: normal 600 50px Poppins;
+	letter-spacing: -2.5px;
+	text-align: left;
+	align-self: flex-end;
 }
 .serviceRow {
 	position: relative;
@@ -94,12 +125,25 @@ export default {
 .calTitle {
 	font: normal bold 1.56vw Poppins;
 }
-.dashHeader {
-	transform: rotate(-90deg);
-	position: absolute;
-	font: normal bold 5.2vw Poppins;
-	color: #1e1e1e;
-	margin-left: -14.4vw;
-	margin-top: 3vw;
+@media screen and (max-width: 1400px) {
+	.serviceContainer {
+		position: relative;
+		display: grid;
+		grid:
+			'.' 75px
+			'b' auto
+			'c' auto
+			/ 1fr;
+	}
+}
+@media screen and (max-width: 900px) {
+	.serviceContainer {
+		margin: 0;
+	}
+}
+@media screen and (max-width: 685px) {
+	.cardsContainer {
+		justify-content: space-around;
+	}
 }
 </style>

@@ -38,7 +38,7 @@
 		</v-navigation-drawer>
 
 		<v-bottom-navigation v-else class="mobileNav" fixed color="secondary" shift grow>
-			<v-btn v-for="link in links" :key="link" @click="$emit('update-window', link.value)">
+			<v-btn v-for="link in links" :key="link.icon" @click="$emit('update-window', link.value)">
 				<span> {{ link.text }} </span>
 
 				<v-icon>{{ link.icon }}</v-icon>

@@ -13,7 +13,7 @@ export default {}
 
 <style scoped>
 .tipContainer {
-	height: 100%;
+	height: auto;
 	width: 100%;
 	background-color: #1e1e1e;
 	padding: 30px 24px;

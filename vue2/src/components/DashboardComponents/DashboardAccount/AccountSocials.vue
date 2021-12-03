@@ -24,14 +24,17 @@
 				</a>
 			</h2>
 			<!-- Twitch -->
-			<h2 class="socialText" style="display: inline-block">
-				<v-icon color="#6441A4" class="socialIcon"> fab fa-twitch</v-icon>
-				<a :href="`https://twitch.tv/${twitch}`" target="_blank" v-if="twitch">
-					{{ twitch }}
-				</a>
-			</h2>
-			<v-btn text class="editBtn" @click="socialEdit = !socialEdit"> Change </v-btn>
+			<div class="d-flex justify-space-between">
+				<h2 class="socialText">
+					<v-icon color="#6441A4" class="socialIcon"> fab fa-twitch</v-icon>
+					<a :href="`https://twitch.tv/${twitch}`" target="_blank" v-if="twitch">
+						{{ twitch }}
+					</a>
+				</h2>
+				<v-btn text class="editBtn" @click="socialEdit = !socialEdit"> EDIT </v-btn>
+			</div>
 		</div>
+
 		<div v-else>
 			<h1 class="tagHeader text-xs-h3"> Social </h1>
 			<div>
@@ -40,8 +43,6 @@
 			<v-text-field
 				dense
 				v-model="socials.twitter"
-				v-on="on"
-				v-bind="attrs"
 				hint="Enter only your username."
 				label="Username"
 				class="editInput my-2"
@@ -85,27 +86,36 @@
 			>
 				<v-icon color="#6441A4" slot="prepend" class="socialIconEdit"> fab fa-twitch</v-icon>
 			</v-text-field>
-			<v-btn text class="editBtn" color="success" @click="updateSocials">
-				Save
-			</v-btn>
-			<v-icon
-				v-if="!socialLoading"
-				slot="append"
-				size="1vw"
-				@click="socialEdit = !socialEdit"
-				class="mt-2 socialClose"
-				color="red darken-4"
-				>fas fa-times</v-icon
-			>
+			<div class="socialActions">
+				<v-icon @click="updateSocials" color="success">
+					fas fa-save
+				</v-icon>
+				<v-icon
+					v-if="!socialLoading"
+					@click="socialEdit = !socialEdit"
+					size="30px"
+					class="ml-2 "
+					color="red darken-4"
+				>
+					fas fa-times
+				</v-icon>
+			</div>
+		</div>
+		<AccountTimezone :timezoneSelect="this.$store.state.auth.tz" />
+		<div>
+			<h2 class="code mt-10"> Discord code </h2>
+			<h3 class="codeText"> {{ discord }} </h3>
 		</div>
 	</div>
 </template>
 
 <script>
 import { db } from '../../../plugins/firebase'
+import AccountTimezone from './AccountTimezone.vue'
 
 export default {
-	props: ['twitter', 'facebook', 'youtube', 'twitch'],
+	components: { AccountTimezone },
+	props: ['twitter', 'facebook', 'youtube', 'twitch', 'discord'],
 	data: () => ({
 		socialEdit: false,
 		socialLoading: false,
@@ -144,32 +154,38 @@ export default {
 </script>
 
 <style scoped>
-.socialClose {
-	float: right;
-	align-content: flex-end;
+.code {
+	font: normal bold 25px Poppins;
+}
+.codeText {
+	font: normal normal 15px Poppins;
+}
+.socialActions {
+	display: flex;
+	justify-content: flex-end;
 }
 .editBtn {
-	font: normal normal bold 0.78125vw/0.78125vw Poppins;
+	font: normal normal bold 15px Poppins;
 	color: #fa4b6b;
-	float: right;
+	align-content: flex-start;
+	height: 100% !important;
 }
 .socialIcon {
-	margin-right: 0.521vw;
+	margin-right: 10px;
 	min-width: 27px;
 }
 .socialIconEdit {
-	min-width: 1.40625vw;
+	min-width: 28px;
 }
 .tagHeader {
-	font: normal bold 1.3021vw Poppins;
-	padding-top: 2.109375vw;
+	font: normal bold 25px Poppins;
 }
 .socialText {
-	font: normal normal 0.78125vw/0.78125vw Poppins;
-	padding-left: 0.10417vw;
-	padding-bottom: 1.5vw;
+	display: flex;
+	font: normal normal 15px Poppins;
+	padding-bottom: 25px;
 }
 .editInput {
-	margin-right: 1.0417vw;
+	margin-right: 20px;
 }
 </style>

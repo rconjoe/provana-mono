@@ -1,16 +1,16 @@
 import Stripe from 'stripe'
 import * as sendgrid from '@sendgrid/mail'
-import { ClientOptions   } from '@grpc/grpc-js'
+import { ClientOptions } from '@grpc/grpc-js'
 
-export var stripe = new Stripe('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', {
+export var stripe = new Stripe(  "sk_test_51HJUgfGoIl5NLNcQ8xzPwo3tXqwoaGym8ZXwPBxbVWuOEEdCQxst4ORTV9x8GU4k4TK9uyFFiB9zLHMvDMLSV9UW00N8C4ejVB", {
     apiVersion: '2020-08-27',
   }
 )
 
-export var stripeRedirectUrl = 'https://alpha.provana.gg'
+export var stripeRedirectUrl = 'https://pv-dev-4e2c2.web.app'
 
 sendgrid.setApiKey("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")
 export const sg = sendgrid
 
 export var taskcfg: ClientOptions = {}
-export const project = 'pv-stage-1'
+export const project = 'pv-dev-4e2c2'

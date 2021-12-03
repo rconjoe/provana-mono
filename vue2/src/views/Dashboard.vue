@@ -1,9 +1,9 @@
 <template>
 	<div>
-		<v-row class="pa-0  dashRow">
+		<v-row class="pa-0 ma-0">
 			<!-- Dashboard nav drawer must sit outside of the column -->
 			<!-- Creator and supporter links are set by checking claim then displaying a limited or full list of links -->
-			<div cols="1" class="pa-0 navDrawerCol">
+			<div cols="1" class=" navDrawerCol">
 				<DashboardNavDrawer
 					style="height:100%"
 					:links="claims.type === 'creators' ? creators : supporters"
@@ -13,20 +13,20 @@
 				/>
 			</div>
 			<!-- Onboard Overlay -->
-			<Overlay :show="this.profile.onboarded !== undefined && this.profile.onboarded === false">
+			<v-overlay :value="this.profile.onboarded !== undefined && this.profile.onboarded === false">
 				<OnboardOverlay />
-			</Overlay>
+			</v-overlay>
 
 			<!-- Review overlay -->
-			<Overlay :show="reviews.length > 1">
+			<v-overlay :value="reviews.length > 1">
 				<Review :review="reviews[0]" />
-			</Overlay>
+			</v-overlay>
 			<!-- Column wraps all dashboard windows. -->
-			<v-col class="pa-0 DashCol">
+			<v-col class=" DashCol px-0">
 				<!-- Dashboard components are displayed using seperate window-items. We can't loop them because each window has different components. -->
 				<v-window v-model="window" v-if="profile !== null" class="dashWindowWrapper">
 					<!-- home window-->
-					<v-window-item name="DashHomeWindow" class="dashWindow ">
+					<v-window-item name="DashHomeWindow" class="dashWindow px-0">
 						<DashboardHome :profile="profile" @goto-services="updateWindow(2)" />
 					</v-window-item>
 					<!-- account window -->
@@ -34,15 +34,15 @@
 						<DashboardAccount :profile="profile" />
 					</v-window-item>
 
-					<!-- services window -->
+					<!-- storefront window -->
 					<v-window-item name="DashServiceWindow" id="services">
-						<DashboardService />
+						<ServiceCal />
 					</v-window-item>
 
-					<!-- payment window -->
-					<!-- <v-window-item name="DashPaymentWindow">
-							<dashboard-payments></dashboard-payments>
-					</v-window-item> -->
+					<!-- services window -->
+					<v-window-item name="DashPaymentWindow">
+						<DashboardService />
+					</v-window-item>
 
 					<!-- contact window -->
 					<!-- <v-window-item name="DashContactWindow">
@@ -62,7 +62,8 @@ import { mapState } from 'vuex'
 import ChatBox from '@/components/Chat/ChatBox.vue'
 import DashboardHome from '../components/DashboardComponents/DashboardHome/DashboardHome.vue'
 import DashboardAccount from '@/components/DashboardComponents/DashboardAccount/DashboardAccount.vue'
-import DashboardService from '@/components/DashboardComponents/DashboardService/DashboardService.vue'
+import ServiceCal from '../components/DashboardComponents/DashboardCalendar/ServiceCal.vue'
+import DashboardService from '../components/DashboardComponents/DashboardService/DashboardService.vue'
 import DashboardPayments from '@/components/DashboardComponents/DashboardPayments.vue'
 import DashboardContact from '@/components/DashboardComponents/DashboardContact.vue'
 import DashboardNavDrawer from '@/components/DashboardComponents/DashboardNavDrawer.vue'
@@ -78,11 +79,12 @@ export default {
 		ChatBox,
 		DashboardHome,
 		DashboardAccount,
-		DashboardService,
+		ServiceCal,
 		DashboardPayments,
 		DashboardContact,
 		DashboardNavDrawer,
 		OnboardOverlay,
+		DashboardService,
 		Overlay,
 	},
 
@@ -122,14 +124,14 @@ export default {
 			},
 			{
 				icon: 'far fa-calendar-alt',
-				text: 'Services',
+				text: 'Schedule',
 				value: 2,
 			},
-			// {
-			//   icon: 'fas fa-credit-card',
-			//   text: 'Payment',
-			//   value: 3,
-			// },
+			{
+				icon: 'fas fa-credit-card',
+				text: 'Services',
+				value: 3,
+			},
 			// {
 			//   icon: 'fas fa-bell',
 			//   text: 'Contact',
@@ -184,8 +186,9 @@ export default {
 .dashWindowWrapper {
 	background-image: url('../assets/_DashboardBG1.png');
 	background-size: cover;
-	min-height: 100vh;
-	padding-left: 65px;
+	max-height: auto;
+	min-height: 960px;
+	box-sizing: border-box;
 }
 .dashWindow {
 	background-color: transparent;

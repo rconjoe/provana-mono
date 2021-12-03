@@ -80,7 +80,7 @@ export default {
 	z-index: 4;
 }
 .mobileChat {
-	width: 375px;
+	max-width: 375px;
 	position: fixed;
 	bottom: 50px;
 	right: 10px;
