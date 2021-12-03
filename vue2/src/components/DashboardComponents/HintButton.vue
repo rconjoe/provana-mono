@@ -15,7 +15,6 @@ import gsap from 'gsap'
 export default {
 	data: () => ({
 		hintOpen: false,
-		timeline: gsap.timeline({ delay: 0 }),
 	}),
 	methods: {
 		grow() {
@@ -29,7 +28,8 @@ export default {
 		},
 	},
 	mounted() {
-		this.growTween = this.timeline
+		this.growTween = gsap
+			.timeline()
 			.set(this.$refs.hintBox, { height: 'auto', width: '300px' })
 			.from(
 				this.$refs.hintBox,
@@ -57,8 +57,8 @@ export default {
 	border-bottom-left-radius: 25px;
 	border-top-left-radius: 25px;
 	border-bottom-right-radius: 25px;
-	height: 50px;
-	width: 50px;
+	height: auto;
+	width: 300px;
 	border-top-right-radius: none;
 	border: 3px solid #fa4b6b;
 	background-color: #1e1e1e;
