@@ -59,7 +59,7 @@
 					<span class="label align-self-start" slot="prepend"> Service Color: </span>
 					<v-color-picker
 						:style="cssVars"
-						v-model="form.serviceColor.hex"
+						v-model="form.serviceColor"
 						class="colorPicker mb-2"
 						hide-mode-switch
 						mode="hexa"
@@ -77,7 +77,7 @@
 					<span class="label"> Price: </span>
 					<v-text-field
 						data-test="servicePrice-input"
-						class="pt-1 mt-0 inputText"
+						class="pt-1 pb-0mt-0 inputText"
 						v-model.number="form.serviceCost"
 						color="#fff"
 						type="number"

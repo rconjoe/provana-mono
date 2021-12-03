@@ -164,7 +164,7 @@
 				</v-btn>
 				<v-btn
 					color="primary"
-					class="btnCTA termsButton"
+					class=" termsButton"
 					width="110"
 					:ripple="false"
 					:disabled="sessionsBlockingServiceDeletion.length > 0"
@@ -217,8 +217,9 @@ export default {
 			const pictureFileRef = storageRef.child(pictureName)
 			await pictureFileRef.put(this.servicePicFile)
 			const uploadUrl = await pictureFileRef.getDownloadURL()
-			// this.updateServicePic(service, uploadUrl)
-			console.log(uploadUrl)
+			this.updateServicePic(service, uploadUrl).then(() => {
+				this.pictureOverlay = !this.pictureOverlay
+			})
 		},
 		async updateServicePic(service, imageUrl) {
 			db.collection('services')
@@ -348,5 +349,11 @@ h1 {
 }
 .serviceImg {
 	border-radius: 5px;
+}
+.termsButton {
+	padding-bottom: 5px;
+	border-radius: 6px;
+	background-image: linear-gradient(179.4deg, rgba(230, 27, 91, 1) 7.1%, #bd154a 97.1%);
+	border-bottom: 3px solid #bd154a;
 }
 </style>
