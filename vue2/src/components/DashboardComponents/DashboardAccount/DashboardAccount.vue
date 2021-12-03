@@ -1,105 +1,152 @@
 <template>
 	<!--Container Row -->
-	<v-row no gutters class="accountRow">
+	<div class="accountContainer">
 		<h1 class="dashHeader"> Settings </h1>
-		<v-col>
-			<!-- Main Content Row  with 3 columns -->
-			<h1 class="accountTitle"> Account </h1>
-			<v-row class="dashContainer">
-				<!-- Left Column Content -->
-				<v-col class="leftCol">
-					<AccountInfo :profile="profile" />
-				</v-col>
-				<!-- Middle Column Content -->
-				<v-col class="middleCol">
-					<!-- Socials -->
-					<AccountSocials
-						:twitter="profile.twitter"
-						:facebook="profile.facebook"
-						:twitch="profile.twitch"
-						:youtube="profile.youtube"
-					/>
-					<!-- TimeZone selection -->
-					<AccountTimezone :timezoneSelect="this.$store.state.auth.tz" />
-				</v-col>
-				<v-col class="avatarCol">
-					<!-- Avatar/ banner uploads -->
-					<AccountUploads :profile="profile" />
-				</v-col>
-			</v-row>
-		</v-col>
-	</v-row>
+		<!-- Main Content Row  with 3 columns -->
+		<h1 class="accountTitle"> Account </h1>
+		<div class="tipCard">
+			<HelpButton>
+				This information is what’s used to fill out your storefront.
+				<br />
+				<br />
+				Let your buyers know about you through your Tagline and Bio.
+				<br />
+				<br />
+				Have your storefront visitors navigate to your other social media profiles through the Socials links :D
+			</HelpButton>
+		</div>
+		<!-- Left Column Content -->
+		<div class="accountInfo">
+			<AccountInfo :profile="profile" />
+		</div>
+		<!-- Middle Column Content -->
+		<div class="accountSocials">
+			<!-- Socials -->
+			<AccountSocials
+				:twitter="profile.twitter"
+				:facebook="profile.facebook"
+				:twitch="profile.twitch"
+				:youtube="profile.youtube"
+				:discord="profile.discord"
+			/>
+			<!-- TimeZone selection -->
+		</div>
+		<div class="accountUploads">
+			<!-- Avatar/ banner uploads -->
+			<AccountUploads :profile="profile" />
+		</div>
+	</div>
 </template>
 
 <script>
-	import {mapState} from 'vuex'
-	import AccountSocials from './AccountSocials.vue'
-	import AccountTimezone from './AccountTimezone.vue'
-	import AccountInfo from './AccountInfo.vue'
-	import AccountUploads from './AccountUploads.vue'
-	export default {
-		name: 'DashboardAccount',
-		props: ['profile'],
-		components: { AccountSocials, AccountTimezone, AccountInfo, AccountUploads },
-		data: () => ({
-			seller: '',
-			uid: '',
-			closeOnContentClick: false,
-		}),
-		computed: mapState({
-			profile: (state) => state.auth.currentUser,
-		}),
-		async mounted() {
-			this.uid = this.$user.uid
-			this.seller = this.avatarUrl = this.profile.avatar
-			this.bannerUrl = this.profile.banner
-		},
-	}
+import { mapState } from 'vuex'
+import AccountSocials from './AccountSocials.vue'
+import AccountTimezone from './AccountTimezone.vue'
+import AccountInfo from './AccountInfo.vue'
+import AccountUploads from './AccountUploads.vue'
+import HelpButton from '../HintButton.vue'
+export default {
+	name: 'DashboardAccount',
+	props: ['profile'],
+	components: { AccountSocials, AccountTimezone, AccountInfo, AccountUploads, HelpButton },
+	data: () => ({
+		seller: '',
+		uid: '',
+		closeOnContentClick: false,
+	}),
+
+	async mounted() {
+		this.uid = this.$user.uid
+		this.avatarUrl = this.profile.avatar
+		this.bannerUrl = this.profile.banner
+	},
+}
 </script>
 
-<style scoped>
-	.accountRow {
-		display: relative;
-		padding-left: 2.5vw;
-		padding-top: 5.8vw;
-	}
+<style scoped lang="scss">
+.accountContainer {
+	padding-left: 175px;
+	display: grid;
+	grid-template:
+		' a . . . ' auto
+		' b c d e ' auto
+		' . . . . ' auto
+		/ 1fr 1fr 1fr 1fr;
 
-	.dashContainer {
-		margin-left: 6vw;
-	}
-	.contain {
-		padding-left: 40%;
-	}
-	.leftCol {
-		margin-right: 2.609375vw;
-		max-width: 20.67vw;
-	}
-	.dashHeader {
-		transform: rotate(-90deg);
-		position: absolute;
-		font: normal normal bold 5.208vw Poppins;
-		color: #1e1e1e;
-		left: -8.2vw;
-		top: 8vw;
-	}
-	/* Page Content */
 	.accountTitle {
-		font: normal 600 2.605vw Poppins;
+		grid-area: a;
+		font: normal 600 50px Poppins;
+		letter-spacing: -2.5px;
 		color: #ffffff;
-		padding-left: 4.5vw;
-		padding-top: 2.4vw;
+		padding-top: 80px;
 	}
-	.avatarCol {
-		padding-right: 5.208vw;
-		padding-left: 5.208vw;
+	.accountInfo {
+		grid-area: c;
+		max-width: 320px;
 	}
-	.middleCol {
-		max-width: 19.302vw;
+	.accountSocials {
+		grid-area: d;
+		max-width: 270px;
 	}
-	.edit {
-		font: normal normal bold 0.78125vw/0.78125vw Poppins;
-		margin-right: 0.9375vw;
-		color: #fa4b6b;
-		float: right;
+	.accountUploads {
+		grid-area: e;
 	}
+}
+
+.dashHeader {
+	transform: rotate(-90deg);
+	position: absolute;
+	font: normal normal bold 100px Poppins;
+	letter-spacing: -5px;
+	color: #1e1e1e;
+	left: -145px;
+	top: 145px;
+}
+@media screen and (max-width: 1400px) {
+	.dashHeader {
+		display: none;
+	}
+	.accountContainer {
+		padding-left: 10px;
+	}
+}
+@media screen and (max-width: 1150px) {
+	.accountContainer {
+		padding-bottom: 60px;
+		display: grid;
+		grid-template:
+			'a .'
+			'b c'
+			'd e';
+		justify-content: space-around;
+		.accountSocials,
+		.accountUploads {
+			margin-top: 60px;
+		}
+		.tipCard {
+			margin-top: 80px;
+		}
+	}
+}
+@media screen and (max-width: 650px) {
+	.accountContainer {
+		padding-bottom: 60px;
+		display: grid;
+		grid-template:
+			'a '
+			'b'
+			'c'
+			'd'
+			'e';
+		justify-content: space-around;
+		.accountSocials,
+		.accountUploads {
+			margin-top: 60px;
+		}
+		.tipCard {
+			margin-top: 30px;
+			margin-bottom: 30px;
+		}
+	}
+}
 </style>

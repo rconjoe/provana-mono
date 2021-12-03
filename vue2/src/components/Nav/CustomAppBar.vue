@@ -45,7 +45,7 @@
 		</v-navigation-drawer>
 
 		<!-- App bar -->
-		<v-app-bar app color="#1E1E1E" class="appBar pt-0">
+		<v-app-bar color="#1E1E1E" app class="appBar pt-0">
 			<!-- provana Img -->
 			<router-link to="/">
 				<v-img
@@ -117,6 +117,7 @@
 		</v-overlay>
 		<!-- DisputDialog -->
 		<DisputeDialog v-if="topDispute" :dispute="topDispute" />
+		<Alert />
 	</div>
 </template>
 
@@ -128,12 +129,13 @@ import Logout from '@/components/Nav/Logout.vue'
 import DisputeDialog from '@/components/Nav/DisputeDialog.vue'
 import LoginOverlay from '../Nav/LoginOverlay/LoginOverlay.vue'
 import AlphaPartnerAlert from './AlphaPartnerAlert.vue'
+import Alert from '../Alert.vue'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { mapState } from 'vuex'
 export default {
 	name: 'CustomAppBar',
-	components: { LoginBtn, Logout, DisputeDialog, Overlay, Login, LoginOverlay, AlphaPartnerAlert },
+	components: { LoginBtn, Logout, DisputeDialog, Overlay, Login, LoginOverlay, AlphaPartnerAlert, Alert },
 	data: () => ({
 		appNavDrawer: false,
 		mobileDrawer: false,

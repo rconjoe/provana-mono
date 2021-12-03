@@ -8,11 +8,7 @@
 			<v-row class="imageRow">
 				<!-- 1/2 service Image -->
 				<v-col class="serviceImgCol">
-					<v-img
-						src="../../assets/ProvanaAlphaBadge-02.png"
-						max-width="13.736842105263158vw"
-						max-height="140"
-					/>
+					<v-img :src="service.serviceImage" max-width="348px" max-height="196" />
 				</v-col>
 				<!-- 2/2 service info -->
 				<v-col class="serviceInfoCol">
