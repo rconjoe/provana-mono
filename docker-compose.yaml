@@ -1,0 +1,40 @@
+version: "3.7"
+
+services:
+  vue2:
+    container_name: vue2
+    build: ./vue2
+    image: db-abstract_vue2:latest
+    ports: 
+      - "8081:8081"
+    volumes:
+      - ./vue2:/src
+      - vue2_node_modules:/src/node_modules
+    stdin_open: true
+    tty: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    command: npm run serve
+
+  api:
+    container_name: api
+    build: ./api
+    image: db_abstract_api:latest
+    ports:
+      - "9099:9099"
+      - "4000:4000"
+      - "5001:5001"
+      - "8080:8080"
+      - "9199:9199"
+    volumes:
+      - ./api:/src
+      - functions_node_modules:/src/functions/node_modules
+    stdin_open: true
+    tty: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    command: firebase emulators:start --import=./data --export-on-exit=./data
+
+volumes:
+  vue2_node_modules:
+  functions_node_modules:

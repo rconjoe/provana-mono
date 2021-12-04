@@ -11,7 +11,7 @@ firebase-debug.*.log*
 .firebase/
 
 # Firebase config
-functions/src/config/config.ts
+api/functions/src/config/config.ts
 vue2/src/plugins/config.js
 # Uncomment this if you'd like others to create their own Firebase project.
 # For a team working on the same Firebase project(s), it is recommended to leave
@@ -67,18 +67,19 @@ node_modules/
 .env
 
 #out dir for jsdoc documentation
-functions/out
+api/functions/out
 
 .history
-functions/dist
-functions/test-creds.json
-functions/lib
-functions/.runtimeconfig.json
+api/functions/dist
+api/functions/test-creds.json
+api/functions/lib
+api/functions/.runtimeconfig.json
 .vscode
 vue2/node_modules
 vue2/dist
-functions/.vimspector.json
-functions/src/endpoint/.vimspector.json
+api/functions/.vimspector.json
+api/functions/src/endpoint/.vimspector.json
 .DS_Store
-functions/scripts/dispute-test/
-functions/scripts/dustin
+api/functions/scripts/dispute-test/
+api/functions/scripts/dustin
+api/data

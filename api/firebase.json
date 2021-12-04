@@ -7,35 +7,27 @@
     "predeploy": "npm --prefix \"$RESOURCE_DIR\" run build",
     "source": "functions"
   },
-  "hosting": {
-    "public": "vue2/dist",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  },
   "emulators": {
     "auth": {
+      "host": "0.0.0.0",
       "port": 9099
     },
     "functions": {
+      "host": "0.0.0.0",
       "port": 5001
     },
     "firestore": {
+      "host": "0.0.0.0",
       "port": 8080
     },
     "storage": {
+      "host": "0.0.0.0",
       "port": 9199
     },
     "ui": {
-      "enabled": true
+      "host": "0.0.0.0",
+      "enabled": true,
+      "port": 4000
     }
   },
   "storage": {
