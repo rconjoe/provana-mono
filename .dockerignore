@@ -1,0 +1,7 @@
+api/functions/node_modules
+api/functions/node_modules
+api/functions/package-lock.json
+api/.firebase
+vue2/node_modules
+vue2/dist
+vue2/package-lock.json
