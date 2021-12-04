@@ -1,0 +1,19 @@
+{
+    "opts": {
+        "template": "node_modules/better-docs"
+      },
+    "tags": {
+        "allowUnknownTags": ["category"]
+    },
+    "plugins": [
+        "node_modules/better-docs/typescript",
+        "node_modules/better-docs/category",
+        "node_modules/jsdoc-mermaid"
+    ],
+    "recurseDepth": 10,
+    "source": {
+        "include":"./src/",
+        "includePattern": "\\.(jsx|js|ts|tsx)$",
+        "exclude":"./src/spec"
+    }
+}
